@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    enviroment:
+      - VITE_API_KEY=api_key
+    depends_on:
+      - backend
+    networks:
+      - my-network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    enviroment:
+      - VITE_API_KEY=api_key
+      - MYSQL_ROOT_PASSWORD=root
+
+  db:
+    image: mariadb:latest
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+    ports:
+      - "3306:3306"
+    volumes:
+      -db_data:/var/lib/mysql
+    networks:
+      - my-network
+
+volumes:
+  db_data: 
+
+networks:
+  my-network:
