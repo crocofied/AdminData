@@ -1,22 +1,22 @@
 version: '3.8'
 
 services:
-  frontend:
+  client:
     build:
-      context: ./frontend
+      context: ./client
       dockerfile: Dockerfile
     ports:
       - "3000:80"
     environment:
       - VITE_API_KEY=api_key
     depends_on:
-      - backend
+      - server
     networks:
       - my-network
 
-  backend:
+  server:
     build:
-      context: ./backend
+      context: ./server
       dockerfile: Dockerfile
     ports:
       - "5000:5000"
