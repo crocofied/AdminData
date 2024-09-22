@@ -9,7 +9,7 @@ const Home = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        axios.post("http://server:5000/database_init", {}, {
+        axios.post("http://localhost:5000/database_init", {}, {
         headers: {
             "Authorization": `Bearer ${import.meta.env.VITE_API_KEY}`,
             "Content-Type": "application/json"
@@ -24,7 +24,7 @@ const Home = () => {
     }, []);
 
     const login = () => {
-        axios.post("http://server:5000/login", {
+        axios.post("http://localhost:5000/login", {
             username: username,
             password: password
         }, {
