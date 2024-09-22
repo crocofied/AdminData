@@ -121,5 +121,5 @@ async def login(request: Request):
     return {"session_id": session_id}
 
 
-if __name__ == "__main__":
-    uvicorn.run(app, host="server", port=5000)
+# if __name__ == "__main__":
+#     uvicorn.run(app, host="localhost", port=5000)
