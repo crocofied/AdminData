@@ -20,8 +20,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 database_host = os.getenv("VITE_HOST_IP")
-database_port = 3301
-
+database_port = 3001
 database_user = "root"
 database_password = os.getenv("MYSQL_ROOT_PASSWORD")
 
