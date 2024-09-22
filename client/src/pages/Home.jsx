@@ -9,6 +9,7 @@ const Home = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
+        console.log(import.meta.env.VITE_API_KEY);
         axios.post("http://2.56.244.117:5000/database_init", {}, {
         headers: {
             "Authorization": `Bearer ${import.meta.env.VITE_API_KEY}`,
