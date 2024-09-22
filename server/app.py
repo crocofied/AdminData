@@ -78,7 +78,7 @@ async def database_init(request: Request, token=Depends(token_required)):
     return {"message": "Database initialized"}
 
 @app.post("/login")
-async def login(request: Request):
+async def login(request: Request, token=Depends(token_required)):
     data = await request.json()
     username = data.get("username")
     password = data.get("password")
