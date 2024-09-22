@@ -14,12 +14,12 @@ load_dotenv()
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Update this line
+    allow_origins=[os.getenv("VITE_HOST_IP")],  # Update this line
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
-database_host = "localhost"
+database_host = os.getenv("VITE_HOST_IP")
 database_port = 3301
 
 database_user = "root"

@@ -7,7 +7,7 @@ services:
       dockerfile: Dockerfile
       args:
         VITE_API_KEY: api_key
-        VITE_API_URL: 2.56.244.117:5000
+        VITE_HOST_IP: 2.56.244.117
     ports:
       - "3000:80"
     depends_on:
@@ -22,6 +22,7 @@ services:
     environment:
       - VITE_API_KEY=api_key
       - MYSQL_ROOT_PASSWORD=root
+      - VITE_HOST_IP=2.56.244.117
 
   db:
     image: mariadb:latest
