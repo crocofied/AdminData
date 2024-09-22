@@ -19,8 +19,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-database_host = "db"
+database_host = "localhost"
 database_port = 3301
+
 database_user = "root"
 database_password = os.getenv("MYSQL_ROOT_PASSWORD")
 

@@ -23,6 +23,21 @@ const Home = () => {
         });
     }, []);
 
+    useEffect(() => {
+        axios.get("http://localhost:5000/", {
+        headers: {
+            "Authorization": `Bearer ${import.meta.env.VITE_API_KEY}`,
+            "Content-Type": "application/json"
+        }
+        })
+        .then(response => {
+        console.log("Response:", response);
+        })
+        .catch(error => {
+        console.error("Error:", error);
+        });
+    }, []);
+
     const login = () => {
         axios.post("http://localhost:5000/login", {
             username: username,
