@@ -1,3 +1,4 @@
+// =========================== IMPORTS ===========================
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
@@ -8,6 +9,7 @@ const Home = () => {
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
 
+    // Initialize the database on first load
     useEffect(() => {
         axios.post(`http://${import.meta.env.VITE_HOST_IP}:5000/database_init`, {}, {
         headers: {
@@ -23,6 +25,7 @@ const Home = () => {
         });
     }, []);
 
+    // Login function
     const login = () => {
         axios.post(`http://${import.meta.env.VITE_HOST_IP}:5000/login`, {
             username: username,
@@ -38,12 +41,11 @@ const Home = () => {
             navigate("/dashboard");
         })
         .catch(error => {
-            console.error("Error:", error);
+            navigate("/");
         }
         )
     };
-
-
+    
     return (
         <div className="flex items-center justify-center min-h-screen">
             <div className="card bg-base-200 w-1/3 shadow-xl">

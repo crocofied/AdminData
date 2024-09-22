@@ -1,12 +1,11 @@
-// ============================= IMPORTS =============================
+// =========================== IMPORTS ===========================
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-// ============================= PAGE IMPORTS =============================
+// =========================== PAGE IMPORTS ===========================
 import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
 
 function App() {
-
   return (    
     <BrowserRouter>
       <Routes>
