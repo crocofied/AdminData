@@ -23,6 +23,8 @@ services:
     environment:
       - VITE_API_KEY=api_key
       - MYSQL_ROOT_PASSWORD=root
+    networks:
+      - my-network
 
   db:
     image: mariadb:latest
@@ -41,3 +43,4 @@ volumes:
 
 networks:
   my-network:
+    driver: bridge
