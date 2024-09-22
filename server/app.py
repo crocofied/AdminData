@@ -4,8 +4,8 @@ from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 
 ## =========================== IMPORT DEPENDENCIES AND ROUTES ===========================
-from dependencies import token_required
-from routers import user, setup
+from .dependencies import token_required
+from .routers import user, setup
 
 
 # Setup FastAPI and define CORS middleware

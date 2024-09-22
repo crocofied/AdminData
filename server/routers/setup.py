@@ -2,7 +2,7 @@
 from fastapi import APIRouter
 from fastapi import  Request, Depends, HTTPException
 import bcrypt
-from dependencies import token_required, connect_database
+from ..dependencies import token_required, connect_database
 
 router = APIRouter() # Create a router
 
