@@ -34,3 +34,22 @@ async def login(request: Request, token=Depends(token_required)):
     con.close()
 
     return {"session_id": session_id}
+
+@router.post("/check_session")
+async def check_session(request: Request, token=Depends(token_required)):
+    # Fetch the session id from the request body
+    data = await request.json()
+    session_id = data.get("session_id")
+
+    # Get the user from the database
+    con, cursor = connect_database()
+    cursor.execute("SELECT * FROM sessions WHERE token=%s", (session_id,))
+    session = cursor.fetchone()
+    cursor.close()
+    con.close()
+
+    # Check if the session exists
+    if not session:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+
+    return {"message": "Session is valid"}

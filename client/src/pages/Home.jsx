@@ -9,6 +9,26 @@ const Home = () => {
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
 
+    const userLoggedin = () => {
+        if(!Cookies.get("session_id")) {
+            return false;
+        }
+        axios.post(`http://${import.meta.env.VITE_HOST_IP}:5000/check_session`, {
+            session_id: Cookies.get("session_id")
+        }, {
+            headers: {
+                "Authorization": `Bearer ${import.meta.env.VITE_API_KEY}`,
+                "Content-Type": "application/json"
+            }
+        })
+        .then(response => {
+            return true;
+        })
+        .catch(error => {
+            return false;
+        }, {})
+    }
+
     // Initialize the database on first load
     useEffect(() => {
         axios.post(`http://${import.meta.env.VITE_HOST_IP}:5000/database_init`, {}, {
@@ -18,11 +38,17 @@ const Home = () => {
         }
         })
         .then(response => {
-        console.log("Response:", response);
         })
         .catch(error => {
-        console.error("Error:", error);
+            navigate("/");
         });
+    }, []);
+
+    // Check if the user is already logged in
+    useEffect(() => {
+        if(userLoggedin()) {
+            navigate("/dashboard");
+        }
     }, []);
 
     // Login function
@@ -45,7 +71,7 @@ const Home = () => {
         }
         )
     };
-    
+
     return (
         <div className="flex items-center justify-center min-h-screen">
             <div className="card bg-base-200 w-1/3 shadow-xl">
