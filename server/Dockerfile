@@ -10,4 +10,4 @@ COPY . .
 
 EXPOSE 5000
 
-CMD ["fastapi", "run", "app/app.py", "--port", "5000"]
+CMD ["fastapi", "run", "app.py", "--port", "5000"]
