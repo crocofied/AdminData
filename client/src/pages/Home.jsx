@@ -10,22 +10,7 @@ const Home = () => {
 
     useEffect(() => {
         console.log(import.meta.env.VITE_API_KEY);
-        axios.post("http://localhost:5000/database_init", {}, {
-        headers: {
-            "Authorization": `Bearer ${import.meta.env.VITE_API_KEY}`,
-            "Content-Type": "application/json"
-        }
-        })
-        .then(response => {
-        console.log("Response:", response);
-        })
-        .catch(error => {
-        console.error("Error:", error);
-        });
-    }, []);
-
-    useEffect(() => {
-        axios.get("http://localhost:5000/", {
+        axios.post(`http://${import.meta.env.REACT_APP_API_URL}/database_init`, {}, {
         headers: {
             "Authorization": `Bearer ${import.meta.env.VITE_API_KEY}`,
             "Content-Type": "application/json"
@@ -40,7 +25,7 @@ const Home = () => {
     }, []);
 
     const login = () => {
-        axios.post("http://localhost:5000/login", {
+        axios.post(`http://${import.meta.env.REACT_APP_API_URL}/login`, {
             username: username,
             password: password
         }, {
