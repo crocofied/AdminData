@@ -9,7 +9,7 @@ const Home = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        axios.post("http://localhost:5000/database_init", {}, {
+        axios.post("http://2.56.244.117:5000/database_init", {}, {
         headers: {
             "Authorization": `Bearer ${import.meta.env.VITE_API_KEY}`,
             "Content-Type": "application/json"
@@ -24,7 +24,7 @@ const Home = () => {
     }, []);
 
     useEffect(() => {
-        axios.get("http://localhost:5000/", {
+        axios.get("http://2.56.244.117:5000/", {
         headers: {
             "Authorization": `Bearer ${import.meta.env.VITE_API_KEY}`,
             "Content-Type": "application/json"
