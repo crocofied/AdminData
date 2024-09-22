@@ -9,8 +9,7 @@ const Home = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        console.log(import.meta.env.VITE_API_KEY);
-        axios.post(`http://${import.meta.env.REACT_APP_API_URL}/database_init`, {}, {
+        axios.post(`http://${import.meta.env.VITE_API_URL}/database_init`, {}, {
         headers: {
             "Authorization": `Bearer ${import.meta.env.VITE_API_KEY}`,
             "Content-Type": "application/json"
