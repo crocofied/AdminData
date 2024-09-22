@@ -11,8 +11,6 @@ services:
       - VITE_API_KEY=api_key
     depends_on:
       - server
-    networks:
-      - my-network
 
   server:
     build:
@@ -23,8 +21,6 @@ services:
     environment:
       - VITE_API_KEY=api_key
       - MYSQL_ROOT_PASSWORD=root
-    networks:
-      - my-network
 
   db:
     image: mariadb:latest
@@ -35,12 +31,6 @@ services:
       - "3001:3306"
     volumes:
       - db_data:/var/lib/mysql
-    networks:
-      - my-network
 
 volumes:
   db_data: 
-
-networks:
-  my-network:
-    driver: bridge
