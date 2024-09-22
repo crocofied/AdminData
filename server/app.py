@@ -14,7 +14,7 @@ load_dotenv()
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[os.getenv("VITE_HOST_IP")],  # Update this line
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -122,4 +122,4 @@ async def login(request: Request, token=Depends(token_required)):
 
 
 # if __name__ == "__main__":
-#     uvicorn.run(app, host="localhost", port=5000)
+#   uvicorn.run(app, host="localhost", port=5000)
