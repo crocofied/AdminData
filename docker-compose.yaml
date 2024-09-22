@@ -5,10 +5,10 @@ services:
     build:
       context: ./client
       dockerfile: Dockerfile
+      args:
+        VITE_API_KEY: api_key
     ports:
       - "3000:80"
-    environment:
-      - VITE_API_KEY=api_key
     depends_on:
       - server
 
