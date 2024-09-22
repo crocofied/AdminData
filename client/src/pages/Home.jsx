@@ -10,7 +10,7 @@ const Home = () => {
 
     useEffect(() => {
         console.log(import.meta.env.VITE_API_KEY);
-        axios.post("http:/localhost:5000/database_init", {}, {
+        axios.post("http://localhost:5000/database_init", {}, {
         headers: {
             "Authorization": `Bearer ${import.meta.env.VITE_API_KEY}`,
             "Content-Type": "application/json"
