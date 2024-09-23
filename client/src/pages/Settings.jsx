@@ -13,6 +13,12 @@ const Settings = () => {
     const [errorVisible, setErrorVisible] = useState(false);
     const [success, setSuccess] = useState(false);
 
+    useEffect(() => {
+        if(!SessionChecker()) {
+            navigate("/");
+        }
+    }, []);
+
     const showError = (message) => {
         setError(message);
         setErrorVisible(true);
@@ -64,7 +70,7 @@ const Settings = () => {
                 <div className='pt-10 pr-10 w-full'>
                     <h1 className="text-5xl font-bold">Account Settings</h1>
                     <div className="divider"></div>
-                    <div className="w-2/3">
+                    <div className="w-3/4">
                         <h2 className="text-3xl font-medium">Change Password</h2>
                         <div className='flex flex-wrap justify-between items-center'>
                             <div className='text-lg pt-5'>

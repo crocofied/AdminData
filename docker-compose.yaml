@@ -6,8 +6,8 @@ services:
       context: ./client
       dockerfile: Dockerfile
       args:
-        VITE_API_KEY: api_key
-        VITE_HOST_IP: 2.56.244.117
+        VITE_API_KEY: <SUPER_SECRET_API_KEY>
+        VITE_HOST_IP: <YOUR_IP>
     ports:
       - "3000:80"
     depends_on:
@@ -20,15 +20,15 @@ services:
     ports:
       - "5000:5000"
     environment:
-      - VITE_API_KEY=api_key
-      - MYSQL_ROOT_PASSWORD=root
-      - VITE_HOST_IP=2.56.244.117
+      - VITE_API_KEY=<SUPER_SECRET_API_KEY>
+      - MYSQL_ROOT_PASSWORD=<SUPER_SECRET_DB_PASSWORD>
+      - VITE_HOST_IP=<YOUR_IP>
 
   db:
     image: mariadb:latest
     restart: always
     environment:
-      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_ROOT_PASSWORD=<SUPER_SECRET_DB_PASSWORD>
     ports:
       - "3001:3306"
     volumes:

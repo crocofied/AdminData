@@ -89,7 +89,7 @@ const Home = () => {
                         <input type="password" className="grow" placeholder='Password' onChange={(e) => setPassword(e.target.value)}/>
                     </label>
                     <div className="card-actions justify-end">
-                    <button onClick={login} className="btn btn-primary">Login</button>
+                    <button onClick={login} className="btn btn-primary w-full">Login</button>
                     </div>
                     <div className="text-center text-gray-600 text-xs">AdminData - A secure and modern self hosted Database Client</div>
                 </div>

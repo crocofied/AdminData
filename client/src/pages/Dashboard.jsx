@@ -172,7 +172,7 @@ const Home = () => {
             <div className='pt-10 pr-10 w-full'>
                 <h1 className="text-5xl font-bold">Database Connections</h1>
                 <div className="divider"></div>
-                <div className="w-2/3">
+                <div className="w-3/4">
                     <div className='flex flex-wrap justify-between'>
                         <h2 className="text-3xl font-medium">Your Connections</h2>
                         <div className='text-right'>
@@ -181,7 +181,7 @@ const Home = () => {
                             </button>
                         </div>
                     </div>
-                    <div className='flex flex-wrap lg:space-x-4 space-y-4 lg:space-y-0 items-center'>
+                    <div className='flex flex-wrap space-x-4 space-y-4 items-center'>
                     {connections.length > 0 && connections.map((connection, index) => (
                         <>
                             <div key={index} className="card card-compact bg-base-100 w-96 shadow-xl">
@@ -204,7 +204,10 @@ const Home = () => {
                                         setPassword(""); // Passwort nicht voreinstellen, damit es nicht sichtbar ist
                                         document.getElementById('my_modal_4').showModal();
                                     }}> Edit </button>
-                                    <button className="btn btn-primary">Connect</button>
+                                    <button className="btn btn-primary" onClick={() => {
+                                        setCurrentConnectionId(connection[0]);
+                                        navigate("/databases", { state: { connection_id: connection[0], connection_name: connection[2] }});
+                                    }}>Connect</button>
                                     </div>
                                 </div>
                             </div>
