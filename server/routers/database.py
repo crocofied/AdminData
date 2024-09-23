@@ -163,7 +163,7 @@ async def edit_database(request: Request, token=Depends(token_required)):
     cursor.execute("SHOW TABLES")
     tables = cursor.fetchall()
     for (table_name,) in tables:
-        cursor.execute(f"RENAME TABLE your_old_database.{table_name} TO {new_database_name}.{table_name}")
+        cursor.execute(f"RENAME TABLE {old_database_name}.{table_name} TO {new_database_name}.{table_name}")
     con.commit()
     cursor.execute(f"DROP DATABASE {old_database_name}")
     con.commit()
