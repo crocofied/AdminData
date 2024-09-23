@@ -66,7 +66,7 @@ const Settings = () => {
                     <div className="divider"></div>
                     <div className="w-2/3">
                         <h2 className="text-3xl font-medium">Change Password</h2>
-                        <div className='grid grid-cols-2 items-center'>
+                        <div className='flex flex-wrap justify-between items-center'>
                             <div className='text-lg pt-5'>
                                 If you would like to change your password, you can do so here.
                             </div>

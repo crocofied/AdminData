@@ -5,7 +5,7 @@ import uvicorn
 
 ## =========================== IMPORT DEPENDENCIES AND ROUTES ===========================
 from .dependencies import token_required
-from .routers import user, setup
+from .routers import user, setup, database
 
 
 # Setup FastAPI and define CORS middleware
@@ -21,3 +21,4 @@ app.add_middleware(
 # Include the routers
 app.include_router(user.router)
 app.include_router(setup.router)
+app.include_router(database.router)
