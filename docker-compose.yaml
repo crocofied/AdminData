@@ -29,7 +29,5 @@ services:
     volumes:
       - db_data:/app/db
 
-  
-
 volumes:
   db_data: 
