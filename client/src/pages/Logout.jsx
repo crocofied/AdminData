@@ -11,7 +11,7 @@ const Logout = () => {
 
     useEffect(() => {
         if(SessionChecker()) {
-            axios.post(`http://server:5000/logout`, {
+            axios.post(`http://${import.meta.env.VITE_HOST_IP}:5000/logout`, {
                 session_id: Cookies.get("session_id")
             })
             .then(response => {
