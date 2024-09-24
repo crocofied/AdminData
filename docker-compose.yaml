@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   client:
     build:
@@ -22,6 +20,9 @@ services:
     environment:
       - VITE_API_KEY=<SUPER_SECRET_API_KEY>
       - VITE_HOST_IP=<YOUR_IP>
+    volumes:
+      - db_data:/app/db
+
   sqlite3:
     image: nouchka/sqlite3:latest
     stdin_open: true
@@ -30,4 +31,4 @@ services:
       - db_data:/app/db
 
 volumes:
-  db_data: 
+  db_data:

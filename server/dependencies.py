@@ -15,6 +15,6 @@ def token_required(request: Request):
 
 # Define a dependency to connect to the database   
 def connect_database(database: bool = True):
-    con = sqlite3.connect("/db/admin_data.db")
+    con = sqlite3.connect("/app/db/admin_data.db")
     cursor = con.cursor()
     return con, cursor
