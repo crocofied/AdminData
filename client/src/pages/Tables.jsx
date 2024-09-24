@@ -54,15 +54,10 @@ const Tables = () => {
 
     // Refresh tables
     const refreshTables = () => {
-        axios.post(`http://${import.meta.env.VITE_HOST_IP}:5000/get_tables?page=${currentPage}&size=7`, {
+        axios.post(`http://server:5000/get_tables?page=${currentPage}&size=7`, {
             session_id: Cookies.get("session_id"),
             connection_id: connectionID,
             database: databaseName
-        }, {
-            headers: {
-                "Authorization": `Bearer ${import.meta.env.VITE_API_KEY}`,
-                "Content-Type": "application/json"
-            }
         })
         .then(response => {
             if (response.data.items.length === 0 && response.status === 200) {
@@ -79,16 +74,11 @@ const Tables = () => {
     }
 
     const deleteTable = () => {
-        axios.post(`http://${import.meta.env.VITE_HOST_IP}:5000/delete_table`, {
+        axios.post(`http://server:5000/delete_table`, {
             session_id: Cookies.get("session_id"),
             connection_id: connectionID,
             database: databaseName,
             table: selectedTableName
-        }, {
-            headers: {
-                "Authorization": `Bearer ${import.meta.env.VITE_API_KEY}`,
-                "Content-Type": "application/json"
-            }
         })
         .then(response => {
             if (response.data.message === "Table deleted") {

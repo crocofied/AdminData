@@ -38,7 +38,7 @@ const Home = () => {
             showError("Please fill out all fields.");
             return;
         }
-        axios.post(`http://${import.meta.env.VITE_HOST_IP}:5000/add_connection`, {
+        axios.post(`http://server:5000/add_connection`, {
             session_id: Cookies.get("session_id"),
             name: name,
             type: type,
@@ -46,11 +46,6 @@ const Home = () => {
             port: port,
             user: username,
             password: password
-        }, {
-            headers: {
-                "Authorization": `Bearer ${import.meta.env.VITE_API_KEY}`,
-                "Content-Type": "application/json"
-            }
         })
         .then(response => {
             if (response.data.message === "Connection added") {
@@ -79,7 +74,7 @@ const Home = () => {
             showError("Please fill out all fields.");
             return;
         }
-        axios.post(`http://${import.meta.env.VITE_HOST_IP}:5000/edit_connection`, {
+        axios.post(`http://server:5000/edit_connection`, {
             session_id: Cookies.get("session_id"),
             id: currentConnectionId,
             name: name,
@@ -88,11 +83,6 @@ const Home = () => {
             port: port,
             user: username,
             password: password
-        }, {
-            headers: {
-                "Authorization": `Bearer ${import.meta.env.VITE_API_KEY}`,
-                "Content-Type": "application/json"
-            }
         })
         .then(response => {
             if (response.data.message === "Connection updated") {
@@ -119,13 +109,8 @@ const Home = () => {
     }, []);
 
     const updateConnections = () => {
-        axios.post(`http://${import.meta.env.VITE_HOST_IP}:5000/get_connections`, {
+        axios.post(`http://server:5000/get_connections`, {
             session_id: Cookies.get("session_id")
-        }, {
-            headers: {
-                "Authorization": `Bearer ${import.meta.env.VITE_API_KEY}`,
-                "Content-Type": "application/json"
-            }
         })
         .then(response => {
             setConnections(response.data.connections);
@@ -135,14 +120,9 @@ const Home = () => {
     };
 
     const deleteConnection = () => {
-        axios.post(`http://${import.meta.env.VITE_HOST_IP}:5000/delete_connection`, {
+        axios.post(`http://server:5000/delete_connection`, {
             session_id: Cookies.get("session_id"),
             id: currentConnectionId
-        }, {
-            headers: {
-                "Authorization": `Bearer ${import.meta.env.VITE_API_KEY}`,
-                "Content-Type": "application/json"
-            }
         })
         .then(response => {
             if (response.data.message === "Connection deleted") {

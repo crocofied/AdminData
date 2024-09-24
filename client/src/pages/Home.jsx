@@ -14,7 +14,7 @@ const Home = () => {
 
     // Initialize the database on first load
     useEffect(() => {
-        axios.post(`http://${import.meta.env.VITE_HOST_IP}:5000/database_init`, {}, {
+        axios.post(`http://server:5000/database_init`, {}, {
         headers: {
             "Authorization": `Bearer ${import.meta.env.VITE_API_KEY}`,
             "Content-Type": "application/json"
@@ -37,14 +37,9 @@ const Home = () => {
     // Login function
     const login = () => {
         setInputDisabled(true);
-        axios.post(`http://${import.meta.env.VITE_HOST_IP}:5000/login`, {
+        axios.post(`http://server:5000/login`, {
             username: username,
             password: password
-        }, {
-            headers: {
-                "Authorization": `Bearer ${import.meta.env.VITE_API_KEY}`,
-                "Content-Type": "application/json"
-            }
         })
         .then(response => {
             Cookies.set("session_id", response.data.session_id, {expires: 7});
@@ -62,6 +57,7 @@ const Home = () => {
             navigate("/dashboard");
         }
     }, []);
+
 
     return (
         <>

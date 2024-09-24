@@ -1,11 +1,5 @@
 FROM node:22.9.0-alpine AS build
 
-ARG VITE_API_KEY
-ARG VITE_HOST_IP
-
-ENV VITE_API_KEY=$VITE_API_KEY
-ENV VITE_HOST_IP=$VITE_HOST_IP
-
 WORKDIR /app
 
 COPY package*.json ./

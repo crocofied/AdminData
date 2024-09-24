@@ -54,12 +54,12 @@ const Databases = () => {
 
     // Refresh databases
     const refreshDatabases = () => {
-        axios.post(`http://${import.meta.env.VITE_HOST_IP}:5000/get_databases?page=${currentPage}&size=7`, {
+        axios.post(`http://server:5000/get_databases?page=${currentPage}&size=7`, {
             session_id: Cookies.get("session_id"),
             connection_id: connectionID
         }, {
             headers: {
-                "Authorization": `Bearer ${import.meta.env.VITE_API_KEY}`,
+                "Authorization": `Bearer ${localStorage.getItem("api_token")}`,
                 "Content-Type": "application/json"
             }
         })
@@ -83,15 +83,10 @@ const Databases = () => {
 
     // Save edited database
     const saveEditDatabase = () => {
-        axios.post(`http://${import.meta.env.VITE_HOST_IP}:5000/edit_database`, {
+        axios.post(`http://server:5000/edit_database`, {
             connection_id: connectionID,
             old_database_name: selectedDatabaseName,
             new_database_name: selectedNewDatabaseName
-        }, {
-            headers: {
-                "Authorization": `Bearer ${import.meta.env.VITE_API_KEY}`,
-                "Content-Type": "application/json"
-            }
         })
         .then(response => {
             if (response.data.message === "Database edited") {
@@ -108,14 +103,9 @@ const Databases = () => {
 
     // Delete database
     const deleteDatabase = () => {
-        axios.post(`http://${import.meta.env.VITE_HOST_IP}:5000/delete_database`, {
+        axios.post(`http://server:5000/delete_database`, {
             connection_id: connectionID,
             database_name: selectedDatabaseName
-        }, {
-            headers: {
-                "Authorization": `Bearer ${import.meta.env.VITE_API_KEY}`,
-                "Content-Type": "application/json"
-            }
         })
         .then(response => {
             if (response.data.message === "Database deleted") {
@@ -130,14 +120,9 @@ const Databases = () => {
 
     // Create new database
     const createDatabase = () => {
-        axios.post(`http://${import.meta.env.VITE_HOST_IP}:5000/create_database`, {
+        axios.post(`http://server:5000/create_database`, {
             connection_id: connectionID,
             database_name: createDatabaseName
-        }, {
-            headers: {
-                "Authorization": `Bearer ${import.meta.env.VITE_API_KEY}`,
-                "Content-Type": "application/json"
-            }
         })
         .then(response => {
             if (response.data.message === "Database created") {

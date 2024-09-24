@@ -1,5 +1,5 @@
-from fastapi import APIRouter, Request, Depends, HTTPException
-from ..dependencies import token_required, connect_database
+from fastapi import APIRouter, Request, HTTPException
+from ..dependencies import connect_database, validate_session
 import mysql.connector
 from fastapi_pagination import Page, add_pagination, paginate
 from pydantic import BaseModel
@@ -13,7 +13,9 @@ class Table(BaseModel):
 
 # Define a route to initialize the database
 @router.post("/get_tables", tags=["tables"])
-async def get_tables(request: Request, token=Depends(token_required)) -> Page[Table]:
+async def get_tables(request: Request) -> Page[Table]:
+    await validate_session(request)
+
     data = await request.json()
     database = data.get('database')
     connection_id = data.get('connection_id')
@@ -72,7 +74,9 @@ async def get_tables(request: Request, token=Depends(token_required)) -> Page[Ta
     return paginate(databases)
 
 @router.post("/delete_table", tags=["tables"])
-async def delete_table(request: Request, token=Depends(token_required)):
+async def delete_table(request: Request):
+    await validate_session(request)
+
     data = await request.json()
     database = data.get('database')
     connection_id = data.get('connection_id')

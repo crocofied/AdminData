@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Request, Depends, HTTPException
-from ..dependencies import token_required, connect_database
+from ..dependencies import connect_database, validate_session
 import mysql.connector
 from fastapi_pagination import Page, add_pagination, paginate
 from pydantic import BaseModel
@@ -9,7 +9,9 @@ router = APIRouter()  # Create a router
 
 # Define a route to initialize the database
 @router.post("/add_connection", tags=["database"])
-async def add_connection(request: Request, token=Depends(token_required)):
+async def add_connection(request: Request):
+    await validate_session(request)
+
     data = await request.json()
     # get user id from session id
     con, cursor = connect_database()
@@ -24,7 +26,9 @@ async def add_connection(request: Request, token=Depends(token_required)):
     return {"message": "Connection added"}
 
 @router.post("/get_connections", tags=["database"])
-async def get_connections(request: Request, token=Depends(token_required)):
+async def get_connections(request: Request):
+    await validate_session(request)
+
     data = await request.json()
     con, cursor = connect_database()
     cursor.execute("SELECT * FROM sessions WHERE token=?", (data.get("session_id"),))
@@ -38,7 +42,9 @@ async def get_connections(request: Request, token=Depends(token_required)):
     return {"connections": connections}
 
 @router.post("/edit_connection", tags=["database"])
-async def edit_connection(request: Request, token=Depends(token_required)):
+async def edit_connection(request: Request):
+    await validate_session(request)
+
     data = await request.json()
     con, cursor = connect_database()
     cursor.execute("SELECT * FROM sessions WHERE token=?", (data.get("session_id"),))
@@ -55,7 +61,9 @@ async def edit_connection(request: Request, token=Depends(token_required)):
     return {"message": "Connection updated"}
 
 @router.post("/delete_connection", tags=["database"])
-async def delete_connection(request: Request, token=Depends(token_required)):
+async def delete_connection(request: Request):
+    await validate_session(request)
+
     data = await request.json()
     con, cursor = connect_database()
     cursor.execute("SELECT * FROM sessions WHERE token=?", (data.get("session_id"),))
@@ -72,7 +80,9 @@ class DatabaseOut(BaseModel):
     name: str
 
 @router.post("/get_databases", tags=["database"])
-async def get_databases(request: Request, token=Depends(token_required)) -> Page[DatabaseOut]:
+async def get_databases(request: Request) -> Page[DatabaseOut]:
+    await validate_session(request)
+
     data = await request.json()
     connection_id = data.get("connection_id")
 
@@ -109,7 +119,9 @@ async def get_databases(request: Request, token=Depends(token_required)) -> Page
     return paginate(databases)
 
 @router.post("/edit_database", tags=["database"])
-async def edit_database(request: Request, token=Depends(token_required)):
+async def edit_database(request: Request):
+    await validate_session(request)
+
     data = await request.json()
     connection_id = data.get("connection_id")
 
@@ -177,7 +189,9 @@ async def edit_database(request: Request, token=Depends(token_required)):
     return {"message": "Database edited"}
 
 @router.post("/delete_database", tags=["database"])
-async def delete_database(request: Request, token=Depends(token_required)):
+async def delete_database(request: Request):
+    await validate_session(request)
+
     data = await request.json()
     connection_id = data.get("connection_id")
 
@@ -211,7 +225,9 @@ async def delete_database(request: Request, token=Depends(token_required)):
     return {"message": "Database deleted"}
 
 @router.post("/create_database", tags=["database"])
-async def create_database(request: Request, token=Depends(token_required)):
+async def create_database(request: Request):
+    await validate_session(request)
+
     data = await request.json()
     connection_id = data.get("connection_id")
 

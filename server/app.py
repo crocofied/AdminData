@@ -4,13 +4,12 @@ from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 
 ## =========================== IMPORT DEPENDENCIES AND ROUTES ===========================
-from .dependencies import token_required
 from .routers import user, setup, database, tables
 from fastapi_pagination import Page, add_pagination, paginate
 
 
 # Setup FastAPI and define CORS middleware
-app = FastAPI(dependencies=[Depends(token_required)])
+app = FastAPI()
 add_pagination(app)
 app.add_middleware(
     CORSMiddleware,

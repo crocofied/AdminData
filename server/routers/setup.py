@@ -2,14 +2,14 @@
 from fastapi import APIRouter
 from fastapi import Request, Depends, HTTPException
 import bcrypt
-from ..dependencies import token_required, connect_database
-import sqlite3
+from ..dependencies import connect_database, validate_session
 
 router = APIRouter() # Create a router
 
+
 # Define a route to initialize the database
 @router.post("/database_init", tags=["setup"])
-async def database_init(request: Request, token=Depends(token_required)):
+async def database_init(request: Request):
     # Create a default password and generate its hash and salt
     salt = bcrypt.gensalt()
     hashed = bcrypt.hashpw("admin".encode(), salt)
@@ -19,7 +19,6 @@ async def database_init(request: Request, token=Depends(token_required)):
     cursor.execute("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, password TEXT, salt TEXT)")
     cursor.execute("CREATE TABLE IF NOT EXISTS sessions (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, token TEXT)")
     con.commit()
-    # Check if admin user exists else create a default user
     cursor.execute("SELECT * FROM users WHERE username='admin'")
     if not cursor.fetchone():
         cursor.execute("INSERT INTO users (username, password, salt) VALUES (?, ?, ?)", ("admin", hashed, salt))

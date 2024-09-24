@@ -3,9 +3,8 @@ services:
     build:
       context: ./client
       dockerfile: Dockerfile
-      args:
-        VITE_API_KEY: <SUPER_SECRET_API_KEY>
-        VITE_HOST_IP: <YOUR_IP>
+    links:
+      - server
     ports:
       - "3000:80"
     depends_on:
@@ -17,9 +16,6 @@ services:
       dockerfile: Dockerfile
     ports:
       - "5000:5000"
-    environment:
-      - VITE_API_KEY=<SUPER_SECRET_API_KEY>
-      - VITE_HOST_IP=<YOUR_IP>
     volumes:
       - db_data:/app/db
 

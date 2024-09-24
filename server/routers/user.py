@@ -1,15 +1,15 @@
 # =========================== IMPORTS ===========================
 from fastapi import APIRouter
-from fastapi import  Request, Depends, HTTPException
+from fastapi import  Request, HTTPException
 import bcrypt
 import secrets
-from ..dependencies import token_required, connect_database
+from ..dependencies import connect_database, validate_session
 
 router = APIRouter() # Create a router
 
 
 @router.post("/login")
-async def login(request: Request, token=Depends(token_required)):
+async def login(request: Request):
     # Fetch the username and password from the request body
     data = await request.json()
     username = data.get("username")
@@ -36,7 +36,7 @@ async def login(request: Request, token=Depends(token_required)):
     return {"session_id": session_id}
 
 @router.post("/check_session")
-async def check_session(request: Request, token=Depends(token_required)):
+async def check_session(request: Request):
     # Fetch the session id from the request body
     data = await request.json()
     session_id = data.get("session_id")
@@ -55,7 +55,7 @@ async def check_session(request: Request, token=Depends(token_required)):
     return {"message": "Session is valid"}
 
 @router.post("/logout")
-async def logout(request: Request, token=Depends(token_required)):
+async def logout(request: Request):
     # Fetch the session id from the request body
     data = await request.json()
     session_id = data.get("session_id")
@@ -70,7 +70,9 @@ async def logout(request: Request, token=Depends(token_required)):
     return {"message": "Logged out successfully"}
 
 @router.post("/change_password")
-async def change_password(request: Request, token=Depends(token_required)):
+async def change_password(request: Request):
+    await validate_session(request)
+
     # Fetch the username, old password, and new password from the request body
     data = await request.json()
     session_id = data.get("session_id")
