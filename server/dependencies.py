@@ -3,6 +3,7 @@ from fastapi import Request, HTTPException
 from dotenv import load_dotenv
 import os
 import mysql.connector
+import sqlite3
 
 load_dotenv()
 
@@ -14,20 +15,6 @@ def token_required(request: Request):
 
 # Define a dependency to connect to the database   
 def connect_database(database: bool = True):
-    load_dotenv() # Load environment variables
-    # Define database connection parameters
-    database_host = os.getenv("VITE_HOST_IP")
-    database_port = 3001
-    database_user = "root"
-    database_password = os.getenv("MYSQL_ROOT_PASSWORD")
-
-    con = mysql.connector.connect(
-        host=database_host,
-        port=database_port,
-        user=database_user,
-        password=database_password,
-        collation='utf8mb4_general_ci',
-        database="admin_data" if database else None
-    )
+    con = sqlite3.connect("/db/admin_data.db")
     cursor = con.cursor()
     return con, cursor

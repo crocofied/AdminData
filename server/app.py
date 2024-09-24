@@ -5,7 +5,7 @@ import uvicorn
 
 ## =========================== IMPORT DEPENDENCIES AND ROUTES ===========================
 from .dependencies import token_required
-from .routers import user, setup, database
+from .routers import user, setup, database, tables
 from fastapi_pagination import Page, add_pagination, paginate
 
 
@@ -24,3 +24,4 @@ app.add_middleware(
 app.include_router(user.router)
 app.include_router(setup.router)
 app.include_router(database.router)
+app.include_router(tables.router)

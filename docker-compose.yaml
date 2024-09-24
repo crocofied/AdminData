@@ -21,18 +21,15 @@ services:
       - "5000:5000"
     environment:
       - VITE_API_KEY=<SUPER_SECRET_API_KEY>
-      - MYSQL_ROOT_PASSWORD=<SUPER_SECRET_DB_PASSWORD>
       - VITE_HOST_IP=<YOUR_IP>
-
-  db:
-    image: mariadb:latest
-    restart: always
-    environment:
-      - MYSQL_ROOT_PASSWORD=<SUPER_SECRET_DB_PASSWORD>
-    ports:
-      - "3001:3306"
+  sqlite3:
+    image: nouchka/sqlite3:latest
+    stdin_open: true
+    tty: true
     volumes:
-      - db_data:/var/lib/mysql
+      - db_data:/app/db
+
+  
 
 volumes:
   db_data: 

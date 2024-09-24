@@ -17,18 +17,18 @@ async def login(request: Request, token=Depends(token_required)):
 
     # Get the user from the database
     con, cursor = connect_database()
-    cursor.execute("SELECT * FROM users WHERE username=%s", (username,))
+    cursor.execute("SELECT * FROM users WHERE username=?", (username,))
     user = cursor.fetchone()
 
     # Check if the user exists and if the password is correct
-    if not user or not bcrypt.checkpw(password.encode(), user[2].encode()):
+    if not user or not bcrypt.checkpw(password.encode(), user[2]):
         cursor.close()
         con.close()
         raise HTTPException(status_code=401, detail="Unauthorized")
 
     # Create a session id and store it in the database
     session_id = secrets.token_hex(20)
-    cursor.execute("INSERT INTO sessions (user_id, token) VALUES (%s, %s)", (user[0], session_id))
+    cursor.execute("INSERT INTO sessions (user_id, token) VALUES (?, ?)", (user[0], session_id))
     con.commit()
     cursor.close()
     con.close()
@@ -43,7 +43,7 @@ async def check_session(request: Request, token=Depends(token_required)):
 
     # Get the user from the database
     con, cursor = connect_database()
-    cursor.execute("SELECT * FROM sessions WHERE token=%s", (session_id,))
+    cursor.execute("SELECT * FROM sessions WHERE token=?", (session_id,))
     session = cursor.fetchone()
     cursor.close()
     con.close()
@@ -62,7 +62,7 @@ async def logout(request: Request, token=Depends(token_required)):
 
     # Get the user from the database
     con, cursor = connect_database()
-    cursor.execute("DELETE FROM sessions WHERE token=%s", (session_id,))
+    cursor.execute("DELETE FROM sessions WHERE token=?", (session_id,))
     con.commit()
     cursor.close()
     con.close()
@@ -79,13 +79,13 @@ async def change_password(request: Request, token=Depends(token_required)):
 
     # Get the user from the database
     con, cursor = connect_database()
-    cursor.execute("SELECT user_id FROM sessions WHERE token=%s", (session_id,))
+    cursor.execute("SELECT user_id FROM sessions WHERE token=?", (session_id,))
     user_id = cursor.fetchone()[0]
-    cursor.execute("SELECT * FROM users WHERE id=%s", (user_id,))
+    cursor.execute("SELECT * FROM users WHERE id=?", (user_id,))
     user = cursor.fetchone()
 
     # Check if the user exists and if the current password is correct
-    if not user or not bcrypt.checkpw(current_password.encode(), user[2].encode()):
+    if not user or not bcrypt.checkpw(current_password.encode(), user[2]):
         cursor.close()
         con.close()
         raise HTTPException(status_code=401, detail="Unauthorized")
@@ -95,7 +95,7 @@ async def change_password(request: Request, token=Depends(token_required)):
     hashed = bcrypt.hashpw(new_password.encode(), salt)
 
     # Update the user's password in the database
-    cursor.execute("UPDATE users SET password=%s, salt=%s WHERE id=%s", (hashed, salt, user_id))
+    cursor.execute("UPDATE users SET password=?, salt=? WHERE id=?", (hashed, salt, user_id))
     con.commit()
     cursor.close()
     con.close()

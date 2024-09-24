@@ -7,6 +7,7 @@ import Dashboard from "./pages/Dashboard";
 import Logout from "./pages/Logout";
 import Settings from "./pages/Settings";
 import Databases from "./pages/Databases";
+import Tables from "./pages/Tables";
 
 function App() {
   return (    
@@ -17,6 +18,7 @@ function App() {
         <Route path="/logout" element={<Logout />}/>
         <Route path="/settings" element={<Settings />}/>
         <Route path="/databases" element={<Databases />}/>
+        <Route path="/tables" element={<Tables />}/>
       </Routes>
     </BrowserRouter>
   )
