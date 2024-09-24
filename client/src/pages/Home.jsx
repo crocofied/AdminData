@@ -14,6 +14,7 @@ const Home = () => {
 
     // Initialize the database on first load
     useEffect(() => {
+        console.log(import.meta.env.VITE_HOST_IP);
         axios.post(`http://${import.meta.env.VITE_HOST_IP}:5000/database_init`, {}, {
         headers: {
             "Authorization": `Bearer ${import.meta.env.VITE_API_KEY}`,
