@@ -18,13 +18,5 @@ services:
       - "5000:5000"
     volumes:
       - db_data:/app/db
-
-  sqlite3:
-    image: nouchka/sqlite3:latest
-    stdin_open: true
-    tty: true
-    volumes:
-      - db_data:/app/db
-
 volumes:
   db_data:
