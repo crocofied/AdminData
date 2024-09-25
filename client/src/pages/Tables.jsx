@@ -54,7 +54,7 @@ const Tables = () => {
 
     // Refresh tables
     const refreshTables = () => {
-        axios.post(`http://${import.meta.env.VITE_HOST_IP}:5000/get_tables?page=${currentPage}&size=7`, {
+        axios.post(`${import.meta.env.VITE_API_URL}/get_tables?page=${currentPage}&size=7`, {
             session_id: Cookies.get("session_id"),
             connection_id: connectionID,
             database: databaseName
@@ -74,7 +74,7 @@ const Tables = () => {
     }
 
     const deleteTable = () => {
-        axios.post(`http://${import.meta.env.VITE_HOST_IP}:5000/delete_table`, {
+        axios.post(`${import.meta.env.VITE_API_URL}/delete_table`, {
             session_id: Cookies.get("session_id"),
             connection_id: connectionID,
             database: databaseName,

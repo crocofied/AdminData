@@ -14,7 +14,7 @@ const Home = () => {
 
     // Initialize the database on first load
     useEffect(() => {
-        axios.post(`http://${import.meta.env.VITE_HOST_IP}:5000/database_init`, {}, {
+        axios.post(`${import.meta.env.VITE_API_URL}/database_init`, {}, {
         headers: {
             "Authorization": `Bearer ${import.meta.env.VITE_API_KEY}`,
             "Content-Type": "application/json"
@@ -37,7 +37,7 @@ const Home = () => {
     // Login function
     const login = () => {
         setInputDisabled(true);
-        axios.post(`http://${import.meta.env.VITE_HOST_IP}:5000/login`, {
+        axios.post(`${import.meta.env.VITE_API_URL}/login`, {
             username: username,
             password: password
         })

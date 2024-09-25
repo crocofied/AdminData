@@ -33,7 +33,7 @@ const Settings = () => {
             showError("Passwords do not match.");
             return;
         }
-        axios.post(`http://${import.meta.env.VITE_HOST_IP}:5000/change_password`, {
+        axios.post(`${import.meta.env.VITE_API_URL}/change_password`, {
             session_id: Cookies.get("session_id"),
             current_password: currentPassword,
             new_password: newPassword

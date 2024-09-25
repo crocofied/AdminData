@@ -5,7 +5,7 @@ function SessionChecker() {
     if(!Cookies.get("session_id")) {
         return false;
     }
-    axios.post(`http://${import.meta.env.VITE_HOST_IP}:5000/check_session`, {
+    axios.post(`${import.meta.env.VITE_API_URL}/check_session`, {
         session_id: Cookies.get("session_id")
     }, {
         headers: {

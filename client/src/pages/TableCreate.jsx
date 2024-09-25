@@ -42,7 +42,7 @@ const TableCreate = () => {
     };
 
     const createTable = () => {
-        axios.post(`http://${import.meta.env.VITE_HOST_IP}:5000/create_table`, {
+        axios.post(`${import.meta.env.VITE_API_URL}/create_table`, {
             session_id: Cookies.get("session_id"),
             connection_id: connectionID,
             database: databaseName,
