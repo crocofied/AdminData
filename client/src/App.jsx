@@ -8,6 +8,7 @@ import Logout from "./pages/Logout";
 import Settings from "./pages/Settings";
 import Databases from "./pages/Databases";
 import Tables from "./pages/Tables";
+import TableCreate from "./pages/TableCreate";
 
 function App() {
   return (    
@@ -19,6 +20,7 @@ function App() {
         <Route path="/settings" element={<Settings />}/>
         <Route path="/databases" element={<Databases />}/>
         <Route path="/tables" element={<Tables />}/>
+        <Route path="/table_create" element={<TableCreate />}/>
       </Routes>
     </BrowserRouter>
   )

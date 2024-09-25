@@ -152,7 +152,15 @@ const Tables = () => {
                                     ))}
                                 </tbody>
                             </table>
-                            <button className="btn btn-neutral w-full" onClick={() => document.getElementById('my_modal_5').showModal()}>Create new Table</button>
+                            <button className="btn btn-neutral w-full" onClick={() => {
+                                navigate("/table_create", {
+                                    state: {
+                                        connection_id: connectionID,
+                                        connection_name: connectionName,
+                                        database_name: databaseName
+                                    }
+                                });
+                            }}>Create new Table</button>
                             <div className="flex justify-center items-center join pt-5">
                                 {currentPage === 1 ? (
                                     <button className="join-item btn" disabled>«</button>

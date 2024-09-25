@@ -63,7 +63,7 @@ const Home = () => {
         <>
             <SessionChecker />
             <div className="flex items-center justify-center min-h-screen">
-                <div className="card bg-base-200 lg:w-1/3 shadow-xl">
+                <div className="card bg-base-200 lg:w-1/3 border border-gray-800 shadow-2xl">
                 <figure>
                     <img
                     src="/Cover.png"

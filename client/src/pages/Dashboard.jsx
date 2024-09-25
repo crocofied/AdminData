@@ -4,6 +4,7 @@ import Cookies from 'js-cookie';
 import { useNavigate } from "react-router-dom";
 import SessionChecker from '../components/SessionChecker';
 import Navbar from '../components/Navbar';
+import { FaDatabase, FaServer, FaNetworkWired, FaUser, FaEdit, FaPlug } from 'react-icons/fa';
 
 const Home = () => {
     const navigate = useNavigate();
@@ -164,33 +165,59 @@ const Home = () => {
                     <div className='flex flex-wrap space-x-4 space-y-4 items-center'>
                     {connections.length > 0 && connections.map((connection, index) => (
                         <>
-                            <div key={index} className="card card-compact bg-base-100 w-96 shadow-xl">
-                                <div className="card-body">
-                                    <h2 className="card-title">{connection[2]}</h2>
-                                    <p className='text-base'>
-                                        <span className="font-bold">Type:</span> { connection[3] === 1 ? "MariaDB" : "MySQL" }<br />
-                                        <span className="font-bold">Host:</span> {connection[4]}<br />
-                                        <span className="font-bold">Port:</span> {connection[5]}<br />
-                                        <span className="font-bold">Username:</span> {connection[6]}
-                                    </p>
-                                    <div className="card-actions justify-end">
-                                    <button className="btn btn-neutral" onClick={() => {
-                                        setCurrentConnectionId(connection[0]);
-                                        setName(connection[2]);
-                                        setType(connection[3]); // Typ anpassen
-                                        setHost(connection[4]);
-                                        setPort(connection[5]);
-                                        setUsername(connection[6]);
-                                        setPassword(""); // Passwort nicht voreinstellen, damit es nicht sichtbar ist
-                                        document.getElementById('my_modal_4').showModal();
-                                    }}> Edit </button>
-                                    <button className="btn btn-primary" onClick={() => {
-                                        setCurrentConnectionId(connection[0]);
-                                        navigate("/databases", { state: { connection_id: connection[0], connection_name: connection[2] }});
-                                    }}>Connect</button>
-                                    </div>
+                            <div key={index} className="card card-compact bg-base-300 w-96 shadow-2xl">
+                        <div className="card-body">
+                            <h2 className="card-title flex items-center">
+                                <FaDatabase className="mr-2" /> {connection[2]}
+                            </h2>
+                            <p className='text-base'>
+                                <div className="flex justify-between">
+                                    <span className="font-bold flex items-center">
+                                        <FaServer className="mr-2" /> Type:
+                                    </span> 
+                                    <span>{connection[3] === 1 ? "MariaDB" : "MySQL"}</span>
                                 </div>
+                                <div className="flex justify-between">
+                                    <span className="font-bold flex items-center">
+                                        <FaNetworkWired className="mr-2" /> Host:
+                                    </span> 
+                                    <span>{connection[4]}</span>
+                                </div>
+                                <div className="flex justify-between">
+                                    <span className="font-bold flex items-center">
+                                        <FaNetworkWired className="mr-2" /> Port:
+                                    </span> 
+                                    <span>{connection[5]}</span>
+                                </div>
+                                <div className="flex justify-between">
+                                    <span className="font-bold flex items-center">
+                                        <FaUser className="mr-2" /> Username:
+                                    </span> 
+                                    <span>{connection[6]}</span>
+                                </div>
+                            </p>
+                            <div className="card-actions justify-end">
+                                <button className="btn btn-neutral flex items-center" onClick={() => {
+                                    setCurrentConnectionId(connection[0]);
+                                    setName(connection[2]);
+                                    setType(connection[3]);
+                                    setHost(connection[4]);
+                                    setPort(connection[5]);
+                                    setUsername(connection[6]);
+                                    setPassword("");
+                                    document.getElementById('my_modal_4').showModal();
+                                }}>
+                                    <FaEdit className="mr-2" /> Edit
+                                </button>
+                                <button className="btn btn-primary flex items-center" onClick={() => {
+                                    setCurrentConnectionId(connection[0]);
+                                    navigate("/databases", { state: { connection_id: connection[0], connection_name: connection[2] }});
+                                }}>
+                                    <FaPlug className="mr-2" /> Connect
+                                </button>
                             </div>
+                        </div>
+                    </div>
                             <dialog id="my_modal_4" className="modal">
                                 <div className="modal-box">
                                     <form method="dialog">

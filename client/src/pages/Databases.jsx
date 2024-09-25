@@ -84,6 +84,7 @@ const Databases = () => {
     // Save edited database
     const saveEditDatabase = () => {
         axios.post(`http://${import.meta.env.VITE_HOST_IP}:5000/edit_database`, {
+            session_id: Cookies.get("session_id"),
             connection_id: connectionID,
             old_database_name: selectedDatabaseName,
             new_database_name: selectedNewDatabaseName
@@ -104,6 +105,7 @@ const Databases = () => {
     // Delete database
     const deleteDatabase = () => {
         axios.post(`http://${import.meta.env.VITE_HOST_IP}:5000/delete_database`, {
+            session_id: Cookies.get("session_id"),
             connection_id: connectionID,
             database_name: selectedDatabaseName
         })
@@ -121,6 +123,7 @@ const Databases = () => {
     // Create new database
     const createDatabase = () => {
         axios.post(`http://${import.meta.env.VITE_HOST_IP}:5000/create_database`, {
+            session_id: Cookies.get("session_id"),
             connection_id: connectionID,
             database_name: createDatabaseName
         })
