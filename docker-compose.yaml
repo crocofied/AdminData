@@ -1,22 +1,19 @@
 services:
   client:
-    build:
-      context: ./client
-      dockerfile: Dockerfile
-      args:
-        VITE_HOST_IP: ${VITE_HOST_IP}
+    image: headlessdev0/admindata-server:latest
     ports:
       - "3000:80"
+    environment:
+      - VITE_HOST_IP=${VITE_HOST_IP}
     depends_on:
       - server
 
   server:
-    build:
-      context: ./server
-      dockerfile: Dockerfile
+    image: headlessdev0/admindata-server:latest
     ports:
       - "5000:5000"
     volumes:
       - db_data:/app/db
+
 volumes:
   db_data:
