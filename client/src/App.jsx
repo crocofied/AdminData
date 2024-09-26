@@ -9,6 +9,7 @@ import Settings from "./pages/Settings";
 import Databases from "./pages/Databases";
 import Tables from "./pages/Tables";
 import TableCreate from "./pages/TableCreate";
+import TableEdit from "./pages/TableEdit";
 
 function App() {
   return (    
@@ -21,6 +22,7 @@ function App() {
         <Route path="/databases" element={<Databases />}/>
         <Route path="/tables" element={<Tables />}/>
         <Route path="/table_create" element={<TableCreate />}/>
+        <Route path="/table_edit" element={<TableEdit />}/>
       </Routes>
     </BrowserRouter>
   )

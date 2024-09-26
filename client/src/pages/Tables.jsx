@@ -143,10 +143,18 @@ const Tables = () => {
                                             <td className='text-base w-1/12'>{table.rows}</td>
                                             <td className='text-base w-2/12'>{table.size}</td>
                                             <td className='text-base w-3/12'>
-                                            <button className="btn btn-neutral" onClick={() => {
-                                                setSelectedTableName(table.name);
-                                                document.getElementById('my_modal_4').showModal();
-                                            }}>Delete</button>
+                                                <div className="space-x-3">
+                                                    <Link to="/table_edit" state={{
+                                                        connection_id: connectionID,
+                                                        connection_name: connectionName,
+                                                        database_name: databaseName,
+                                                        table_name: table.name
+                                                    }} className="btn btn-neutral">Edit</Link>
+                                                    <button className="btn btn-neutral" onClick={() => {
+                                                        setSelectedTableName(table.name);
+                                                        document.getElementById('my_modal_4').showModal();
+                                                    }}>Delete</button>
+                                            </div>
                                             </td>
                                         </tr>
                                     ))}
