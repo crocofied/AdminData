@@ -131,7 +131,7 @@ const TableCreate = () => {
                                         <td><input type="text" className="input input-bordered w-full" placeholder="e.g. id" value={column.name} onChange={(e) => handleColumnChange(index, 'name', e.target.value)} /></td>
                                         <td>
                                             <select className="select select-bordered w-full" value={column.type} onChange={(e) => handleColumnChange(index, 'type', e.target.value)}>
-                                                <option disabled selected>Select</option>
+                                                <option disabled selected value="">Select</option>
                                                 <option>TINYINT</option>
                                                 <option>SMALLINT</option>
                                                 <option>MEDIUMINT</option>

@@ -138,7 +138,16 @@ const Tables = () => {
                                         <tr key={index}>
                                             <td className='text-base w-1/12'>{index}</td>
                                             <td className='text-base'>
-                                                <button className="btn btn-ghost w-full justify-start text-left">{table.name}</button>  
+                                                <button className="btn btn-ghost w-full justify-start text-left" onClick={() => {
+                                                    navigate("/table_view", {
+                                                        state: {
+                                                            connection_id: connectionID,
+                                                            connection_name: connectionName,
+                                                            database_name: databaseName,
+                                                            table_name: table.name
+                                                        }
+                                                    });
+                                                }}>{table.name}</button>  
                                             </td>
                                             <td className='text-base w-1/12'>{table.rows}</td>
                                             <td className='text-base w-2/12'>{table.size}</td>

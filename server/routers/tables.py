@@ -333,4 +333,57 @@ async def edit_table(request: Request):
 
     return {"message": "Table edited"}
 
+class Row(BaseModel):
+    values: dict
+
+@router.post("/get_table_data_values", tags=["tables"])
+async def get_table_data_values(request: Request) -> Page[Row]:
+    await validate_session(request)
+
+    data = await request.json()
+    database = data.get('database_name')
+    connection_id = data.get('connection_id')
+    table = data.get('table_name')
+
+    # Connect to your admin database to fetch connection details
+    con, cursor = connect_database()
+    cursor.execute("SELECT * FROM `databases` WHERE id=?", (connection_id,))
+    connection = cursor.fetchone()
+    con.close()
+
+    if connection is None:
+        raise HTTPException(status_code=404, detail="Connection not found")
+    
+    host = connection[4]
+    port = connection[5]
+    user = connection[6]
+    password = connection[7]
+
+    con = mysql.connector.connect(
+        host=host,
+        port=port,
+        user=user,
+        password=password,
+        collation='utf8mb4_general_ci',
+        database=database
+    )
+    cursor = con.cursor()
+    cursor.execute(f"SELECT * FROM `{table}`")
+    data = cursor.fetchall()
+    cursor.execute(f"SHOW COLUMNS FROM `{table}`")
+    columns = cursor.fetchall()
+    cursor.close()
+    con.close()
+
+    # Convert tuples to dictionaries
+    column_names = [column[0] for column in columns]
+    data_dicts = [dict(zip(column_names, row)) for row in data]
+
+    # Wrap each dictionary in another dictionary with the key 'values'
+    wrapped_data = [{"values": row} for row in data_dicts]
+
+    # Paginate the wrapped data
+    paginated_data = paginate(wrapped_data)
+
+    return paginated_data
 add_pagination(router)
