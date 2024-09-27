@@ -9,7 +9,7 @@ git clone https://github.com/crocofied/AdminData && cd AdminData
 
 ### ⚙️ · Enviroment Setup
 ```sh
-cp .env .env.example && nano .env
+cp .env.example .env && nano .env
 ```
 Replace <YOUR_SERVER_IP> with your server host ip
 ```
