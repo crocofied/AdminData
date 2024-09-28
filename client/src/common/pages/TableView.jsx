@@ -2,8 +2,9 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
-import SessionChecker from '../common/components/SessionChecker';
-import Navbar from '../common/components/Navbar';
+import SessionChecker from '../components/SessionChecker';
+import Navbar from '../components/Navbar';
+import { FaEdit, FaTrash  } from 'react-icons/fa';
 
 const TableView = () => {
     const navigate = useNavigate();
@@ -203,7 +204,7 @@ const TableView = () => {
                                         {Object.keys(data[0]?.values || {}).map((key) => (
                                             <th className='text-xl' key={key}>{key}</th>
                                         ))}
-                                        <th className='text-xl'>Actions</th>
+                                        <th className='text-xl w-1/12'>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -214,8 +215,8 @@ const TableView = () => {
                                                     <td key={index}>{value !== null ? value : ''}</td>
                                                 ))}
                                                 <td>
-                                                    <button onClick={() => openEditModal(row)} className="btn btn-neutral mr-2">Edit</button>
-                                                    <button onClick={() => handleDelete(row)} className="btn btn-neutral">Delete</button>
+                                                    <button onClick={() => openEditModal(row)} className="btn btn-neutral mr-2"><FaEdit/></button>
+                                                    <button onClick={() => handleDelete(row)} className="btn btn-neutral"><FaTrash/></button>
                                                 </td>
                                             </tr>
                                         ))

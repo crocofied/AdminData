@@ -2,8 +2,9 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import Cookies from 'js-cookie';
-import SessionChecker from '../common/components/SessionChecker';
-import Navbar from '../common/components/Navbar';
+import SessionChecker from '../components/SessionChecker';
+import Navbar from '../components/Navbar';
+import { FaEdit, FaTrash  } from 'react-icons/fa';
 
 const Tables = () => {
     // Navigation and location details
@@ -130,7 +131,7 @@ const Tables = () => {
                                         <th className="text-xl">Table Name</th>
                                         <th className="text-xl w-1/12">Rows</th>
                                         <th className="text-xl w-2/12">Size</th>
-                                        <th className="text-xl w-3/12">Actions</th>
+                                        <th className="text-xl w-1/12">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -151,18 +152,18 @@ const Tables = () => {
                                             </td>
                                             <td className='text-base w-1/12'>{table.rows}</td>
                                             <td className='text-base w-2/12'>{table.size}</td>
-                                            <td className='text-base w-3/12'>
+                                            <td className='text-base w-1/12'>
                                                 <div className="space-x-3">
                                                     <Link to="/table_edit" state={{
                                                         connection_id: connectionID,
                                                         connection_name: connectionName,
                                                         database_name: databaseName,
                                                         table_name: table.name
-                                                    }} className="btn btn-neutral">Edit</Link>
+                                                    }} className="btn btn-neutral"><FaEdit/></Link>
                                                     <button className="btn btn-neutral" onClick={() => {
                                                         setSelectedTableName(table.name);
                                                         document.getElementById('my_modal_4').showModal();
-                                                    }}>Delete</button>
+                                                    }}><FaTrash/></button>
                                             </div>
                                             </td>
                                         </tr>

@@ -2,8 +2,10 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import { useNavigate, useLocation, Link } from "react-router-dom";
-import SessionChecker from '../common/components/SessionChecker';
-import Navbar from '../common/components/Navbar';
+import SessionChecker from '../components/SessionChecker';
+import Navbar from '../components/Navbar';
+import { FaTrash  } from 'react-icons/fa';
+
 
 const TableCreate = () => {
     // Navigation and location details
@@ -39,6 +41,11 @@ const TableCreate = () => {
 
     const addColumn = () => {
         setColumns([...columns, { name: '', type: '', length: '', default: '', index: false, autoIncrement: false }]);
+    };
+    const removeColumn = (index) => {
+        const newColumns = [...columns];
+        newColumns.splice(index, 1);
+        setColumns(newColumns);
     };
 
     const createTable = () => {
@@ -119,10 +126,11 @@ const TableCreate = () => {
                                 <tr>
                                     <th className="text-xl w-3/12">Name</th>
                                     <th className="text-xl w-2/12">Type</th>
-                                    <th className="text-xl w-3/12">Length</th>
+                                    <th className="text-xl w-2/12">Length</th>
                                     <th className="text-xl w-2/12">Default</th>
                                     <th className="text-xl w-1/12">Index</th>
                                     <th className="text-xl w-1/12">Auto Increment</th>
+                                    <th className="text-xl w-1/12">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -179,6 +187,7 @@ const TableCreate = () => {
                                         <td><input type="text" className="input input-bordered w-full" placeholder="Default" value={column.default} onChange={(e) => handleColumnChange(index, 'default', e.target.value)} /></td>
                                         <td><input type="checkbox" className="checkbox" checked={column.index} onChange={(e) => handleColumnChange(index, 'index', e.target.checked)} /></td>
                                         <td><input type="checkbox" className="checkbox" checked={column.autoIncrement} onChange={(e) => handleColumnChange(index, 'autoIncrement', e.target.checked)} /></td>
+                                        <td><button className="btn btn-error" onClick={() => removeColumn(index)}><FaTrash /></button></td>
                                     </tr>
                                 ))}
                             </tbody>

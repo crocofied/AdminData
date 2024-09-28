@@ -2,8 +2,10 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import Cookies from 'js-cookie';
-import SessionChecker from '../common/components/SessionChecker';
-import Navbar from '../common/components/Navbar';
+import SessionChecker from '../components/SessionChecker';
+import Navbar from '../components/Navbar';
+import { FaEdit, FaTrash  } from 'react-icons/fa';
+
 
 const Databases = () => {
     // Navigation and location details
@@ -167,7 +169,7 @@ const Databases = () => {
                                             <tr>
                                                 <th className="text-xl w-1/12">ID</th>
                                                 <th className="text-xl">Database Name</th>
-                                                <th className="text-xl w-3/12">Actions</th>
+                                                <th className="text-xl w-1/12">Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -179,17 +181,17 @@ const Databases = () => {
                                                             navigate("/tables", { state: { connection_id: connectionID, connection_name: connectionName, database_name: database.name } });
                                                         }}>{database.name}</button>
                                                     </td>
-                                                    <td className='text-base w-3/12'>
+                                                    <td className='text-base w-1/12'>
                                                         <div className="flex space-x-2">
                                                             <button className="btn btn-neutral" onClick={() => {
                                                                 setSelectedDatabaseName(database.name);
                                                                 setSelectedNewDatabaseName(database.name);
                                                                 document.getElementById('my_modal_3').showModal();
-                                                            }}>Edit</button>
+                                                            }}><FaEdit/></button>
                                                             <button className="btn btn-neutral" onClick={() => {
                                                                 setSelectedDatabaseName(database.name);
                                                                 document.getElementById('my_modal_4').showModal();
-                                                            }}>Delete</button>
+                                                            }}><FaTrash/></button>
                                                         </div>
                                                     </td>
                                                 </tr>

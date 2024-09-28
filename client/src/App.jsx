@@ -2,15 +2,15 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 // =========================== PAGE IMPORTS ===========================
-import Home from "./pages/Home";
-import Dashboard from "./pages/Dashboard";
-import Logout from "./pages/Logout";
-import Settings from "./pages/Settings";
-import Databases from "./pages/Databases";
-import Tables from "./pages/Tables";
-import TableCreate from "./pages/TableCreate";
-import TableEdit from "./pages/TableEdit";
-import TableView from "./pages/TableView";
+import Home from "./common/pages/Home";
+import Dashboard from "./common/pages/Dashboard";
+import Logout from "./common/pages/Logout";
+import Settings from "./common/pages/Settings";
+import Databases from "./common/pages/Databases";
+import Tables from "./common/pages/Tables";
+import TableCreate from "./common/pages/TableCreate";
+import TableEdit from "./common/pages/TableEdit";
+import TableView from "./common/pages/TableView";
 
 function App() {
   return (    

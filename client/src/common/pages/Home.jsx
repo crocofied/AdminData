@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import { useNavigate } from "react-router-dom";
-import SessionChecker from '../common/components/SessionChecker';
+import SessionChecker from '../components/SessionChecker';
 
 const Home = () => {
     const [username, setUsername] = useState("");
@@ -114,7 +114,7 @@ const Home = () => {
                     <div className="card-actions justify-end">
                     <button onClick={login} disabled={inputDisabled} className="btn btn-primary w-full">Login</button>
                     </div>
-                    <div className="text-center text-gray-600 text-xs">AdminData - A secure and modern self hosted Database Client</div>
+                    <a href="https://admindata.xyz" className="text-center text-gray-600 text-xs underline">AdminData - A secure and modern self hosted Database Client</a>
                 </div>
                 </div>
             </div>
