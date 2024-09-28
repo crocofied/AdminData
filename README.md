@@ -22,6 +22,13 @@ AdminData is a secure and modern self hosted Database Client for SQL-Databases o
 # 🚀 · Install & Run
 You can run AdminData by following the [guide](https://www.admindata.xyz/install.html)
 
+# 📸 · Images
+
+<img alt="AdminData Picture1" src="https://i.imgur.com/94ruRRS.png">
+<img alt="AdminData Picture2" src="https://i.imgur.com/4eL4uoq.png">
+<img alt="AdminData Picture3" src="https://i.imgur.com/4t6hVq1.png">
+
+
 ## License
 
 Distributed under the MIT license. See `LICENSE` for more information.
