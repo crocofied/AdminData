@@ -1,4 +1,4 @@
-![GitHub Gist stars](https://img.shields.io/github/gist/stars/:gistId)
+![GitHub Gist stars](https://img.shields.io/github/gist/stars/:AdminData)
 
 # AdminData
 
