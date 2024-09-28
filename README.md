@@ -5,6 +5,48 @@
 [![MIT License][license-shield]][license-url]
 [![Release][release-shield]][release-url]
 
-# AdminData
+<br />
+<p align="center">
+  <a href="https://github.com/crocofied/AdminData">
+    <picture>
+        <source media="(prefers-color-scheme: dark)" srcset="https://i.imgur.com/4t6hVq1.png">
+        <img alt="AdminData Banner" src="https://i.imgur.com/4t6hVq1.png">
+    </picture>
+  </a>
+</p>
+
+# ⚙️ · What is AdminData?
 
 AdminData is a secure and modern self hosted Database Client for SQL-Databases of usefull features, like saving your database connections, view and edit your data and managing your databases. It is a modern alternative to older software such as PHPmyAdmin.
+
+# 🚀 · Install & Run
+You can run AdminData by following the [guide](https://www.admindata.xyz/install.html)
+
+## License
+
+Distributed under the MIT license. See `LICENSE` for more information.
+
+
+[contributors-shield]: https://img.shields.io/github/contributors/crocofied/AdminData.svg?style=for-the-badge
+
+[contributors-url]: https://github.com/crocofied/AdminData/graphs/contributors
+
+[forks-shield]: https://img.shields.io/github/forks/crocofied/AdminData.svg?style=for-the-badge
+
+[forks-url]: https://github.com/crocofied/AdminData/network/members
+
+[stars-shield]: https://img.shields.io/github/stars/crocofied/AdminData.svg?style=for-the-badge
+
+[stars-url]: https://github.com/crocofied/AdminData/stargazers
+
+[issues-shield]: https://img.shields.io/github/issues/crocofied/AdminData.svg?style=for-the-badge
+
+[issues-url]: https://github.com/crocofied/AdminData/issues
+
+[license-shield]: https://img.shields.io/github/license/crocofied/AdminData.svg?style=for-the-badge
+
+[license-url]: https://github.com/crocofied/AdminData/blob/master/LICENSE
+
+[release-shield]: https://img.shields.io/github/v/release/crocofied/AdminData.svg?style=for-the-badge
+
+[release-url]: https://github.com/crocofied/AdminData/releases/latest
