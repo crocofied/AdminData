@@ -2,8 +2,8 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import { useNavigate } from "react-router-dom";
-import SessionChecker from '../components/SessionChecker';
-import Navbar from '../components/Navbar';
+import SessionChecker from '../common/components/SessionChecker';
+import Navbar from '../common/components/Navbar';
 import { FaDatabase, FaServer, FaNetworkWired, FaUser, FaEdit, FaPlug } from 'react-icons/fa';
 
 const Home = () => {

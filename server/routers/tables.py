@@ -453,7 +453,7 @@ async def delete_table_data(request: Request):
     cursor.close()
     con.close()
 
-    return {"message": "Rows deleted"}
+    return {"message": "Row deleted"}
 
 
 @router.post("/edit_table_data", tags=["tables"])
@@ -577,6 +577,8 @@ async def add_table_data(request: Request):
     con.commit()
     cursor.close()
     con.close()
+
+    return {"message": "Row added"}
 
 
 add_pagination(router)

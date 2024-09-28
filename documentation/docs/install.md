@@ -22,4 +22,4 @@ Save your changes and close the editor.
 docker compose up -d
 ```
 
-> Your application should now run on http://<YOUR_SERVER_IP>:3000
+> Your application should now run on http://<YOUR_SERVER_IP>:3000. Default login is User: admin Password: admin

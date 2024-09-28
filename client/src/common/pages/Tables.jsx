@@ -2,8 +2,8 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import Cookies from 'js-cookie';
-import SessionChecker from '../components/SessionChecker';
-import Navbar from '../components/Navbar';
+import SessionChecker from '../common/components/SessionChecker';
+import Navbar from '../common/components/Navbar';
 
 const Tables = () => {
     // Navigation and location details

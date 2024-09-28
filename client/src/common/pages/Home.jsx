@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import { useNavigate } from "react-router-dom";
-import SessionChecker from '../components/SessionChecker';
+import SessionChecker from '../common/components/SessionChecker';
 
 const Home = () => {
     const [username, setUsername] = useState("");

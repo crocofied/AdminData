@@ -2,8 +2,8 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import { useNavigate } from "react-router-dom";
-import SessionChecker from '../components/SessionChecker';
-import Navbar from '../components/Navbar';
+import SessionChecker from '../common/components/SessionChecker';
+import Navbar from '../common/components/Navbar';
 
 const Settings = () => {
     const [currentPassword, setCurrentPassword] = useState("");

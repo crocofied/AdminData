@@ -2,8 +2,8 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
-import SessionChecker from '../components/SessionChecker';
-import Navbar from '../components/Navbar';
+import SessionChecker from '../common/components/SessionChecker';
+import Navbar from '../common/components/Navbar';
 
 const TableView = () => {
     const navigate = useNavigate();
@@ -20,6 +20,8 @@ const TableView = () => {
     const [selectedRow, setSelectedRow] = useState(null);
     const [selectedOldRow, setSelectedOldRow] = useState(null);
     const [selectedNewRow, setSelectedNewRow] = useState({ values: {} });
+    // Loading state
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         if (!SessionChecker()) {
@@ -36,6 +38,16 @@ const TableView = () => {
         }
     }, [location.state]);
 
+    const showError = (message) => {
+        setError(message);
+        setErrorVisible(true);
+
+        setTimeout(() => {
+            setError('');
+            setErrorVisible(false);
+        }, 5000);
+    };
+
     const retrieveTableData = () => {
         if (connectionID && databaseName && tableName) {
             axios.post(`${import.meta.env.VITE_API_URL}/get_table_data_values?page=${currentPage}&size=7`, {
@@ -47,11 +59,10 @@ const TableView = () => {
                 .then((response) => {
                     setData(response.data.items || []); // Set empty array if items is undefined
                     setMaxPage(response.data.pages || 1); // Set to 1 if pages is undefined
-                    console.log(response.data)
+                    setLoading(false);
                 })
                 .catch((error) => {
-                    setError(error.message);
-                    setErrorVisible(true);
+                    showError(error.message);
                 });
         }
     };
@@ -70,12 +81,15 @@ const TableView = () => {
             new_row: selectedRow,  // use updated row data
         })
         .then((response) => {
-            retrieveTableData();
-            document.getElementById('my_modal_3').close();
+            if (response.data.message === 'Row updated') {
+                retrieveTableData();
+                document.getElementById('my_modal_3').close();
+            } else {
+                showError(response.data.message);
+            }
         })
         .catch((error) => {
-            setError(error.message);
-            setErrorVisible(true);
+            showError(error.message);
         });
     };
 
@@ -88,11 +102,15 @@ const TableView = () => {
             row: row,
         })
         .then((response) => {
-            retrieveTableData();
+            if (response.data.message === 'Row deleted') {
+                retrieveTableData();
+            } else {
+                showError(response.data.message);
+            }
+            
         })
         .catch((error) => {
-            setError(error.message);
-            setErrorVisible(true);
+            showError(error.message);
         });
     };
 
@@ -105,12 +123,15 @@ const TableView = () => {
             row: selectedNewRow,
         })
         .then((response) => {
-            retrieveTableData();
-            document.getElementById('my_modal_4').close();
+            if (response.data.message === 'Row added') {
+                retrieveTableData();
+                document.getElementById('my_modal_4').close();
+            } else {
+                showError(response.data.message);
+            }
         })
         .catch((error) => {
-            setError(error.message);
-            setErrorVisible(true);
+            showError(error.message);
         });
     };
 
@@ -148,40 +169,46 @@ const TableView = () => {
                     </div>
                     <h1 className="text-5xl font-bold">View Table</h1>
                     <div className="divider"></div>
-                    <div className="w-full">
-                        {errorVisible && (
-                            <div className="pb-5">
-                                <div role="alert" className="alert alert-error">
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        className="h-6 w-6 shrink-0 stroke-current"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                    >
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            strokeWidth="2"
-                                            d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
-                                        />
-                                    </svg>
-                                    <span>{error}</span>
-                                </div>
+                    {loading ? (
+                        <div className="flex justify-center items-center">
+                            <div className="flex justify-center pt-20">
+                                <span className="loading loading-infinity loading-lg"></span>
                             </div>
-                        )}
-                        <table className="table w-full">
-                            {data.length > 0 && (
-                                <>
-                                    <thead>
-                                        <tr>
-                                            {Object.keys(data[0].values || {}).map((key) => (
-                                                <th className='text-xl' key={key}>{key}</th>
-                                            ))}
-                                            <th className='text-xl'>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {data.map((row) => (
+                        </div>
+                    ) : (
+                        <div className="w-full">
+                            {errorVisible && (
+                                <div className="pb-5">
+                                    <div role="alert" className="alert alert-error">
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            className="h-6 w-6 shrink-0 stroke-current"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                        >
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth="2"
+                                                d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+                                            />
+                                        </svg>
+                                        <span>{error}</span>
+                                    </div>
+                                </div>
+                            )}
+                            <table className="table w-full">
+                                <thead>
+                                    <tr>
+                                        {Object.keys(data[0]?.values || {}).map((key) => (
+                                            <th className='text-xl' key={key}>{key}</th>
+                                        ))}
+                                        <th className='text-xl'>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {data.length > 0 && data.some(row => Object.values(row.values || {}).some(value => value !== null)) ? (
+                                        data.map((row) => (
                                             <tr key={row.id}>
                                                 {Object.values(row.values || {}).map((value, index) => (
                                                     <td key={index}>{value !== null ? value : ''}</td>
@@ -191,35 +218,39 @@ const TableView = () => {
                                                     <button onClick={() => handleDelete(row)} className="btn btn-neutral">Delete</button>
                                                 </td>
                                             </tr>
-                                        ))}
-                                    </tbody>
-                                </>
-                            )}
-                        </table>
-                        <button className="btn btn-neutral mt-5 w-full" onClick={() => document.getElementById('my_modal_4').showModal()}>Add Row</button>
-                        <div className="flex justify-center items-center join pt-5">
-                            {currentPage === 1 ? (
-                                <button className="join-item btn" disabled>
-                                    «
-                                </button>
-                            ) : (
-                                <button className="join-item btn" onClick={() => setCurrentPage(currentPage - 1)}>
-                                    «
-                                </button>
-                            )}
-                            <button className="join-item btn">Page {currentPage}</button>
-                            {currentPage < maxPage ? (
-                                <button className="join-item btn" onClick={() => setCurrentPage(currentPage + 1)}>
-                                    »
-                                </button>
-                            ) : (
-                                <button className="join-item btn" disabled>
-                                    »
-                                </button>
-                            )}
+                                        ))
+                                    ) : (
+                                        <tr>
+                                            <td colSpan={Object.keys(data[0]?.values || {}).length + 1} className="text-center">No data available</td>
+                                        </tr>
+                                    )}
+                                </tbody>
+                            </table>
+                            <button className="btn btn-neutral mt-5 w-full" onClick={() => document.getElementById('my_modal_4').showModal()}>Add Row</button>
+                            <div className="flex justify-center items-center join pt-5">
+                                {currentPage === 1 ? (
+                                    <button className="join-item btn" disabled>
+                                        «
+                                    </button>
+                                ) : (
+                                    <button className="join-item btn" onClick={() => setCurrentPage(currentPage - 1)}>
+                                        «
+                                    </button>
+                                )}
+                                <button className="join-item btn">Page {currentPage}</button>
+                                {currentPage < maxPage ? (
+                                    <button className="join-item btn" onClick={() => setCurrentPage(currentPage + 1)}>
+                                        »
+                                    </button>
+                                ) : (
+                                    <button className="join-item btn" disabled>
+                                        »
+                                    </button>
+                                )}
+                            </div>
                         </div>
-                    </div>
-
+                    )}
+    
                     <dialog id="my_modal_3" className="modal">
                         <div className="modal-box">
                             <form method="dialog">
@@ -254,7 +285,7 @@ const TableView = () => {
                             )}
                         </div>
                     </dialog>
-
+    
                     <dialog id="my_modal_4" className="modal">
                         <div className="modal-box">
                             <form method="dialog">
@@ -291,6 +322,7 @@ const TableView = () => {
             </div>
         </>
     );
+    
 };
 
 export default TableView;
