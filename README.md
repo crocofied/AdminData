@@ -1,4 +1,9 @@
-![GitHub Gist stars](https://img.shields.io/github/gist/stars/:AdminData)
+[![Contributors][contributors-shield]][contributors-url]
+[![Forks][forks-shield]][forks-url]
+[![Stargazers][stars-shield]][stars-url]
+[![Issues][issues-shield]][issues-url]
+[![MIT License][license-shield]][license-url]
+[![Release][release-shield]][release-url]
 
 # AdminData
 
