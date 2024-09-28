@@ -26,7 +26,7 @@ You can run AdminData by following the [guide](https://www.admindata.xyz/install
 
 <img alt="AdminData Picture1" src="https://i.imgur.com/94ruRRS.png">
 <img alt="AdminData Picture2" src="https://i.imgur.com/4eL4uoq.png">
-<img alt="AdminData Picture3" src="https://i.imgur.com/4t6hVq1.png">
+<img alt="AdminData Picture3" src="https://i.imgur.com/pc648hO.png">
 
 
 ## License
