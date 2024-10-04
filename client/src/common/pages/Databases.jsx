@@ -56,6 +56,9 @@ const Databases = () => {
 
     // Refresh databases
     const refreshDatabases = () => {
+        if (connectionID === undefined) {
+            return;
+        }
         axios.post(`${import.meta.env.VITE_API_URL}/get_databases?page=${currentPage}&size=7`, {
             session_id: Cookies.get("session_id"),
             connection_id: connectionID
