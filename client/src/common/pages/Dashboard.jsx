@@ -35,6 +35,7 @@ const Home = () => {
     };
 
     const addConnection = () => {
+        document.getElementById('save_button').disabled = true;
         if (name === "" || type === "" || host === "" || port === 0 || username === "" || password === "") {
             showError("Please fill out all fields.");
             return;
@@ -66,14 +67,18 @@ const Home = () => {
                     showError("Error adding connection.");
                 }
             }
+            document.getElementById('save_button').disabled = false;
         })
         .catch(error => {
             showError("Error adding connection.");
+            document.getElementById('save_button').disabled = false;
         });
     };
 
 
     const editConnection = () => {
+        document.getElementById('save_button').disabled = true;
+        document.getElementById('delete_button').disabled = true;
         if (name === "" || type === "" || host === "" || port === 0 || username === "") {
             showError("Please fill out all fields.");
             return;
@@ -100,11 +105,19 @@ const Home = () => {
                 document.getElementById('my_modal_4').close();
                 updateConnections();
             } else {
-                showError("Error editing connection.");
+                if (response.data.message === "Connection failed") {
+                    showError("Connection failed. Please check your connection details.");
+                } else {
+                    showError("Error editing connection.");
+                }
             }
+            document.getElementById('save_button').disabled = false;
+            document.getElementById('delete_button').disabled = false;
         })
         .catch(error => {
             showError("Error editing connection.");
+            document.getElementById('save_button').disabled = false;
+            document.getElementById('delete_button').disabled = false;
         });
     };
     // Update Connections List
@@ -286,8 +299,8 @@ const Home = () => {
                             </label>
                         </div>
                         <div className='pt-4 flex flex-col gap-2'>
-                            <button className="btn w-full" onClick={editConnection}>Save</button>
-                            <button className="btn btn-error w-full" onClick={deleteConnection}>Delete</button>
+                            <button id="save_button" className="btn w-full" onClick={editConnection}>Save</button>
+                            <button id="delete_button" className="btn btn-error w-full" onClick={deleteConnection}>Delete</button>
                         </div>
                     </div>
                 </dialog>
@@ -346,7 +359,7 @@ const Home = () => {
                             </label>
                         </div>
                         <div className='pt-4'>
-                            <button className="btn w-full" onClick={addConnection}>Save</button>
+                            <button id="save_button" className="btn w-full" onClick={addConnection}>Save</button>
                         </div>
                     </div>
                 </dialog>
