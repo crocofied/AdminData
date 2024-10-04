@@ -4,7 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 
 ## =========================== IMPORT DEPENDENCIES AND ROUTES ===========================
-from .routers import user, setup, database, tables
+from .routers import tables_operations, user, setup, database
 from fastapi_pagination import Page, add_pagination, paginate
 
 
@@ -23,4 +23,4 @@ app.add_middleware(
 app.include_router(user.router)
 app.include_router(setup.router)
 app.include_router(database.router)
-app.include_router(tables.router)
+app.include_router(tables_operations.router)
