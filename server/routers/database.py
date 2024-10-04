@@ -13,6 +13,25 @@ async def add_connection(request: Request):
     await validate_session(request)
 
     data = await request.json()
+    
+    # Check database connection
+    try:
+        con = mysql.connector.connect(
+            host=data.get("host"),
+            port=data.get("port"),
+            user=data.get("user"),
+            password=data.get("password"),
+            collation='utf8mb4_general_ci',
+            database=None,
+            connect_timeout=5
+        )
+        cursor = con.cursor()
+        cursor.execute("SHOW DATABASES")
+        cursor.close()
+        con.close()
+    except mysql.connector.errors.Error as e:
+        return {"message": f"Connection failed"}
+
     # get user id from session id
     con, cursor = connect_database()
     cursor.execute("SELECT * FROM sessions WHERE token=?", (data.get("session_id"),))

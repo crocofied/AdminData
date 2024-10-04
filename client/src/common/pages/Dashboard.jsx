@@ -60,8 +60,11 @@ const Home = () => {
                 document.getElementById('my_modal_3').close();
                 updateConnections();
             } else {
-                showError("Error adding connection.");
-                
+                if (response.data.message === "Connection failed") {
+                    showError("Connection failed. Please check your connection details.");
+                } else {
+                    showError("Error adding connection.");
+                }
             }
         })
         .catch(error => {
