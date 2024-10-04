@@ -6,6 +6,10 @@ import uvicorn
 ## =========================== IMPORT DEPENDENCIES AND ROUTES ===========================
 from .routers import tables_operations, user, setup, database
 from fastapi_pagination import Page, add_pagination, paginate
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
 # Setup FastAPI and define CORS middleware
@@ -13,7 +17,7 @@ app = FastAPI()
 add_pagination(app)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=[os.getenv("CLIENT_URL")],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
