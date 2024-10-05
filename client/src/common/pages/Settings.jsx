@@ -33,10 +33,11 @@ const Settings = () => {
         setTimeout(() => {
             setErrorVisible(false);
             setError("");
-        }, 5000); // Error wird nach 5 Sekunden ausgeblendet
+        }, 5000);
     };
 
     const changePassword = () => {
+        document.getElementById('change_password_button').disabled = true;
         if (newPassword !== repeatNewPassword) {
             showError("Passwords do not match.");
             return;
@@ -63,9 +64,11 @@ const Settings = () => {
         .catch(error => {
             showError("Error changing password.");
         });
+        document.getElementById('change_password_button').disabled = false;
     };
 
     const changeUsername = () => {
+        document.getElementById('change_username_button').disabled = true;
         makePostRequest("/change_username", {
             new_username: username,
             password: password
@@ -87,6 +90,7 @@ const Settings = () => {
         .catch(error => {
             showError("Error changing username.");
         });
+        document.getElementById('change_username_button').disabled = false;
     };
 
     return (
@@ -166,7 +170,7 @@ const Settings = () => {
                             </label>
                         </div>
                         
-                        <button className="btn btn-primary w-full" onClick={changePassword}>Change Password</button>
+                        <button id="change_password_button" className="btn btn-primary w-full" onClick={changePassword}>Change Password</button>
                     </div>
                 </dialog>
 
@@ -209,7 +213,7 @@ const Settings = () => {
                             </label>
                         </div>
                         
-                        <button className="btn btn-primary w-full" onClick={changeUsername}>Change Username</button>
+                        <button id="change_username_button" className="btn btn-primary w-full" onClick={changeUsername}>Change Username</button>
                     </div>
                 </dialog>
             </div>

@@ -59,7 +59,8 @@ const Tables = () => {
 
     // Refresh tables
     const refreshTables = () => {
-        makePostRequest("/get_tables", {
+        setLoading(true);
+        makePostRequest("/get_tables?page=" + currentPage + "&size=6", {
             connection_id: connectionID,
             database: databaseName
         })
