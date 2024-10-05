@@ -1,6 +1,8 @@
 services:
   client:
-    image: your-dockerhub-username/admindata-client:latest  # Ersetzen Sie dies mit Ihrem tatsächlichen Image-Namen
+    build:
+      context: ./client
+      dockerfile: Dockerfile
     ports:
       - "3000:80"
     environment:
@@ -9,13 +11,14 @@ services:
       - server
 
   server:
-    image: your-dockerhub-username/admindata-server:latest  # Ersetzen Sie dies mit Ihrem tatsächlichen Image-Namen
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+      args:
+        CLIENT_URL: ${CLIENT_URL}
     ports:
       - "5000:5000"
-    environment:
-      - CLIENT_URL=${CLIENT_URL}
     volumes:
       - db_data:/app/db
-
 volumes:
   db_data:
