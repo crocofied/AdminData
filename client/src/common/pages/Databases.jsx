@@ -4,7 +4,9 @@ import Cookies from 'js-cookie';
 import Navbar from '../components/Navbar';
 import { FaEdit, FaTrash  } from 'react-icons/fa';
 import { makePostRequest } from '../utils/api';
-
+import CodeMirror from "@uiw/react-codemirror";
+import { vscodeDark } from "@uiw/codemirror-theme-vscode";
+import { sql } from "@codemirror/lang-sql";
 
 const Databases = () => {
     // Navigation and location details
@@ -29,6 +31,16 @@ const Databases = () => {
     const [error, setError] = useState("");
     const [errorVisible, setErrorVisible] = useState(false);
     const [loading, setLoading] = useState(true);
+
+    // SQL editor
+    const [editorValue, setEditorValue] = useState("");
+    const [queryResult, setQueryResult] = useState([]);
+    const [queryResultVisible, setQueryResultVisible] = useState(false);
+    const [queryError, setQueryError] = useState("");
+    const [queryErrorVisible, setQueryErrorVisible] = useState(false);
+
+    // New state for active accordion
+    const [activeAccordion, setActiveAccordion] = useState('database');
 
     useEffect(() => {
         makePostRequest("/check_session")
@@ -63,10 +75,11 @@ const Databases = () => {
         if (connectionID === undefined) {
             return;
         }
-        makePostRequest("/get_databases", {
+        makePostRequest("/get_databases?page=" + currentPage + "&size=6", {
             connection_id: connectionID
         })
         .then(response => {
+            console.log(response.data);
             if (response.data.items.length === 0) {
                 setCurrentPage(currentPage - 1);
                 return;
@@ -76,6 +89,7 @@ const Databases = () => {
             setLoading(false); // Set loading to false after data is successfully fetched
         })
         .catch(error => {
+            showError("Error fetching databases");
         });
     };
 
@@ -141,6 +155,41 @@ const Databases = () => {
         });
     };
 
+    // Add functions to handle running and saving queries
+    const runQuery = () => {
+        setQueryResultVisible(false);
+        setQueryErrorVisible(false);
+        makePostRequest("/run_query", {
+            connection_id: connectionID,
+            query: editorValue
+        })
+        .then(response => {
+            if (response.data.results) {
+                console.log(response.data.results.length);
+                if (response.data.results.length === 1 && response.data.results[0].length === 0) {
+                    setQueryResult("Success, Result is empty.");
+                } else {
+                    setQueryResult(response.data.results);
+                }
+                setQueryError("");
+                setQueryErrorVisible(false);
+                setQueryResultVisible(true);
+            } else {
+                setQueryError(response.data.error);
+                setQueryErrorVisible(true);
+                setQueryResult([]);
+                setQueryResultVisible(false);
+            }
+        })
+        .catch(error => {
+            setQueryError(error.response?.data?.error || "An unknown error occurred");
+            setQueryErrorVisible(true);
+            setQueryResult([]);
+            setQueryResultVisible(false);
+        });
+    };
+
+
     return (
         <>
             <div className="flex space-x-12">
@@ -154,65 +203,107 @@ const Databases = () => {
                     </div>
                     <h1 className="text-5xl font-bold">{connectionName} Databases</h1>
                     <div className="divider"></div>
-                    <div className="w-full">
-                        <div className="overflow-x-auto">
-                            {loading ? (
-                                <div className="flex justify-center pt-20">
-                                    <span className="loading loading-infinity loading-lg"></span>
-                                </div>
-                            ) : (
-                                <>
-                                    <table className="table w-full">
-                                        <thead>
-                                            <tr>
-                                                <th className="text-xl w-1/12">ID</th>
-                                                <th className="text-xl">Database Name</th>
-                                                <th className="text-xl w-1/12">Actions</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {databases.map((database, index) => (
-                                                <tr key={index}>
-                                                    <td className='text-base w-1/12'>{index}</td>
-                                                    <td className='text-base'>
-                                                        <button className="btn btn-ghost w-full justify-start text-left" onClick={() => {
-                                                            navigate("/tables", { state: { connection_id: connectionID, connection_name: connectionName, database_name: database.name } });
-                                                        }}>{database.name}</button>
-                                                    </td>
-                                                    <td className='text-base w-1/12'>
-                                                        <div className="flex space-x-2">
-                                                            <button className="btn btn-neutral" onClick={() => {
-                                                                setSelectedDatabaseName(database.name);
-                                                                setSelectedNewDatabaseName(database.name);
-                                                                document.getElementById('my_modal_3').showModal();
-                                                            }}><FaEdit/></button>
-                                                            <button className="btn btn-neutral" onClick={() => {
-                                                                setSelectedDatabaseName(database.name);
-                                                                document.getElementById('my_modal_4').showModal();
-                                                            }}><FaTrash/></button>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            ))}
-                                        </tbody>
-                                    </table>
-                                    <button className="btn btn-neutral w-full" onClick={() => document.getElementById('my_modal_5').showModal()}>Create new Database</button>
-                                    <div className="flex justify-center items-center join pt-5">
-                                        {currentPage === 1 ? (
-                                            <button className="join-item btn" disabled>«</button>
-                                        ) : (
-                                            <button className="join-item btn" onClick={() => setCurrentPage(currentPage - 1)}>«</button>
-                                        )}
-                                        <button className="join-item btn">Page {currentPage}</button>
-                                        {currentPage < maxPage ? (
-                                            <button className="join-item btn" onClick={() => setCurrentPage(currentPage + 1)}>»</button>
-                                        ) : (
-                                            <button className="join-item btn" disabled>»</button>
-                                        )}
+                    <div className="flex space-x-4 mb-4">
+                        <button 
+                            className={`btn flex-1 ${activeAccordion === 'database' ? 'btn-active' : ''}`}
+                            onClick={() => setActiveAccordion('database')}
+                        >
+                            Database View
+                        </button>
+                        <button 
+                            className={`btn flex-1 ${activeAccordion === 'sql' ? 'btn-active' : ''}`}
+                            onClick={() => setActiveAccordion('sql')}
+                        >
+                            SQL Editor
+                        </button>
+                    </div>
+                    <div className="bg-base-200 p-4 rounded-lg">
+                        {activeAccordion === 'database' && (
+                            <div className="overflow-x-auto">
+                                {loading ? (
+                                    <div className="flex justify-center pt-20">
+                                        <span className="loading loading-infinity loading-lg"></span>
                                     </div>
-                                </>
-                            )}
-                        </div>
+                                ) : (
+                                    <>
+                                        <table className="table w-full">
+                                            <thead>
+                                                <tr>
+                                                    <th className="text-xl w-1/12">ID</th>
+                                                    <th className="text-xl">Database Name</th>
+                                                    <th className="text-xl w-1/12">Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {databases.map((database, index) => (
+                                                    <tr key={index}>
+                                                        <td className='text-base w-1/12'>{index}</td>
+                                                        <td className='text-base'>
+                                                            <button className="btn btn-ghost w-full justify-start text-left" onClick={() => {
+                                                                navigate("/tables", { state: { connection_id: connectionID, connection_name: connectionName, database_name: database.name } });
+                                                            }}>{database.name}</button>
+                                                        </td>
+                                                        <td className='text-base w-1/12'>
+                                                            <div className="flex space-x-2">
+                                                                <button className="btn btn-neutral" onClick={() => {
+                                                                    setSelectedDatabaseName(database.name);
+                                                                    setSelectedNewDatabaseName(database.name);
+                                                                    document.getElementById('my_modal_3').showModal();
+                                                                }}><FaEdit/></button>
+                                                                <button className="btn btn-neutral" onClick={() => {
+                                                                    setSelectedDatabaseName(database.name);
+                                                                    document.getElementById('my_modal_4').showModal();
+                                                                }}><FaTrash/></button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                        <button className="btn btn-neutral w-full mt-4" onClick={() => document.getElementById('my_modal_5').showModal()}>Create new Database</button>
+                                        <div className="flex justify-center items-center join pt-5">
+                                            {currentPage === 1 ? (
+                                                <button className="join-item btn" disabled>«</button>
+                                            ) : (
+                                                <button className="join-item btn" onClick={() => setCurrentPage(currentPage - 1)}>«</button>
+                                            )}
+                                            <button className="join-item btn">Page {currentPage}</button>
+                                            {currentPage < maxPage ? (
+                                                <button className="join-item btn" onClick={() => setCurrentPage(currentPage + 1)}>»</button>
+                                            ) : (
+                                                <button className="join-item btn" disabled>»</button>
+                                            )}
+                                        </div>
+                                    </>
+                                )}
+                            </div>
+                        )}
+                        {activeAccordion === 'sql' && (
+                            <>
+                                <div>
+                                    <CodeMirror
+                                        value={editorValue}
+                                        height="200px"
+                                        theme={vscodeDark}
+                                        extensions={[sql()]}
+                                        onChange={(value) => setEditorValue(value)}
+                                    />
+                                    <button className="btn btn-success mt-4 w-full" onClick={runQuery}>
+                                        Run Query
+                                    </button>
+                                </div>
+                                {queryResultVisible && (
+                                    <div className="mt-4 p-4 bg-base-300 rounded-lg overflow-x-auto">
+                                        {JSON.stringify(queryResult)}
+                                    </div>
+                                )}
+                                {queryErrorVisible && (
+                                    <div className="mt-4 p-4 bg-error text-error-content rounded-lg">
+                                        Error: {queryError}
+                                    </div>
+                                )}
+                            </>
+                        )}
                     </div>
                     <dialog id="my_modal_3" className="modal">
                         <div className="modal-box">

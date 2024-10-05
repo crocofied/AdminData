@@ -319,4 +319,58 @@ async def create_database(request: Request):
 
     return {"message": "Database created"}
 
+@router.post("/run_query", tags=["database"])
+async def run_query(request: Request):
+    await validate_session(request)
+
+    data = await request.json()
+    query = data.get("query")
+    connection_id = data.get("connection_id")
+
+    con, cursor = connect_database()
+    cursor.execute("SELECT * FROM databases WHERE id=?", (connection_id,))
+    connection = cursor.fetchone()
+    cursor.close()
+    con.close()
+
+    host = connection[4]
+    port = connection[5]
+    user = connection[6]
+    password = connection[7]
+
+    try:
+        con = mysql.connector.connect(
+            host=host,
+            port=port,
+            user=user,
+            password=password,
+            collation='utf8mb4_general_ci',
+            database=None
+        )
+        cursor = con.cursor()
+        
+        # Ausführen mehrerer Anweisungen
+        results = []
+        for statement in query.split(';'):
+            if statement.strip():
+                if statement.strip().endswith(";"):
+                    statement = statement.strip()
+                else:
+                    statement = statement.strip() + ";" 
+                cursor.execute(statement)
+                print(statement)
+                try:
+                    result = cursor.fetchall()
+                    results.append(result)
+                except mysql.connector.errors.InterfaceError:
+                    # Wenn keine Ergebnisse zurückgegeben werden (z.B. bei INSERT, UPDATE, DELETE)
+                    results.append({"affected_rows": cursor.rowcount})
+        
+        con.commit()  # Commit Änderungen für nicht-SELECT Anweisungen
+        cursor.close()
+        con.close()
+        return {"results": results}
+    except mysql.connector.Error as err:
+        return {"error": str(err)}
+
 add_pagination(router)
