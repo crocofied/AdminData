@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import { useNavigate, useLocation, Link } from "react-router-dom";
-import SessionChecker from '../components/SessionChecker';
 import Navbar from '../components/Navbar';
 import { FaTrash  } from 'react-icons/fa';
 import { makePostRequest } from '../utils/api';
@@ -25,10 +24,16 @@ const TableEdit = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        if (!SessionChecker()) {
+        makePostRequest("/check_session")
+        .then(response => {
+            if(response.data.message !== "Session is valid"){
+                navigate("/");
+            }
+        })
+        .catch(error => {
             navigate("/");
-        }
-    }, [navigate]);
+        });
+    }, []);
 
     useEffect(() => {
         setConnectionID(location.state.connection_id);
@@ -41,7 +46,6 @@ const TableEdit = () => {
     useEffect(() => {
         if (connectionID && databaseName && tableName) {
             makePostRequest("/get_table_data", {
-                session_id: Cookies.get("session_id"),
                 connection_id: connectionID,
                 database_name: databaseName,
                 table_name: tableName
@@ -68,7 +72,6 @@ const TableEdit = () => {
         }
         setEdited(true);
         makePostRequest("/edit_table", {
-            session_id: Cookies.get("session_id"),
             connection_id: connectionID,
             database_name: databaseName,
             table_name: tableName,

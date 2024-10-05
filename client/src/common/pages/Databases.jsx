@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import Cookies from 'js-cookie';
-import SessionChecker from '../components/SessionChecker';
 import Navbar from '../components/Navbar';
 import { FaEdit, FaTrash  } from 'react-icons/fa';
 import { makePostRequest } from '../utils/api';
@@ -31,12 +30,17 @@ const Databases = () => {
     const [errorVisible, setErrorVisible] = useState(false);
     const [loading, setLoading] = useState(true);
 
-    // Check if session is valid
     useEffect(() => {
-        if (!SessionChecker()) {
+        makePostRequest("/check_session")
+        .then(response => {
+            if(response.data.message !== "Session is valid"){
+                navigate("/");
+            }
+        })
+        .catch(error => {
             navigate("/");
-        }
-    }, [navigate]);
+        });
+    }, []);
 
     // Show error message
     const showError = (message) => {
@@ -60,7 +64,6 @@ const Databases = () => {
             return;
         }
         makePostRequest("/get_databases", {
-            session_id: Cookies.get("session_id"),
             connection_id: connectionID
         })
         .then(response => {
@@ -84,7 +87,6 @@ const Databases = () => {
     // Save edited database
     const saveEditDatabase = () => {
         makePostRequest("/edit_database", {
-            session_id: Cookies.get("session_id"),
             connection_id: connectionID,
             old_database_name: selectedDatabaseName,
             new_database_name: selectedNewDatabaseName
@@ -105,7 +107,6 @@ const Databases = () => {
     // Delete database
     const deleteDatabase = () => {
         makePostRequest("/delete_database", {
-            session_id: Cookies.get("session_id"),
             connection_id: connectionID,
             database_name: selectedDatabaseName
         })
@@ -123,7 +124,6 @@ const Databases = () => {
     // Create new database
     const createDatabase = () => {
         makePostRequest("/create_database", {
-            session_id: Cookies.get("session_id"),
             connection_id: connectionID,
             database_name: createDatabaseName
         })

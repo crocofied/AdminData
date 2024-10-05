@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import { useNavigate, useLocation, Link } from "react-router-dom";
-import SessionChecker from '../components/SessionChecker';
 import Navbar from '../components/Navbar';
 import { FaTrash  } from 'react-icons/fa';
 import { makePostRequest } from '../utils/api';
@@ -21,9 +20,15 @@ const TableCreate = () => {
     const [errorVisible, setErrorVisible] = useState(false);
 
     useEffect(() => {
-        if (!SessionChecker()) {
+        makePostRequest("/check_session")
+        .then(response => {
+            if(response.data.message !== "Session is valid"){
+                navigate("/");
+            }
+        })
+        .catch(error => {
             navigate("/");
-        }
+        });
     }, []);
 
     useEffect(() => {
@@ -49,7 +54,6 @@ const TableCreate = () => {
 
     const createTable = () => {
         makePostRequest("/create_table", {
-            session_id: Cookies.get("session_id"),
             connection_id: connectionID,
             database: databaseName,
             table: tableName,

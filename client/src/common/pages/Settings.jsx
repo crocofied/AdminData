@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
-import SessionChecker from '../components/SessionChecker';
 import Navbar from '../components/Navbar';
 import { makePostRequest } from '../utils/api';
 import { FaKey, FaLock, FaUser } from "react-icons/fa";
@@ -14,10 +13,18 @@ const Settings = () => {
     const [success, setSuccess] = useState(false);
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+
+
     useEffect(() => {
-        if(!SessionChecker()) {
+        makePostRequest("/check_session")
+        .then(response => {
+            if(response.data.message !== "Session is valid"){
+                navigate("/");
+            }
+        })
+        .catch(error => {
             navigate("/");
-        }
+        });
     }, []);
 
     const showError = (message) => {
@@ -35,7 +42,6 @@ const Settings = () => {
             return;
         }
         makePostRequest("/change_password", {
-            session_id: Cookies.get("session_id"),
             current_password: currentPassword,
             new_password: newPassword
         })
@@ -61,7 +67,6 @@ const Settings = () => {
 
     const changeUsername = () => {
         makePostRequest("/change_username", {
-            session_id: Cookies.get("session_id"),
             new_username: username,
             password: password
         })

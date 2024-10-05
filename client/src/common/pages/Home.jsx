@@ -2,7 +2,6 @@
 import { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import { useNavigate } from "react-router-dom";
-import SessionChecker from '../components/SessionChecker';
 import { makePostRequest } from '../utils/api';
 
 const Home = () => {
@@ -42,7 +41,6 @@ const Home = () => {
             password: password
         })
         .then(response => {
-            Cookies.set("session_id", response.data.session_id, {expires: 7});
             navigate("/dashboard");
         })
         .catch(error => {
@@ -53,15 +51,16 @@ const Home = () => {
     };
 
     useEffect(() => {
-        if(SessionChecker()) {
-            navigate("/dashboard");
-        }
+        makePostRequest("/check_session")
+        .then(response => {
+            if(response.data.message === "Session is valid"){
+                navigate("/dashboard");
+            }
+        })
     }, []);
-
 
     return (
         <>
-            <SessionChecker />
             <div className="flex items-center justify-center min-h-screen">
                 <div className="card bg-base-200 lg:w-1/3 border border-gray-800 shadow-2xl">
                 <figure>

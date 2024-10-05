@@ -36,7 +36,7 @@ async def add_connection(request: Request):
 
     # get user id from session id
     con, cursor = connect_database()
-    cursor.execute("SELECT * FROM sessions WHERE token=?", (data.get("session_id"),))
+    cursor.execute("SELECT * FROM sessions WHERE token=?", (request.cookies.get("session_id"),))
     session = cursor.fetchone()
     user_id = session[1]
 
@@ -50,9 +50,8 @@ async def add_connection(request: Request):
 async def get_connections(request: Request):
     await validate_session(request)
 
-    data = await request.json()
     con, cursor = connect_database()
-    cursor.execute("SELECT * FROM sessions WHERE token=?", (data.get("session_id"),))
+    cursor.execute("SELECT * FROM sessions WHERE token=?", (request.cookies.get("session_id"),))
     session = cursor.fetchone()
     user_id = session[1]
 
@@ -94,7 +93,7 @@ async def edit_connection(request: Request):
         return {"message": f"Connection failed"}
 
     con, cursor = connect_database()
-    cursor.execute("SELECT * FROM sessions WHERE token=?", (data.get("session_id"),))
+    cursor.execute("SELECT * FROM sessions WHERE token=?", (request.cookies.get("session_id"),))
     session = cursor.fetchone()
     user_id = session[1]
 
@@ -113,7 +112,7 @@ async def delete_connection(request: Request):
 
     data = await request.json()
     con, cursor = connect_database()
-    cursor.execute("SELECT * FROM sessions WHERE token=?", (data.get("session_id"),))
+    cursor.execute("SELECT * FROM sessions WHERE token=?", (request.cookies.get("session_id"),))
     session = cursor.fetchone()
     user_id = session[1]
 

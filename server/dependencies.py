@@ -8,8 +8,7 @@ import sqlite3
 load_dotenv()
 
 async def validate_session(request: Request):
-    data = await request.json()
-    session_id = data.get("session_id")
+    session_id = request.cookies.get("session_id")
     con = sqlite3.connect("admin_data.db")
     cursor = con.cursor()
     cursor.execute("SELECT * FROM sessions WHERE token=?", (session_id,))

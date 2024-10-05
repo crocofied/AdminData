@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import { useNavigate } from "react-router-dom";
-import SessionChecker from '../components/SessionChecker';
 import Navbar from '../components/Navbar';
 import { FaDatabase, FaServer, FaNetworkWired, FaUser, FaEdit, FaPlug } from 'react-icons/fa';
 import { makePostRequest } from '../utils/api';
@@ -20,9 +19,15 @@ const Home = () => {
     const [currentConnectionId, setCurrentConnectionId] = useState(0);
 
     useEffect(() => {
-        if(!SessionChecker()) {
+        makePostRequest("/check_session")
+        .then(response => {
+            if(response.data.message !== "Session is valid"){
+                navigate("/");
+            }
+        })
+        .catch(error => {
             navigate("/");
-        }
+        });
     }, []);
 
     const showError = (message) => {
@@ -126,12 +131,9 @@ const Home = () => {
     }, []);
 
     const updateConnections = () => {
-        makePostRequest("/get_connections", {
-            session_id: Cookies.get("session_id")
-        })
+        makePostRequest("/get_connections")
         .then(response => {
             setConnections(response.data.connections);
-            console.log(response.data.connections);
         })
         .catch(error => {
         });
@@ -139,7 +141,6 @@ const Home = () => {
 
     const deleteConnection = () => {
         makePostRequest("/delete_connection", {
-            session_id: Cookies.get("session_id"),
             id: currentConnectionId
         })
         .then(response => {

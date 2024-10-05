@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
-import SessionChecker from '../components/SessionChecker';
 import Navbar from '../components/Navbar';
 import { FaEdit, FaTrash  } from 'react-icons/fa';
 import { makePostRequest } from '../utils/api';
@@ -25,10 +24,16 @@ const TableView = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        if (!SessionChecker()) {
-            navigate('/');
-        }
-    }, [navigate]);
+        makePostRequest("/check_session")
+        .then(response => {
+            if(response.data.message !== "Session is valid"){
+                navigate("/");
+            }
+        })
+        .catch(error => {
+            navigate("/");
+        });
+    }, []);
 
     useEffect(() => {
         if (location.state) {
@@ -52,7 +57,6 @@ const TableView = () => {
     const retrieveTableData = () => {
         if (connectionID && databaseName && tableName) {
             makePostRequest("/get_table_data_values", {
-                    session_id: Cookies.get('session_id'),
                     connection_id: connectionID,
                     database_name: databaseName,
                     table_name: tableName,
@@ -74,7 +78,6 @@ const TableView = () => {
 
     const handleEdit = () => {
         makePostRequest("/edit_table_data", {
-            session_id: Cookies.get('session_id'),
             connection_id: connectionID,
             database_name: databaseName,
             table_name: tableName,
@@ -96,7 +99,6 @@ const TableView = () => {
 
     const handleDelete = (row) => {
         makePostRequest("/delete_table_data", {
-            session_id: Cookies.get('session_id'),
             connection_id: connectionID,
             database_name: databaseName,
             table_name: tableName,
@@ -117,7 +119,6 @@ const TableView = () => {
 
     const handleAdd = () => {
         makePostRequest("/add_table_data", {
-            session_id: Cookies.get('session_id'),
             connection_id: connectionID,
             database_name: databaseName,
             table_name: tableName,

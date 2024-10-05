@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import Cookies from 'js-cookie';
-import SessionChecker from '../components/SessionChecker';
 import Navbar from '../components/Navbar';
 import { FaEdit, FaTrash  } from 'react-icons/fa';
 import { makePostRequest } from '../utils/api';
@@ -29,12 +28,17 @@ const Tables = () => {
     // Loading state
     const [loading, setLoading] = useState(true);
 
-    // Check if session is valid
     useEffect(() => {
-        if (!SessionChecker()) {
+        makePostRequest("/check_session")
+        .then(response => {
+            if(response.data.message !== "Session is valid"){
+                navigate("/");
+            }
+        })
+        .catch(error => {
             navigate("/");
-        }
-    }, [navigate]);
+        });
+    }, []);
 
     // Error handling
     const showError = (message) => {
@@ -56,7 +60,6 @@ const Tables = () => {
     // Refresh tables
     const refreshTables = () => {
         makePostRequest("/get_tables", {
-            session_id: Cookies.get("session_id"),
             connection_id: connectionID,
             database: databaseName
         })
@@ -76,7 +79,6 @@ const Tables = () => {
 
     const deleteTable = () => {
         makePostRequest("/delete_table", {
-            session_id: Cookies.get("session_id"),
             connection_id: connectionID,
             database: databaseName,
             table: selectedTableName
