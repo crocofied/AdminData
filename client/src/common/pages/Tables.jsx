@@ -65,7 +65,7 @@ const Tables = () => {
         })
         .then(response => {
             if (response.data.items.length === 0 && response.status === 200) {
-                setCurrentPage(currentPage - 1);
+                setCurrentPage(0);
                 setLoading(false);
                 return;
             }
