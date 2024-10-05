@@ -26,7 +26,7 @@ You can run AdminData by following the [guide](https://www.admindata.xyz/install
 
 <img alt="AdminData Picture1" src="https://zip.headlessdev.de/r/2024-10-05_12%3A46%3A02.png?compress=false">
 <img alt="AdminData Picture2" src="https://zip.headlessdev.de/r/2024-10-05_12%3A47%3A49.png?compress=false">
-<img alt="AdminData Picture3" src="https://i.imgur.com/pc648hO.png">
+<img alt="AdminData Picture3" src="https://zip.headlessdev.de/r/2024-10-05_15%3A16%3A33.png?compress=false">
 
 ## Star History
 
