@@ -103,3 +103,34 @@ async def change_password(request: Request):
     con.close()
 
     return {"message": "Password changed successfully"}
+
+@router.post("/change_username")
+async def change_username(request: Request):
+    await validate_session(request)
+
+    # Fetch th new username
+    data = await request.json()
+    session_id = data.get("session_id")
+    new_username = data.get("new_username")
+    password = data.get("password")
+
+    # Get the user from the database
+    con, cursor = connect_database()
+    cursor.execute("SELECT user_id FROM sessions WHERE token=?", (session_id,))
+    user_id = cursor.fetchone()[0]
+
+    cursor.execute("SELECT * FROM users WHERE id=?", (user_id,))
+    user = cursor.fetchone()
+
+    # Check if the user exists and if the password is correct
+    if not user or not bcrypt.checkpw(password.encode(), user[2]):
+        cursor.close()
+        con.close()
+        return {"message": "Invalid password"}
+    
+    cursor.execute("UPDATE users SET username=? WHERE id=?", (new_username, user_id))
+    con.commit()
+    cursor.close()
+    con.close()
+
+    return {"message": "Username changed successfully"}
