@@ -172,6 +172,15 @@ const Databases = () => {
     const runQuery = () => {
         setQueryResultVisible(false);
         setQueryErrorVisible(false);
+        if (editorValue === "") {
+            setQueryError("Query is empty");
+            setQueryErrorVisible(true);
+            setTimeout(() => {
+                setQueryError("");
+                setQueryErrorVisible(false);
+            }, 5000);
+            return;
+        }
         makePostRequest("/run_query", {
             connection_id: connectionID,
             query: editorValue,
@@ -314,13 +323,16 @@ const Databases = () => {
                                             <option key={index} value={database.name}>{database.name}</option>
                                         ))}
                                     </select>
-                                    <CodeMirror
-                                        value={editorValue}
-                                        height="200px"
-                                        theme={vscodeDark}
-                                        extensions={[sql()]}
-                                        onChange={(value) => setEditorValue(value)}
-                                    />
+                                    <div className="mt-4 border border-gray-700 rounded-3xl overflow-hidden shadow-lg">
+                                        <CodeMirror
+                                            value={editorValue}
+                                            height="300px"
+                                            theme={vscodeDark}
+                                            extensions={[sql()]}
+                                            onChange={(value) => setEditorValue(value)}
+                                            className="w-full font-mono text-sm"
+                                        />
+                                    </div>
                                     <button className="btn btn-success mt-4 w-full" onClick={runQuery}>
                                         Run Query
                                     </button>
