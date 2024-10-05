@@ -17,6 +17,7 @@ const Home = () => {
     const [password, setPassword] = useState("");
     const [connections, setConnections] = useState([]);
     const [currentConnectionId, setCurrentConnectionId] = useState(0);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         makePostRequest("/check_session")
@@ -40,6 +41,7 @@ const Home = () => {
     };
 
     const addConnection = () => {
+        setIsLoading(true);
         document.getElementById('save_button').disabled = true;
         if (name === "" || type === "" || host === "" || port === 0 || username === "" || password === "") {
             showError("Please fill out all fields.");
@@ -73,15 +75,18 @@ const Home = () => {
                 }
             }
             document.getElementById('save_button').disabled = false;
+            setIsLoading(false);
         })
         .catch(error => {
             showError("Error adding connection.");
             document.getElementById('save_button').disabled = false;
+            setIsLoading(false);
         });
     };
 
 
     const editConnection = () => {
+        setIsLoading(true);
         document.getElementById('save_button').disabled = true;
         document.getElementById('delete_button').disabled = true;
         if (name === "" || type === "" || host === "" || port === 0 || username === "") {
@@ -109,11 +114,14 @@ const Home = () => {
                 setPassword("");
                 document.getElementById('my_modal_4').close();
                 updateConnections();
+                setIsLoading(false);
             } else {
                 if (response.data.message === "Connection failed") {
                     showError("Connection failed. Please check your connection details.");
+                    setIsLoading(false);
                 } else {
                     showError("Error editing connection.");
+                    setIsLoading(false);
                 }
             }
             document.getElementById('save_button').disabled = false;
@@ -131,15 +139,19 @@ const Home = () => {
     }, []);
 
     const updateConnections = () => {
+        setIsLoading(true);
         makePostRequest("/get_connections")
         .then(response => {
             setConnections(response.data.connections);
+            setIsLoading(false);
         })
         .catch(error => {
+            setIsLoading(false);
         });
     };
 
     const deleteConnection = () => {
+        setIsLoading(true);
         makePostRequest("/delete_connection", {
             id: currentConnectionId
         })
@@ -161,87 +173,98 @@ const Home = () => {
         .catch(error => {
             showError("Error deleting connection.");
         });
+        setIsLoading(false);
     };
 
 
     return (
-        <div className="flex min-h-screen bg-base-200">
-            <Navbar />
-            <div className='flex-1 p-8'>
-                <h1 className="text-4xl font-bold mb-6">Database Connections</h1>
-                <div className="bg-base-100 rounded-box p-6 shadow-lg">
-                    <div className='flex justify-between items-center mb-6'>
-                        <h2 className="text-2xl font-semibold">Your Connections</h2>
-                        <button className="btn btn-primary" onClick={() => document.getElementById('my_modal_3').showModal()}>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-5 h-5 mr-2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                            </svg>
-                            Add Connection
-                        </button>
-                    </div>
-                    <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
-                    {connections.length > 0 ? connections.map((connection, index) => (
-                        <div key={index} className="card bg-base-300 shadow-xl transition-all duration-300 hover:shadow-2xl hover:scale-105">
-                            <div className="card-body">
-                                <h2 className="card-title flex items-center text-primary">
-                                    <FaDatabase className="mr-2" /> {connection[2]}
-                                </h2>
-                                <div className='space-y-2 mt-4'>
-                                    <p className="flex justify-between items-center">
-                                        <span className="font-medium flex items-center">
-                                            <FaServer className="mr-2" /> Type:
-                                        </span> 
-                                        <span className="badge badge-outline">{connection[3] === 1 ? "MariaDB" : "MySQL"}</span>
-                                    </p>
-                                    <p className="flex justify-between items-center">
-                                        <span className="font-medium flex items-center">
-                                            <FaNetworkWired className="mr-2" /> Host:
-                                        </span> 
-                                        <span className="text-sm">{connection[4]}</span>
-                                    </p>
-                                    <p className="flex justify-between items-center">
-                                        <span className="font-medium flex items-center">
-                                            <FaNetworkWired className="mr-2" /> Port:
-                                        </span> 
-                                        <span className="text-sm">{connection[5]}</span>
-                                    </p>
-                                    <p className="flex justify-between items-center">
-                                        <span className="font-medium flex items-center">
-                                            <FaUser className="mr-2" /> Username:
-                                        </span> 
-                                        <span className="text-sm">{connection[6]}</span>
-                                    </p>
-                                </div>
-                                <div className="card-actions justify-end mt-4">
-                                    <button className="btn btn-sm btn-outline" onClick={() => {
-                                        setCurrentConnectionId(connection[0]);
-                                        setName(connection[2]);
-                                        setType(connection[3]);
-                                        setHost(connection[4]);
-                                        setPort(connection[5]);
-                                        setUsername(connection[6]);
-                                        setPassword("");
-                                        document.getElementById('my_modal_4').showModal();
-                                    }}>
-                                        <FaEdit className="mr-2" /> Edit
-                                    </button>
-                                    <button className="btn btn-sm btn-primary" onClick={() => {
-                                        setCurrentConnectionId(connection[0]);
-                                        navigate("/databases", { state: { connection_id: connection[0], connection_name: connection[2] }});
-                                    }}>
-                                        <FaPlug className="mr-2" /> Connect
-                                    </button>
-                                </div>
-                            </div>
+        <>
+            <div className="flex min-h-screen bg-base-200">
+                <Navbar />
+                <div className='flex-1 p-8'>
+                    <h1 className="text-4xl font-bold mb-6">Database Connections</h1>
+                    <div className="bg-base-100 rounded-box p-6 shadow-lg">
+                        <div className='flex justify-between items-center mb-6'>
+                            <h2 className="text-2xl font-semibold">Your Connections</h2>
+                            <button className="btn btn-primary" onClick={() => document.getElementById('my_modal_3').showModal()}>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-5 h-5 mr-2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                                </svg>
+                                Add Connection
+                            </button>
                         </div>
-                    )) : (
-                        <div className='col-span-full'>
-                            <div className="alert">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="stroke-current shrink-0 w-6 h-6"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                <span>No connections found. Add a new connection to get started!</span>
-                            </div>
+                        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
+                            {isLoading && (
+                                <div className="col-span-full flex justify-center pt-20">
+                                    <span className="loading loading-infinity loading-lg"></span>
+                                </div>
+                            ) || (
+                                connections.length > 0 ? (
+                                    connections.map((connection, index) => (
+                                        <div key={index} className="card bg-base-300 shadow-xl transition-all duration-300 hover:shadow-2xl hover:scale-105">
+                                            <div className="card-body">
+                                                <h2 className="card-title flex items-center text-primary">
+                                                    <FaDatabase className="mr-2" /> {connection[2]}
+                                                </h2>
+                                                <div className='space-y-2 mt-4'>
+                                                    <p className="flex justify-between items-center">
+                                                        <span className="font-medium flex items-center">
+                                                            <FaServer className="mr-2" /> Type:
+                                                        </span> 
+                                                        <span className="badge badge-outline">{connection[3] === 1 ? "MariaDB" : "MySQL"}</span>
+                                                    </p>
+                                                    <p className="flex justify-between items-center">
+                                                        <span className="font-medium flex items-center">
+                                                            <FaNetworkWired className="mr-2" /> Host:
+                                                        </span> 
+                                                        <span className="text-sm">{connection[4]}</span>
+                                                    </p>
+                                                    <p className="flex justify-between items-center">
+                                                        <span className="font-medium flex items-center">
+                                                            <FaNetworkWired className="mr-2" /> Port:
+                                                        </span> 
+                                                        <span className="text-sm">{connection[5]}</span>
+                                                    </p>
+                                                    <p className="flex justify-between items-center">
+                                                        <span className="font-medium flex items-center">
+                                                            <FaUser className="mr-2" /> Username:
+                                                        </span> 
+                                                        <span className="text-sm">{connection[6]}</span>
+                                                    </p>
+                                                </div>
+                                                <div className="card-actions justify-end mt-4">
+                                                    <button className="btn btn-sm btn-outline" onClick={() => {
+                                                        setCurrentConnectionId(connection[0]);
+                                                        setName(connection[2]);
+                                                        setType(connection[3]);
+                                                        setHost(connection[4]);
+                                                        setPort(connection[5]);
+                                                        setUsername(connection[6]);
+                                                        setPassword("");
+                                                        document.getElementById('my_modal_4').showModal();
+                                                    }}>
+                                                        <FaEdit className="mr-2" /> Edit
+                                                    </button>
+                                                    <button className="btn btn-sm btn-primary" onClick={() => {
+                                                        setCurrentConnectionId(connection[0]);
+                                                        navigate("/databases", { state: { connection_id: connection[0], connection_name: connection[2] }});
+                                                    }}>
+                                                        <FaPlug className="mr-2" /> Connect
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))
+                                ) : (
+                                    <div className='col-span-full'>
+                                        <div className="alert">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="stroke-current shrink-0 w-6 h-6"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                            <span>No connections found. Add a new connection to get started!</span>
+                                        </div>
+                                    </div>
+                                )
+                            )}
                         </div>
-                    )}
                     </div>
                 </div>
                 
@@ -365,7 +388,7 @@ const Home = () => {
                     </div>
                 </dialog>
             </div>
-        </div>
+        </>
     )
 }
 
