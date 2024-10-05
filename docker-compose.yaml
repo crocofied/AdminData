@@ -3,10 +3,10 @@ services:
     build:
       context: ./client
       dockerfile: Dockerfile
-      args:
-        VITE_API_URL: ${VITE_API_URL}
     ports:
       - "3000:80"
+    environment:
+      - VITE_API_URL=${VITE_API_URL}
     depends_on:
       - server
 
@@ -14,6 +14,8 @@ services:
     build:
       context: ./server
       dockerfile: Dockerfile
+      args:
+        CLIENT_URL: ${CLIENT_URL}
     ports:
       - "5000:5000"
     volumes:

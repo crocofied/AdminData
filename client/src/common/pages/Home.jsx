@@ -1,9 +1,8 @@
 // =========================== IMPORTS ===========================
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import { useNavigate } from "react-router-dom";
-import SessionChecker from '../components/SessionChecker';
+import { makePostRequest } from '../utils/api';
 
 const Home = () => {
     const [username, setUsername] = useState("");
@@ -14,7 +13,7 @@ const Home = () => {
 
     // Initialize the database on first load
     useEffect(() => {
-        axios.post(`${import.meta.env.VITE_API_URL}/database_init`, {}, {
+        makePostRequest("/database_init", {}, {
         headers: {
             "Authorization": `Bearer ${import.meta.env.VITE_API_KEY}`,
             "Content-Type": "application/json"
@@ -37,12 +36,11 @@ const Home = () => {
     // Login function
     const login = () => {
         setInputDisabled(true);
-        axios.post(`${import.meta.env.VITE_API_URL}/login`, {
+        makePostRequest("/login", {
             username: username,
             password: password
         })
         .then(response => {
-            Cookies.set("session_id", response.data.session_id, {expires: 7});
             navigate("/dashboard");
         })
         .catch(error => {
@@ -53,24 +51,27 @@ const Home = () => {
     };
 
     useEffect(() => {
-        if(SessionChecker()) {
-            navigate("/dashboard");
-        }
+        makePostRequest("/check_session")
+        .then(response => {
+            if(response.data.message === "Session is valid"){
+                navigate("/dashboard");
+            }
+        })
     }, []);
-
 
     return (
         <>
-            <SessionChecker />
             <div className="flex items-center justify-center min-h-screen">
                 <div className="card bg-base-200 lg:w-1/3 border border-gray-800 shadow-2xl">
                 <figure>
-                    <img
-                    src="/Cover.png"
-                    alt="Shoes" />
+                    <a href="https://github.com/crocofied/AdminData" target="_blank" rel="noopener noreferrer">
+                        <img
+                        src="/Cover.png"
+                        alt="AdminData Logo"
+                        className="cursor-pointer" />
+                    </a>
                 </figure>
                 <div className="card-body">
-                    <h2 className="card-title pb-5">AdminData</h2>
                     {error &&
                         <div role="alert" className="alert alert-error">
                             <svg

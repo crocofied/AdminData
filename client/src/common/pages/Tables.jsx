@@ -1,10 +1,9 @@
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import Cookies from 'js-cookie';
-import SessionChecker from '../components/SessionChecker';
 import Navbar from '../components/Navbar';
 import { FaEdit, FaTrash  } from 'react-icons/fa';
+import { makePostRequest } from '../utils/api';
 
 const Tables = () => {
     // Navigation and location details
@@ -29,12 +28,17 @@ const Tables = () => {
     // Loading state
     const [loading, setLoading] = useState(true);
 
-    // Check if session is valid
     useEffect(() => {
-        if (!SessionChecker()) {
+        makePostRequest("/check_session")
+        .then(response => {
+            if(response.data.message !== "Session is valid"){
+                navigate("/");
+            }
+        })
+        .catch(error => {
             navigate("/");
-        }
-    }, [navigate]);
+        });
+    }, []);
 
     // Error handling
     const showError = (message) => {
@@ -55,14 +59,13 @@ const Tables = () => {
 
     // Refresh tables
     const refreshTables = () => {
-        axios.post(`${import.meta.env.VITE_API_URL}/get_tables?page=${currentPage}&size=7`, {
-            session_id: Cookies.get("session_id"),
+        makePostRequest("/get_tables", {
             connection_id: connectionID,
             database: databaseName
         })
         .then(response => {
             if (response.data.items.length === 0 && response.status === 200) {
-                setCurrentPage(currentPage - 1);
+                setCurrentPage(0);
                 setLoading(false);
                 return;
             }
@@ -75,8 +78,7 @@ const Tables = () => {
     }
 
     const deleteTable = () => {
-        axios.post(`${import.meta.env.VITE_API_URL}/delete_table`, {
-            session_id: Cookies.get("session_id"),
+        makePostRequest("/delete_table", {
             connection_id: connectionID,
             database: databaseName,
             table: selectedTableName

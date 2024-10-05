@@ -4,6 +4,7 @@ import mysql.connector
 from fastapi_pagination import Page, add_pagination, paginate
 from pydantic import BaseModel
 import sqlite3
+from mysql.connector import errors as mysql_errors
 
 router = APIRouter()  # Create a router
 
@@ -13,9 +14,29 @@ async def add_connection(request: Request):
     await validate_session(request)
 
     data = await request.json()
+    
+    # Check database connection
+    try:
+        con = mysql.connector.connect(
+            host=data.get("host"),
+            port=data.get("port"),
+            user=data.get("user"),
+            password=data.get("password"),
+            collation='utf8mb4_general_ci',
+            database=None,
+            connect_timeout=5
+        )
+        cursor = con.cursor()
+        cursor.execute("SHOW DATABASES")
+        result = cursor.fetchall()
+        cursor.close()
+        con.close()
+    except (mysql_errors.InterfaceError, mysql_errors.OperationalError) as e:
+        return {"message": f"Connection failed"}
+
     # get user id from session id
     con, cursor = connect_database()
-    cursor.execute("SELECT * FROM sessions WHERE token=?", (data.get("session_id"),))
+    cursor.execute("SELECT * FROM sessions WHERE token=?", (request.cookies.get("session_id"),))
     session = cursor.fetchone()
     user_id = session[1]
 
@@ -29,9 +50,8 @@ async def add_connection(request: Request):
 async def get_connections(request: Request):
     await validate_session(request)
 
-    data = await request.json()
     con, cursor = connect_database()
-    cursor.execute("SELECT * FROM sessions WHERE token=?", (data.get("session_id"),))
+    cursor.execute("SELECT * FROM sessions WHERE token=?", (request.cookies.get("session_id"),))
     session = cursor.fetchone()
     user_id = session[1]
 
@@ -46,8 +66,34 @@ async def edit_connection(request: Request):
     await validate_session(request)
 
     data = await request.json()
+    # Get database password from connection table
     con, cursor = connect_database()
-    cursor.execute("SELECT * FROM sessions WHERE token=?", (data.get("session_id"),))
+    cursor.execute("SELECT * FROM databases WHERE id=?", (data.get("id"),))
+    connection = cursor.fetchone()
+    cursor.close()
+    con.close()
+    database_password = connection[7]
+    # Check database connection
+    try:
+        con = mysql.connector.connect(
+            host=data.get("host"),
+            port=data.get("port"),
+            user=data.get("user"),
+            password=database_password,
+            collation='utf8mb4_general_ci',
+            database=None,
+            connect_timeout=5
+        )
+        cursor = con.cursor()
+        cursor.execute("SHOW DATABASES")
+        result = cursor.fetchall()
+        cursor.close()
+        con.close()
+    except (mysql_errors.InterfaceError, mysql_errors.OperationalError) as e:
+        return {"message": f"Connection failed"}
+
+    con, cursor = connect_database()
+    cursor.execute("SELECT * FROM sessions WHERE token=?", (request.cookies.get("session_id"),))
     session = cursor.fetchone()
     user_id = session[1]
 
@@ -66,7 +112,7 @@ async def delete_connection(request: Request):
 
     data = await request.json()
     con, cursor = connect_database()
-    cursor.execute("SELECT * FROM sessions WHERE token=?", (data.get("session_id"),))
+    cursor.execute("SELECT * FROM sessions WHERE token=?", (request.cookies.get("session_id"),))
     session = cursor.fetchone()
     user_id = session[1]
 

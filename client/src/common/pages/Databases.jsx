@@ -1,10 +1,9 @@
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import Cookies from 'js-cookie';
-import SessionChecker from '../components/SessionChecker';
 import Navbar from '../components/Navbar';
 import { FaEdit, FaTrash  } from 'react-icons/fa';
+import { makePostRequest } from '../utils/api';
 
 
 const Databases = () => {
@@ -31,12 +30,17 @@ const Databases = () => {
     const [errorVisible, setErrorVisible] = useState(false);
     const [loading, setLoading] = useState(true);
 
-    // Check if session is valid
     useEffect(() => {
-        if (!SessionChecker()) {
+        makePostRequest("/check_session")
+        .then(response => {
+            if(response.data.message !== "Session is valid"){
+                navigate("/");
+            }
+        })
+        .catch(error => {
             navigate("/");
-        }
-    }, [navigate]);
+        });
+    }, []);
 
     // Show error message
     const showError = (message) => {
@@ -56,14 +60,11 @@ const Databases = () => {
 
     // Refresh databases
     const refreshDatabases = () => {
-        axios.post(`${import.meta.env.VITE_API_URL}/get_databases?page=${currentPage}&size=7`, {
-            session_id: Cookies.get("session_id"),
+        if (connectionID === undefined) {
+            return;
+        }
+        makePostRequest("/get_databases", {
             connection_id: connectionID
-        }, {
-            headers: {
-                "Authorization": `Bearer ${localStorage.getItem("api_token")}`,
-                "Content-Type": "application/json"
-            }
         })
         .then(response => {
             if (response.data.items.length === 0) {
@@ -85,8 +86,7 @@ const Databases = () => {
 
     // Save edited database
     const saveEditDatabase = () => {
-        axios.post(`${import.meta.env.VITE_API_URL}/edit_database`, {
-            session_id: Cookies.get("session_id"),
+        makePostRequest("/edit_database", {
             connection_id: connectionID,
             old_database_name: selectedDatabaseName,
             new_database_name: selectedNewDatabaseName
@@ -106,8 +106,7 @@ const Databases = () => {
 
     // Delete database
     const deleteDatabase = () => {
-        axios.post(`${import.meta.env.VITE_API_URL}/delete_database`, {
-            session_id: Cookies.get("session_id"),
+        makePostRequest("/delete_database", {
             connection_id: connectionID,
             database_name: selectedDatabaseName
         })
@@ -124,8 +123,7 @@ const Databases = () => {
 
     // Create new database
     const createDatabase = () => {
-        axios.post(`${import.meta.env.VITE_API_URL}/create_database`, {
-            session_id: Cookies.get("session_id"),
+        makePostRequest("/create_database", {
             connection_id: connectionID,
             database_name: createDatabaseName
         })

@@ -1,5 +1,8 @@
 FROM python:3.12.1-slim
 
+ARG CLIENT_URL
+ENV CLIENT_URL=${CLIENT_URL}
+
 WORKDIR /app
 
 COPY requirements.txt .

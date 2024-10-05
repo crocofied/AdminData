@@ -14,6 +14,7 @@ cp .env.example .env && nano .env
 Replace <YOUR_SERVER_IP> with your server host ip
 ```
 VITE_API_URL=http://<YOUR_SERVER_IP>:5000
+CLIENT_URL=http://<YOUR_SERVER_IP>:3000
 ```
 Save your changes and close the editor.
 

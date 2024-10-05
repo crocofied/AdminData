@@ -12,10 +12,12 @@ nano .env
 and replace your old `VITE_API_URL` with
 ```
 VITE_API_URL=http://<YOUR_SERVER_API_DOMAIN>
+CLIENT_URL=http://<YOUR_CLIENT_DOMAIN>
 ```
 or if you have an SLL certificate:
 ```
 VITE_API_URL=https://<YOUR_SERVER_API_DOMAIN>
+CLIENT_URL=https://<YOUR_CLIENT_DOMAIN>
 ```
 ### 🐳 - Rebuild container & launch application
 ```sh

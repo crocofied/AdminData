@@ -1,10 +1,9 @@
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
-import SessionChecker from '../components/SessionChecker';
 import Navbar from '../components/Navbar';
 import { FaEdit, FaTrash  } from 'react-icons/fa';
+import { makePostRequest } from '../utils/api';
 
 const TableView = () => {
     const navigate = useNavigate();
@@ -25,10 +24,16 @@ const TableView = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        if (!SessionChecker()) {
-            navigate('/');
-        }
-    }, [navigate]);
+        makePostRequest("/check_session")
+        .then(response => {
+            if(response.data.message !== "Session is valid"){
+                navigate("/");
+            }
+        })
+        .catch(error => {
+            navigate("/");
+        });
+    }, []);
 
     useEffect(() => {
         if (location.state) {
@@ -51,8 +56,7 @@ const TableView = () => {
 
     const retrieveTableData = () => {
         if (connectionID && databaseName && tableName) {
-            axios.post(`${import.meta.env.VITE_API_URL}/get_table_data_values?page=${currentPage}&size=7`, {
-                    session_id: Cookies.get('session_id'),
+            makePostRequest("/get_table_data_values", {
                     connection_id: connectionID,
                     database_name: databaseName,
                     table_name: tableName,
@@ -73,8 +77,7 @@ const TableView = () => {
     }, [connectionID, databaseName, tableName, currentPage]);
 
     const handleEdit = () => {
-        axios.post(`${import.meta.env.VITE_API_URL}/edit_table_data`, {
-            session_id: Cookies.get('session_id'),
+        makePostRequest("/edit_table_data", {
             connection_id: connectionID,
             database_name: databaseName,
             table_name: tableName,
@@ -95,8 +98,7 @@ const TableView = () => {
     };
 
     const handleDelete = (row) => {
-        axios.post(`${import.meta.env.VITE_API_URL}/delete_table_data`, {
-            session_id: Cookies.get('session_id'),
+        makePostRequest("/delete_table_data", {
             connection_id: connectionID,
             database_name: databaseName,
             table_name: tableName,
@@ -116,8 +118,7 @@ const TableView = () => {
     };
 
     const handleAdd = () => {
-        axios.post(`${import.meta.env.VITE_API_URL}/add_table_data`, {
-            session_id: Cookies.get('session_id'),
+        makePostRequest("/add_table_data", {
             connection_id: connectionID,
             database_name: databaseName,
             table_name: tableName,
