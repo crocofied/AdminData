@@ -85,84 +85,63 @@ const Settings = () => {
     };
 
     return (
-        <>
-            <div className="flex space-x-12">
-                <Navbar />
-                <div className='pt-10 pr-10 w-full'>
-                    <h1 className="text-5xl font-bold">Account Settings</h1>
-                    <div className="divider"></div>
-                    <div className="w-3/4">
-                        <h2 className="text-3xl font-medium">Change Password</h2>
-                        <div className='flex flex-wrap justify-between items-center'>
-                            <div className='text-lg pt-5'>
-                                If you would like to change your password, you can do so here.
-                            </div>
-                            <div className='text-right'>
-                                <button className="btn" onClick={() => document.getElementById('my_modal_3').showModal()}>
-                                    Change Password
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="divider"></div>
-                    <div className="w-3/4">
-                        <h2 className="text-3xl font-medium">Change Username</h2>
-                        <div className='flex flex-wrap justify-between items-center'>
-                            <div className='text-lg pt-5'>
-                                If you would like to change your username, you can do so here.
-                            </div>
-                            <div className='text-right'>
-                                <button className="btn" onClick={() => document.getElementById('my_modal_4').showModal()}>
-                                    Change Username
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+        <div className="flex min-h-screen bg-base-200">
+            <Navbar />
+            <div className="flex-1 p-10">
+                <h1 className="text-4xl font-bold mb-8">Account Settings</h1>
+                
+                <div className="bg-base-100 rounded-lg shadow-md p-6 mb-8">
+                    <h2 className="text-2xl font-semibold mb-4">Change Password</h2>
+                    <p className="mb-4">
+                        If you would like to change your password, you can do so here.
+                    </p>
+                    <button 
+                        className="btn btn-primary"
+                        onClick={() => document.getElementById('my_modal_3').showModal()}
+                    >
+                        Change Password
+                    </button>
                 </div>
+
+                <div className="bg-base-100 rounded-lg shadow-md p-6">
+                    <h2 className="text-2xl font-semibold mb-4">Change Username</h2>
+                    <p className="mb-4">
+                        If you would like to change your username, you can do so here.
+                    </p>
+                    <button 
+                        className="btn btn-primary"
+                        onClick={() => document.getElementById('my_modal_4').showModal()}
+                    >
+                        Change Username
+                    </button>
+                </div>
+
+                {/* Password Change Modal */}
                 <dialog id="my_modal_3" className="modal">
                     <div className="modal-box">
                         <form method="dialog">
                             <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
                         </form>
-                        <h3 className="font-bold text-lg">Change your Password!</h3>
-                        <div className="divider"></div>
-                        {errorVisible &&
-                            <div className='pb-5'>
-                                <div role="alert" className="alert alert-error">
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        className="h-6 w-6 shrink-0 stroke-current"
-                                        fill="none"
-                                        viewBox="0 0 24 24">
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            strokeWidth="2"
-                                            d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
-                                    <span>{error}</span>
-                                </div>  
+                        <h3 className="font-bold text-lg mb-4">Change your Password</h3>
+                        
+                        {errorVisible && (
+                            <div className="alert alert-error mb-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <span>{error}</span>
                             </div>
-                        }
-                        {success &&
-                            <div className='pb-5'>
-                                <div role="alert" className="alert alert-success">
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        className="h-6 w-6 shrink-0 stroke-current"
-                                        fill="none"
-                                        viewBox="0 0 24 24">
-                                        <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth="2"
-                                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
-                                    <span>Password changed!</span>
-                                </div>
+                        )}
+                        
+                        {success && (
+                            <div className="alert alert-success mb-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <span>Password changed successfully!</span>
                             </div>
-                        }
+                        )}
+                        
                         <div className='pb-3'>
                             <label className="input input-bordered flex items-center gap-2">
                                 <FaKey className="h-4 w-4 opacity-70" />
@@ -181,53 +160,37 @@ const Settings = () => {
                                 <input type="password" className="grow" placeholder='Repeat New Password' onChange={(e) => setRepeatNewPassword(e.target.value)} value={repeatNewPassword} />
                             </label>
                         </div>
-                        <button className="btn w-full" onClick={changePassword}>Change Password</button>
+                        
+                        <button className="btn btn-primary w-full" onClick={changePassword}>Change Password</button>
                     </div>
                 </dialog>
 
+                {/* Username Change Modal */}
                 <dialog id="my_modal_4" className="modal">
                     <div className="modal-box">
                         <form method="dialog">
                             <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
                         </form>
-                        <h3 className="font-bold text-lg">Change your Username!</h3>
-                        <div className="divider"></div>
-                        {errorVisible &&
-                            <div className='pb-5'>
-                                <div role="alert" className="alert alert-error">
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        className="h-6 w-6 shrink-0 stroke-current"
-                                        fill="none"
-                                        viewBox="0 0 24 24">
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            strokeWidth="2"
-                                            d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
-                                    <span>{error}</span>
-                                </div>  
+                        <h3 className="font-bold text-lg mb-4">Change your Username</h3>
+                        
+                        {errorVisible && (
+                            <div className="alert alert-error mb-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <span>{error}</span>
                             </div>
-                        }
-                        {success &&
-                            <div className='pb-5'>
-                                <div role="alert" className="alert alert-success">
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        className="h-6 w-6 shrink-0 stroke-current"
-                                        fill="none"
-                                        viewBox="0 0 24 24">
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            strokeWidth="2"
-                                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
-                                    <span>Username changed!</span>
-                                </div>
+                        )}
+                        
+                        {success && (
+                            <div className="alert alert-success mb-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <span>Username changed successfully!</span>
                             </div>
-                        }
+                        )}
+                        
                         <div className='pb-3'>
                             <label className="input input-bordered flex items-center gap-2">
                                 <FaUser className="h-4 w-4 opacity-70" />
@@ -240,11 +203,12 @@ const Settings = () => {
                                 <input type="password" className="grow" placeholder='Password' onChange={(e) => setPassword(e.target.value)} value={password} />
                             </label>
                         </div>
-                        <button className="btn w-full" onClick={changeUsername}>Change Username</button>
+                        
+                        <button className="btn btn-primary w-full" onClick={changeUsername}>Change Username</button>
                     </div>
                 </dialog>
             </div>
-        </>
+        </div>
     );
 }
 
