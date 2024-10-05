@@ -3,6 +3,8 @@ services:
     build:
       context: ./client
       dockerfile: Dockerfile
+      args:
+        CLIENT_URL: ${CLIENT_URL}
     ports:
       - "3000:80"
     environment:
