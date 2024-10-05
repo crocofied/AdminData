@@ -13,4 +13,8 @@ export default defineConfig({
     host: true,
     port: 3000,
   },
+  // Comment if development
+  define: {
+    'import.meta.env.VITE_API_URL': 'window._env_.VITE_API_URL',
+  },
 })

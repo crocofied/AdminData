@@ -1,24 +1,21 @@
 services:
   client:
-    build:
-      context: ./client
-      dockerfile: Dockerfile
-      args:
-        VITE_API_URL: ${VITE_API_URL}
+    image: your-dockerhub-username/admindata-client:latest  # Ersetzen Sie dies mit Ihrem tatsächlichen Image-Namen
     ports:
       - "3000:80"
+    environment:
+      - VITE_API_URL=${VITE_API_URL}
     depends_on:
       - server
 
   server:
-    build:
-      context: ./server
-      dockerfile: Dockerfile
-      args:
-        CLIENT_URL: ${CLIENT_URL}
+    image: your-dockerhub-username/admindata-server:latest  # Ersetzen Sie dies mit Ihrem tatsächlichen Image-Namen
     ports:
       - "5000:5000"
+    environment:
+      - CLIENT_URL=${CLIENT_URL}
     volumes:
       - db_data:/app/db
+
 volumes:
   db_data:
