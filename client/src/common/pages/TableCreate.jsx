@@ -5,7 +5,7 @@ import { useNavigate, useLocation, Link } from "react-router-dom";
 import SessionChecker from '../components/SessionChecker';
 import Navbar from '../components/Navbar';
 import { FaTrash  } from 'react-icons/fa';
-
+import { makePostRequest } from '../utils/api';
 
 const TableCreate = () => {
     // Navigation and location details
@@ -49,7 +49,7 @@ const TableCreate = () => {
     };
 
     const createTable = () => {
-        axios.post(`${import.meta.env.VITE_API_URL}/create_table`, {
+        makePostRequest("/create_table", {
             session_id: Cookies.get("session_id"),
             connection_id: connectionID,
             database: databaseName,
@@ -57,7 +57,6 @@ const TableCreate = () => {
             columns: columns
         })
         .then(response => {
-            console.log(response.data);
             if (response.data.message === "Table created") {
                 navigate("/tables", {
                     state: {

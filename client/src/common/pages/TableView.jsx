@@ -5,6 +5,7 @@ import { useNavigate, useLocation, Link } from 'react-router-dom';
 import SessionChecker from '../components/SessionChecker';
 import Navbar from '../components/Navbar';
 import { FaEdit, FaTrash  } from 'react-icons/fa';
+import { makePostRequest } from '../utils/api';
 
 const TableView = () => {
     const navigate = useNavigate();
@@ -51,7 +52,7 @@ const TableView = () => {
 
     const retrieveTableData = () => {
         if (connectionID && databaseName && tableName) {
-            axios.post(`${import.meta.env.VITE_API_URL}/get_table_data_values?page=${currentPage}&size=7`, {
+            makePostRequest("/get_table_data_values", {
                     session_id: Cookies.get('session_id'),
                     connection_id: connectionID,
                     database_name: databaseName,
@@ -73,7 +74,7 @@ const TableView = () => {
     }, [connectionID, databaseName, tableName, currentPage]);
 
     const handleEdit = () => {
-        axios.post(`${import.meta.env.VITE_API_URL}/edit_table_data`, {
+        makePostRequest("/edit_table_data", {
             session_id: Cookies.get('session_id'),
             connection_id: connectionID,
             database_name: databaseName,
@@ -95,7 +96,7 @@ const TableView = () => {
     };
 
     const handleDelete = (row) => {
-        axios.post(`${import.meta.env.VITE_API_URL}/delete_table_data`, {
+        makePostRequest("/delete_table_data", {
             session_id: Cookies.get('session_id'),
             connection_id: connectionID,
             database_name: databaseName,
@@ -116,7 +117,7 @@ const TableView = () => {
     };
 
     const handleAdd = () => {
-        axios.post(`${import.meta.env.VITE_API_URL}/add_table_data`, {
+        makePostRequest("/add_table_data", {
             session_id: Cookies.get('session_id'),
             connection_id: connectionID,
             database_name: databaseName,

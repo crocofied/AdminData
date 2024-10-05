@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import SessionChecker from '../components/SessionChecker';
 import Navbar from '../components/Navbar';
 import { FaDatabase, FaServer, FaNetworkWired, FaUser, FaEdit, FaPlug } from 'react-icons/fa';
+import { makePostRequest } from '../utils/api';
 
 const Home = () => {
     const navigate = useNavigate();
@@ -40,7 +41,7 @@ const Home = () => {
             showError("Please fill out all fields.");
             return;
         }
-        axios.post(`${import.meta.env.VITE_API_URL}/add_connection`, {
+        makePostRequest("/add_connection", {
             session_id: Cookies.get("session_id"),
             name: name,
             type: type,
@@ -83,7 +84,7 @@ const Home = () => {
             showError("Please fill out all fields.");
             return;
         }
-        axios.post(`${import.meta.env.VITE_API_URL}/edit_connection`, {
+        makePostRequest("/edit_connection", {
             session_id: Cookies.get("session_id"),
             id: currentConnectionId,
             name: name,
@@ -126,7 +127,7 @@ const Home = () => {
     }, []);
 
     const updateConnections = () => {
-        axios.post(`${import.meta.env.VITE_API_URL}/get_connections`, {
+        makePostRequest("/get_connections", {
             session_id: Cookies.get("session_id")
         })
         .then(response => {
@@ -138,7 +139,7 @@ const Home = () => {
     };
 
     const deleteConnection = () => {
-        axios.post(`${import.meta.env.VITE_API_URL}/delete_connection`, {
+        makePostRequest("/delete_connection", {
             session_id: Cookies.get("session_id"),
             id: currentConnectionId
         })

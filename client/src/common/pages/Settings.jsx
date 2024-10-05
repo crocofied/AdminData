@@ -4,6 +4,7 @@ import Cookies from 'js-cookie';
 import { useNavigate } from "react-router-dom";
 import SessionChecker from '../components/SessionChecker';
 import Navbar from '../components/Navbar';
+import { makePostRequest } from '../utils/api';
 
 const Settings = () => {
     const [currentPassword, setCurrentPassword] = useState("");
@@ -33,7 +34,7 @@ const Settings = () => {
             showError("Passwords do not match.");
             return;
         }
-        axios.post(`${import.meta.env.VITE_API_URL}/change_password`, {
+        makePostRequest("/change_password", {
             session_id: Cookies.get("session_id"),
             current_password: currentPassword,
             new_password: newPassword

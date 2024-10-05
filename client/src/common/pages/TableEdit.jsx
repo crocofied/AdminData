@@ -5,6 +5,7 @@ import { useNavigate, useLocation, Link } from "react-router-dom";
 import SessionChecker from '../components/SessionChecker';
 import Navbar from '../components/Navbar';
 import { FaTrash  } from 'react-icons/fa';
+import { makePostRequest } from '../utils/api';
 
 const TableEdit = () => {
     // Navigation and location details
@@ -40,7 +41,7 @@ const TableEdit = () => {
 
     useEffect(() => {
         if (connectionID && databaseName && tableName) {
-            axios.post(`${import.meta.env.VITE_API_URL}/get_table_data`, {
+            makePostRequest("/get_table_data", {
                 session_id: Cookies.get("session_id"),
                 connection_id: connectionID,
                 database_name: databaseName,
@@ -67,7 +68,7 @@ const TableEdit = () => {
             return;
         }
         setEdited(true);
-        axios.post(`${import.meta.env.VITE_API_URL}/edit_table`, {
+        makePostRequest("/edit_table", {
             session_id: Cookies.get("session_id"),
             connection_id: connectionID,
             database_name: databaseName,

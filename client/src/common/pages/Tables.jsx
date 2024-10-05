@@ -5,6 +5,7 @@ import Cookies from 'js-cookie';
 import SessionChecker from '../components/SessionChecker';
 import Navbar from '../components/Navbar';
 import { FaEdit, FaTrash  } from 'react-icons/fa';
+import { makePostRequest } from '../utils/api';
 
 const Tables = () => {
     // Navigation and location details
@@ -55,7 +56,7 @@ const Tables = () => {
 
     // Refresh tables
     const refreshTables = () => {
-        axios.post(`${import.meta.env.VITE_API_URL}/get_tables?page=${currentPage}&size=7`, {
+        makePostRequest("/get_tables", {
             session_id: Cookies.get("session_id"),
             connection_id: connectionID,
             database: databaseName
@@ -75,7 +76,7 @@ const Tables = () => {
     }
 
     const deleteTable = () => {
-        axios.post(`${import.meta.env.VITE_API_URL}/delete_table`, {
+        makePostRequest("/delete_table", {
             session_id: Cookies.get("session_id"),
             connection_id: connectionID,
             database: databaseName,

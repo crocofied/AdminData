@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import { useNavigate } from "react-router-dom";
 import SessionChecker from '../components/SessionChecker';
+import { makePostRequest } from '../utils/api';
 
 const Home = () => {
     const [username, setUsername] = useState("");
@@ -14,7 +15,7 @@ const Home = () => {
 
     // Initialize the database on first load
     useEffect(() => {
-        axios.post(`${import.meta.env.VITE_API_URL}/database_init`, {}, {
+        makePostRequest("/database_init", {}, {
         headers: {
             "Authorization": `Bearer ${import.meta.env.VITE_API_KEY}`,
             "Content-Type": "application/json"
@@ -37,7 +38,7 @@ const Home = () => {
     // Login function
     const login = () => {
         setInputDisabled(true);
-        axios.post(`${import.meta.env.VITE_API_URL}/login`, {
+        makePostRequest("/login", {
             username: username,
             password: password
         })

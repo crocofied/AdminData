@@ -5,6 +5,7 @@ import Cookies from 'js-cookie';
 import SessionChecker from '../components/SessionChecker';
 import Navbar from '../components/Navbar';
 import { FaEdit, FaTrash  } from 'react-icons/fa';
+import { makePostRequest } from '../utils/api';
 
 
 const Databases = () => {
@@ -59,14 +60,9 @@ const Databases = () => {
         if (connectionID === undefined) {
             return;
         }
-        axios.post(`${import.meta.env.VITE_API_URL}/get_databases?page=${currentPage}&size=7`, {
+        makePostRequest("/get_databases", {
             session_id: Cookies.get("session_id"),
             connection_id: connectionID
-        }, {
-            headers: {
-                "Authorization": `Bearer ${localStorage.getItem("api_token")}`,
-                "Content-Type": "application/json"
-            }
         })
         .then(response => {
             if (response.data.items.length === 0) {
@@ -88,7 +84,7 @@ const Databases = () => {
 
     // Save edited database
     const saveEditDatabase = () => {
-        axios.post(`${import.meta.env.VITE_API_URL}/edit_database`, {
+        makePostRequest("/edit_database", {
             session_id: Cookies.get("session_id"),
             connection_id: connectionID,
             old_database_name: selectedDatabaseName,
@@ -109,7 +105,7 @@ const Databases = () => {
 
     // Delete database
     const deleteDatabase = () => {
-        axios.post(`${import.meta.env.VITE_API_URL}/delete_database`, {
+        makePostRequest("/delete_database", {
             session_id: Cookies.get("session_id"),
             connection_id: connectionID,
             database_name: selectedDatabaseName
@@ -127,7 +123,7 @@ const Databases = () => {
 
     // Create new database
     const createDatabase = () => {
-        axios.post(`${import.meta.env.VITE_API_URL}/create_database`, {
+        makePostRequest("/create_database", {
             session_id: Cookies.get("session_id"),
             connection_id: connectionID,
             database_name: createDatabaseName

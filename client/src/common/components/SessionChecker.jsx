@@ -1,17 +1,12 @@
-import axios from 'axios';
 import Cookies from 'js-cookie';
+import { makePostRequest } from '../utils/api';
 
 function SessionChecker() {
     if(!Cookies.get("session_id")) {
         return false;
     }
-    axios.post(`${import.meta.env.VITE_API_URL}/check_session`, {
+    makePostRequest("/check_session", {
         session_id: Cookies.get("session_id")
-    }, {
-        headers: {
-            "Authorization": `Bearer ${import.meta.env.VITE_API_KEY}`,
-            "Content-Type": "application/json"
-        }
     })
     .then(response => {
         if(response.data.message="Session is valid"){
@@ -21,7 +16,7 @@ function SessionChecker() {
     })
     .catch(error => {
         return false;
-    }, {})
+    })
   return <></>;
 }
 
