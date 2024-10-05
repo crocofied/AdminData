@@ -38,6 +38,7 @@ const Databases = () => {
     const [queryResultVisible, setQueryResultVisible] = useState(false);
     const [queryError, setQueryError] = useState("");
     const [queryErrorVisible, setQueryErrorVisible] = useState(false);
+    const [allDatabases, setAllDatabases] = useState([]);
 
     // New state for active accordion
     const [activeAccordion, setActiveAccordion] = useState('database');
@@ -76,10 +77,10 @@ const Databases = () => {
             return;
         }
         makePostRequest("/get_databases?page=" + currentPage + "&size=6", {
-            connection_id: connectionID
+            connection_id: connectionID,
+            database: selectedDatabaseName
         })
         .then(response => {
-            console.log(response.data);
             if (response.data.items.length === 0) {
                 setCurrentPage(currentPage - 1);
                 return;
@@ -93,9 +94,21 @@ const Databases = () => {
         });
     };
 
+    const get_all_databases = () => {
+        makePostRequest("/get_databases", {
+            connection_id: connectionID
+        })
+        .then(response => {
+            setAllDatabases(response.data.items);
+        })
+        .catch(error => {
+            showError("Error fetching databases");
+        });
+    };
     // Load databases
     useEffect(() => {
         refreshDatabases();
+        get_all_databases();
     }, [connectionID, currentPage]);
 
     // Save edited database
@@ -161,11 +174,11 @@ const Databases = () => {
         setQueryErrorVisible(false);
         makePostRequest("/run_query", {
             connection_id: connectionID,
-            query: editorValue
+            query: editorValue,
+            database: selectedDatabaseName
         })
         .then(response => {
             if (response.data.results) {
-                console.log(response.data.results.length);
                 if (response.data.results.length === 1 && response.data.results[0].length === 0) {
                     setQueryResult("Success, Result is empty.");
                 } else {
@@ -281,6 +294,15 @@ const Databases = () => {
                         {activeAccordion === 'sql' && (
                             <>
                                 <div>
+                                    <select 
+                                        className="select select-bordered w-full" 
+                                        onChange={(e) => {setSelectedDatabaseName(e.target.value);}}
+                                    >
+                                        <option value="none">None</option>
+                                        {allDatabases.map((database, index) => (
+                                            <option key={index} value={database.name}>{database.name}</option>
+                                        ))}
+                                    </select>
                                     <CodeMirror
                                         value={editorValue}
                                         height="200px"

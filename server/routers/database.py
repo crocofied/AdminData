@@ -324,6 +324,9 @@ async def run_query(request: Request):
     await validate_session(request)
 
     data = await request.json()
+    database_name = data.get("database")
+    if database_name == "none":
+        database_name = None
     query = data.get("query")
     connection_id = data.get("connection_id")
 
@@ -345,7 +348,7 @@ async def run_query(request: Request):
             user=user,
             password=password,
             collation='utf8mb4_general_ci',
-            database=None
+            database=database_name
         )
         cursor = con.cursor()
         
