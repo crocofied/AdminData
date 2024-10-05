@@ -187,11 +187,19 @@ const Databases = () => {
                 setQueryError("");
                 setQueryErrorVisible(false);
                 setQueryResultVisible(true);
+                setTimeout(() => {
+                    setQueryResultVisible(false);
+                    setQueryResult([]);
+                }, 10000);
             } else {
                 setQueryError(response.data.error);
                 setQueryErrorVisible(true);
                 setQueryResult([]);
                 setQueryResultVisible(false);
+                setTimeout(() => {
+                    setQueryError("");
+                    setQueryErrorVisible(false);
+                }, 5000);
             }
         })
         .catch(error => {
@@ -199,9 +207,12 @@ const Databases = () => {
             setQueryErrorVisible(true);
             setQueryResult([]);
             setQueryResultVisible(false);
+            setTimeout(() => {
+                setQueryError("");
+                setQueryErrorVisible(false);
+            }, 5000);
         });
     };
-
 
     return (
         <>

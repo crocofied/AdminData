@@ -33,7 +33,7 @@ const Settings = () => {
         setTimeout(() => {
             setErrorVisible(false);
             setError("");
-        }, 5000); // Error wird nach 5 Sekunden ausgeblendet
+        }, 5000);
     };
 
     const changePassword = () => {
