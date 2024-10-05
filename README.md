@@ -28,6 +28,15 @@ You can run AdminData by following the [guide](https://www.admindata.xyz/install
 <img alt="AdminData Picture2" src="https://i.imgur.com/4eL4uoq.png">
 <img alt="AdminData Picture3" src="https://i.imgur.com/pc648hO.png">
 
+## Star History
+
+<a href="https://star-history.com/#crocofied/AdminData&Date">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=crocofied/AdminData&type=Date&theme=dark" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=crocofied/AdminData&type=Date" />
+   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=crocofied/AdminData&type=Date" />
+ </picture>
+</a>
 
 ## License
 
