@@ -9,7 +9,7 @@ load_dotenv()
 
 async def validate_session(request: Request):
     session_id = request.cookies.get("session_id")
-    con = sqlite3.connect("/app/db/admin_data.db")
+    con = sqlite3.connect("admin_data.db")
     cursor = con.cursor()
     cursor.execute("SELECT * FROM sessions WHERE token=?", (session_id,))
     session = cursor.fetchone()
@@ -20,6 +20,6 @@ async def validate_session(request: Request):
 
 # Define a dependency to connect to the database   
 def connect_database(database: bool = True):
-    con = sqlite3.connect("/app/db/admin_data.db")
+    con = sqlite3.connect("admin_data.db")
     cursor = con.cursor()
     return con, cursor
