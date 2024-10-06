@@ -49,7 +49,11 @@
             "username_changed_successfully": "Username changed successfully.",
             "error_changing_password": "Error changing password.",
             "error_changing_username": "Error changing username.",
-            "error_changing_username_message": "Error changing username: "
+            "error_changing_username_message": "Error changing username: ",
+            "change_language": "Change Language",
+            "change_language_description": "If you would like to change your language, you can do so here.",
+            "english": "English",
+            "german": "German"
         },
         "databases": {
             "error_fetching_databases": "Error fetching databases.",

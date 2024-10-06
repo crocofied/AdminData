@@ -33,7 +33,7 @@ async def database_init(request: Request):
         con.commit()
     cursor.execute("SELECT * FROM users")
     if not cursor.fetchone():
-        cursor.execute("INSERT INTO users (username, password, salt) VALUES (?, ?, ?)", ("admin", hashed, salt))
+        cursor.execute("INSERT INTO users (username, password, salt, language) VALUES (?, ?, ?, ?)", ("admin", hashed, salt, "en"))
         con.commit()
     # Create the databases table
     cursor.execute("CREATE TABLE IF NOT EXISTS databases (id INTEGER PRIMARY KEY AUTOINCREMENT, userid INTEGER, name TEXT, type INTEGER, host TEXT, port INTEGER, user TEXT, password TEXT)")

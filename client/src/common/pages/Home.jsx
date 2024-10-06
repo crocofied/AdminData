@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 const Home = () => {
     const { t, i18n: {changeLanguage, language}} = useTranslation();
     useEffect(() => {
-        changeLanguage(import.meta.env.VITE_LANGUAGE);
+        changeLanguage(Cookies.get("language"));
     }, []);
 
     const [username, setUsername] = useState("");

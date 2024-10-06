@@ -8,7 +8,13 @@ import { useTranslation } from 'react-i18next';
 const Settings = () => {
     const { t, i18n: {changeLanguage, language}} = useTranslation();
     useEffect(() => {
-        changeLanguage(import.meta.env.VITE_LANGUAGE);
+        makePostRequest("/get_language")
+        .then(response => {
+            changeLanguage(response.data.language);
+        })
+        .catch(error => {
+            console.error(error);
+        });
     }, []);
 
     const [currentPassword, setCurrentPassword] = useState("");
@@ -99,36 +105,61 @@ const Settings = () => {
         document.getElementById('change_username_button').disabled = false;
     };
 
+    const setLanguage = (language) => {
+        makePostRequest("/change_language", {
+            new_language: language
+        })
+        .then(response => {
+            changeLanguage(language);
+            Cookies.set("language", language);
+        })
+        .catch(error => {
+        });
+    };
+
     return (
         <div className="flex min-h-screen bg-base-200">
             <Navbar />
             <div className="flex-1 p-10">
                 <h1 className="text-4xl font-bold mb-8">{t("settings.title")}</h1>
                 
-                <div className="bg-base-100 rounded-lg shadow-md p-6 mb-8">
-                    <h2 className="text-2xl font-semibold mb-4">{t("settings.change_password")}</h2>
-                    <p className="mb-4">
-                        {t("settings.change_password_description")}
-                    </p>
-                    <button 
-                        className="btn btn-primary"
-                        onClick={() => document.getElementById('my_modal_3').showModal()}
-                    >
-                        {t("settings.change_password")}
-                    </button>
+                <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="bg-base-100 rounded-lg shadow-md p-6 mb-8">
+                        <h2 className="text-2xl font-semibold mb-4">{t("settings.change_password")}</h2>
+                        <p className="mb-4">
+                            {t("settings.change_password_description")}
+                        </p>
+                        <button 
+                            className="btn btn-primary w-full"
+                            onClick={() => document.getElementById('my_modal_3').showModal()}
+                        >
+                            {t("settings.change_password")}
+                        </button>
+                    </div>
+
+                    <div className="bg-base-100 rounded-lg shadow-md p-6 mb-8">
+                        <h2 className="text-2xl font-semibold mb-4">{t("settings.change_username")}</h2>
+                        <p className="mb-4">
+                            {t("settings.change_username_description")}
+                        </p>
+                        <button 
+                            className="btn btn-primary w-full"
+                            onClick={() => document.getElementById('my_modal_4').showModal()}
+                        >
+                            {t("settings.change_username")}
+                        </button>
+                    </div>
                 </div>
 
-                <div className="bg-base-100 rounded-lg shadow-md p-6">
-                    <h2 className="text-2xl font-semibold mb-4">{t("settings.change_username")}</h2>
+                <div className="bg-base-100 rounded-lg shadow-md p-6 mb-8">
+                    <h2 className="text-2xl font-semibold mb-4">{t("settings.change_language")}</h2>
                     <p className="mb-4">
-                        {t("settings.change_username_description")}
+                        {t("settings.change_language_description")}
                     </p>
-                    <button 
-                        className="btn btn-primary"
-                        onClick={() => document.getElementById('my_modal_4').showModal()}
-                    >
-                        {t("settings.change_username")}
-                    </button>
+                    <select className="select select-bordered w-full max-w-xs" value={language} onChange={(e) => setLanguage(e.target.value)}>
+                        <option value="en">{t("settings.english")}</option>
+                        <option value="de">{t("settings.german")}</option>
+                    </select>
                 </div>
 
                 {/* Password Change Modal */}
