@@ -18,7 +18,7 @@ services:
       - VITE_API_URL=http://<YOUR_IP>:5000
     depends_on:
       - server
-
+    restart: always
   server:
     image: damiandbergemann278/admindata-server:latest
     ports:
@@ -27,7 +27,7 @@ services:
       - db_data:/app/db
     environment:
       - CLIENT_URL=http://<YOUR_IP>:3000
-
+    restart: always
 volumes:
   db_data:
 ```

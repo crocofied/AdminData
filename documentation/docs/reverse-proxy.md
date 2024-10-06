@@ -9,8 +9,8 @@ Edit the docker-compose.yml file in your AdminDirectory:
 ```sh
 nano docker-compose.yml
 ```
-and replace your old `VITE_API_URL` with
-```
+and replace your old docker compose file with
+```yaml
 services:
   client:
     image: damiandbergemann278/admindata-client:latest
@@ -20,7 +20,7 @@ services:
       - VITE_API_URL=https://<YOUR_SERVER_API_DOMAIN>
     depends_on:
       - server
-
+    restart: always
   server:
     image: damiandbergemann278/admindata-server:latest
     ports:
@@ -29,7 +29,7 @@ services:
       - db_data:/app/db
     environment:
       - CLIENT_URL=https://<YOUR_CLIENT_DOMAIN>
-
+    restart: always
 volumes:
   db_data:
 ```
