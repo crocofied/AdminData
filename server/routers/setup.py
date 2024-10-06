@@ -26,8 +26,9 @@ async def database_init(request: Request):
     cursor.execute("CREATE TABLE IF NOT EXISTS sessions (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, token TEXT)")
     con.commit()
     # Check if users table exists
-    cursor.execute("SHOW TABLES LIKE 'users'")
-    if not cursor.fetchone():
+    cursor.execute("SHOW TABLES")
+    tables = cursor.fetchall()
+    if "users" in tables:
         # Add language column to users table
         cursor.execute("ALTER TABLE users ADD COLUMN language TEXT")
         con.commit()
