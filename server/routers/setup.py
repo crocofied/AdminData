@@ -28,9 +28,13 @@ async def database_init(request: Request):
     # Check if users table exists
     cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='users'")
     if cursor.fetchone():
-        # Add language column to users table
-        cursor.execute("ALTER TABLE users ADD COLUMN language TEXT")
-        con.commit()
+        # Check if language column exists
+        cursor.execute("PRAGMA table_info(users)")
+        columns = [column[1] for column in cursor.fetchall()]
+        if "language" not in columns:
+            # Add language column to users table
+            cursor.execute("ALTER TABLE users ADD COLUMN language TEXT")
+            con.commit()
     cursor.execute("SELECT * FROM users")
     if not cursor.fetchone():
         cursor.execute("INSERT INTO users (username, password, salt, language) VALUES (?, ?, ?, ?)", ("admin", hashed, salt, "en"))
