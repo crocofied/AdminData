@@ -240,7 +240,7 @@ const Databases = () => {
                             <li>{connectionName}</li>
                         </ul>
                     </div>
-                    <h1 className="text-5xl font-bold">{connectionName} {t("databases.databases")}</h1>
+                    <h1 className="text-5xl font-bold text-primary">{connectionName} {t("databases.databases")}</h1>
                     <div className="divider"></div>
                     <div className="flex space-x-4 mb-4">
                         <button 

@@ -106,7 +106,7 @@ const TableCreate = () => {
                             <li>{t("table_create.create_table")}</li>
                         </ul>
                     </div>
-                    <h1 className="text-5xl font-bold">{t("table_create.create_table")}</h1>
+                    <h1 className="text-5xl font-bold text-primary">{t("table_create.create_table")}</h1>
                     <div className="divider"></div>
                     <div className="w-full">
                         {errorVisible && 

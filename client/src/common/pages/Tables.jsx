@@ -179,7 +179,7 @@ const Tables = () => {
                     <li>{databaseName}</li>
                 </ul>
                 </div>
-                <h1 className="text-5xl font-bold">{databaseName} {t("tables.tables")}</h1>
+                <h1 className="text-5xl font-bold text-primary">{databaseName} {t("tables.tables")}</h1>
                 <div className="divider"></div>
                 <div className="flex space-x-4 mb-4">
                     <button 

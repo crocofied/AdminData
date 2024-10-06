@@ -136,7 +136,7 @@ const TableEdit = () => {
                             <li>{t("table_edit.edit_table")}</li>
                         </ul>
                     </div>
-                    <h1 className="text-5xl font-bold">{t("table_edit.edit_table")}</h1>
+                    <h1 className="text-5xl font-bold text-primary">{t("table_edit.edit_table")}</h1>
                     <div className="divider"></div>
                     {loading ? (
                         <div className="flex justify-center items-center">
