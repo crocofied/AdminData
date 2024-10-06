@@ -1,0 +1,3 @@
+files:
+  - source: /client/src/locale/
+    translation: /client/src/locale/%language%.json
