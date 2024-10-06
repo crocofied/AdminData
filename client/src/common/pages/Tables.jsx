@@ -142,10 +142,6 @@ const Tables = () => {
                 setQueryError("");
                 setQueryErrorVisible(false);
                 setQueryResultVisible(true);
-                setTimeout(() => {
-                    setQueryResultVisible(false);
-                    setQueryResult([]);
-                }, 10000);
             } else {
                 setQueryError(response.data.error);
                 setQueryErrorVisible(true);

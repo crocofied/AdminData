@@ -375,5 +375,161 @@ async def run_query(request: Request):
         return {"results": results}
     except mysql.connector.Error as err:
         return {"error": str(err)}
+    
+
+@router.post("/check_if_root_database_user", tags=["database"])
+async def check_if_root_database_user(request: Request):
+    await validate_session(request)
+
+    data = await request.json()
+    connection_id = data.get("connection_id")
+    
+    con, cursor = connect_database()
+    cursor.execute("SELECT * FROM databases WHERE id=?", (connection_id,))
+    connection = cursor.fetchone()
+    cursor.close()
+    con.close()
+
+    host = connection[4]
+    port = connection[5]
+    user = connection[6]
+    password = connection[7]
+
+    con = mysql.connector.connect(
+        host=host,
+        port=port,
+        user=user,
+        password=password,
+        collation='utf8mb4_general_ci',
+        database=None
+    )
+    cursor = con.cursor()
+    cursor.execute("SELECT * FROM mysql.user WHERE user = 'root'")
+    result = cursor.fetchone()
+    cursor.close()
+    con.close()
+
+    if result:
+        return {"message": "Database user is root"}
+    else:
+        return {"message": "Database user is not root"}
+    
+
+@router.post("/get_database_users", tags=["database"])
+async def get_database_users(request: Request):
+    await validate_session(request)
+
+    data = await request.json()
+    connection_id = data.get("connection_id")
+    
+    con, cursor = connect_database()
+    cursor.execute("SELECT * FROM databases WHERE id=?", (connection_id,))
+    connection = cursor.fetchone()
+    cursor.close()
+    con.close()
+
+    host = connection[4]
+    port = connection[5]
+    user = connection[6]
+    password = connection[7]
+
+    con = mysql.connector.connect(
+        host=host,
+        port=port,
+        user=user,
+        password=password,
+        collation='utf8mb4_general_ci',
+        database=None
+    )
+    cursor = con.cursor()
+    # Get users, host and permissions
+    cursor.execute("SELECT user, host, plugin FROM mysql.user")
+    users = cursor.fetchall()
+    cursor.close()
+    con.close()
+
+    # Filter out users managed by the mysql server
+    users = [user for user in users if user[2] != "mysql_native_password"]
+
+    return {"users": users}
+
+@router.post("/create_database_user", tags=["database"])
+async def create_database_user(request: Request):
+    await validate_session(request)
+
+    data = await request.json()
+    connection_id = data.get("connection_id")
+    
+    con, cursor = connect_database()
+    cursor.execute("SELECT * FROM databases WHERE id=?", (connection_id,))
+    connection = cursor.fetchone()
+    cursor.close()
+    con.close()
+
+    host = connection[4]
+    port = connection[5]
+    user = connection[6]
+    password = connection[7]
+
+    new_username = data.get("new_username")
+    new_password = data.get("new_password")
+    new_host = data.get("new_host")
+    new_plugin = data.get("new_plugin")
+    grant_all_privileges = data.get("grant_all_privileges")
+    grant_all_privileges_on = data.get("grant_all_privileges_on")
+
+    con = mysql.connector.connect(
+        host=host,
+        port=port,
+        user=user,
+        password=password,
+        collation='utf8mb4_general_ci',
+        database=None
+    )
+    cursor = con.cursor()
+    cursor.execute(f"CREATE USER '{new_username}'@'{new_host}' IDENTIFIED BY '{new_password}'")
+    if grant_all_privileges:
+        cursor.execute(f"GRANT ALL PRIVILEGES ON {grant_all_privileges_on}.* TO '{new_username}'@'{new_host}'")
+    con.commit()
+    cursor.close()
+    con.close()
+
+    return {"message": "Database user created"}
+
+@router.post("/delete_database_user", tags=["database"])
+async def delete_database_user(request: Request):
+    await validate_session(request)
+
+    data = await request.json()
+    connection_id = data.get("connection_id")
+    username = data.get("username")
+    host = data.get("host")
+    
+    con, cursor = connect_database()
+    cursor.execute("SELECT * FROM databases WHERE id=?", (connection_id,))
+    connection = cursor.fetchone()
+    cursor.close()
+    con.close()
+
+    host = connection[4]
+    port = connection[5]
+    user = connection[6]
+    password = connection[7]    
+
+    con = mysql.connector.connect(
+        host=host,
+        port=port,
+        user=user,
+        password=password,
+        collation='utf8mb4_general_ci',
+        database=None
+    )
+    cursor = con.cursor()
+    cursor.execute(f"DROP USER '{username}'@'{host}'")
+    con.commit()
+    cursor.close()
+    con.close()
+
+    return {"message": "Database user deleted"}
 
 add_pagination(router)
