@@ -1,5 +1,9 @@
 {
     "translation": {
+        "general": {
+            "page": "Seite",
+            "of": "von"
+        },
         "home": {
             "login_wrong": "Falscher Benutzername oder Passwort. Versuche es erneut.",
             "username_placeholder": "Benutzername",

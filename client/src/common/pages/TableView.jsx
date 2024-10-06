@@ -248,7 +248,7 @@ const TableView = () => {
                                         «
                                     </button>
                                 )}
-                                <button className="join-item btn">{t("table_view.page")} {currentPage}</button>
+                                <button className="join-item btn">{t("tables.page")} {currentPage} {t("general.of")} {maxPage}</button>
                                 {currentPage < maxPage ? (
                                     <button className="join-item btn" onClick={() => setCurrentPage(currentPage + 1)}>
                                         »
