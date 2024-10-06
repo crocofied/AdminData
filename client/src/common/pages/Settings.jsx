@@ -52,6 +52,27 @@ const Settings = () => {
         document.getElementById('change_password_button').disabled = true;
         if (newPassword !== repeatNewPassword) {
             showError(t("settings.password_not_matching"));
+            document.getElementById('change_password_button').disabled = false;
+            return;
+        }
+        if (currentPassword === "") {
+            showError(t("settings.current_password_empty"));
+            document.getElementById('change_password_button').disabled = false;
+            return;
+        }
+        if (newPassword === "") {
+            showError(t("settings.new_password_empty"));
+            document.getElementById('change_password_button').disabled = false;
+            return;
+        }
+        if (repeatNewPassword === "") {
+            showError(t("settings.repeat_new_password_empty"));
+            document.getElementById('change_password_button').disabled = false;
+            return;
+        }
+        if (currentPassword === newPassword) {
+            showError(t("settings.current_password_new_password_same"));
+            document.getElementById('change_password_button').disabled = false;
             return;
         }
         makePostRequest("/change_password", {
@@ -80,6 +101,16 @@ const Settings = () => {
     };
 
     const changeUsername = () => {
+        if (username === "") {
+            showError(t("settings.username_empty"));
+            document.getElementById('change_username_button').disabled = false;
+            return;
+        }
+        if (password === "") {
+            showError(t("settings.password_empty"));
+            document.getElementById('change_username_button').disabled = false;
+            return;
+        }
         document.getElementById('change_username_button').disabled = true;
         makePostRequest("/change_username", {
             new_username: username,
