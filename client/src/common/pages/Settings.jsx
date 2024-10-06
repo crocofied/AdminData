@@ -166,7 +166,7 @@ const Settings = () => {
                 <dialog id="my_modal_3" className="modal">
                     <div className="modal-box">
                         <form method="dialog">
-                            <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+                            <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onClick={() => setSuccess(false)}>✕</button>
                         </form>
                         <h3 className="font-bold text-lg mb-4">{t("settings.change_password_modal_title")}</h3>
                         
@@ -215,7 +215,7 @@ const Settings = () => {
                 <dialog id="my_modal_4" className="modal">
                     <div className="modal-box">
                         <form method="dialog">
-                            <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+                            <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onClick={() => setSuccess(false)}>✕</button>
                         </form>
                         <h3 className="font-bold text-lg mb-4">{t("settings.change_username_modal_title")}</h3>
                         
