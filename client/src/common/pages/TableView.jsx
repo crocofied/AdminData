@@ -4,8 +4,13 @@ import { useNavigate, useLocation, Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import { FaEdit, FaTrash  } from 'react-icons/fa';
 import { makePostRequest } from '../utils/api';
+import { useTranslation } from 'react-i18next';
 
 const TableView = () => {
+    const { t, i18n: {changeLanguage, language}} = useTranslation();
+    useEffect(() => {
+        changeLanguage(import.meta.env.VITE_LANGUAGE);
+    }, []);
     const navigate = useNavigate();
     const location = useLocation();
     const [connectionID, setConnectionID] = useState();

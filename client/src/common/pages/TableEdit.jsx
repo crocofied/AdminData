@@ -4,8 +4,12 @@ import { useNavigate, useLocation, Link } from "react-router-dom";
 import Navbar from '../components/Navbar';
 import { FaTrash  } from 'react-icons/fa';
 import { makePostRequest } from '../utils/api';
-
+import { useTranslation } from 'react-i18next';
 const TableEdit = () => {
+    const { t, i18n: {changeLanguage, language}} = useTranslation();
+    useEffect(() => {
+        changeLanguage(import.meta.env.VITE_LANGUAGE);
+    }, []);
     // Navigation and location details
     const navigate = useNavigate();
     const location = useLocation();

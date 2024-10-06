@@ -98,7 +98,7 @@
             "default": "Default",
             "index": "Index",
             "auto_increment": "Auto Increment",
-            "action": "Action",
+            "action": "Actions",
             "select": "Select",
             "add_column": "Add Column"
         },

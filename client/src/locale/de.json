@@ -112,7 +112,7 @@
             "default": "Standard",
             "index": "Index",
             "auto_increment": "Automatische Erhöhung",
-            "action": "Aktion",
+            "action": "Aktionen",
             "select": "Auswählen",
             "add_column": "Spalte hinzufügen"
         },
