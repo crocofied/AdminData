@@ -31,8 +31,14 @@
             "no_connections": "Keine Verbindungen gefunden. Füge eine neue Verbindung hinzu, um loszulegen!",
             "edit_database_connection": "Bearbeite Datenbank-Verbindung",
             "select_database_type": "Datenbanktyp auswählen",
+            "leave_empty_to_use_old_password": "Leer lassen, um das alte Passwort zu verwenden",
             "save": "Speichern",
             "add_database_connection": "Datenbankverbindung hinzufügen",
+            "name_placeholder": "z.B. TodoDB",
+            "host_placeholder": "z.B. 2.56.244.115",
+            "port_placeholder": "z.B. 3306",
+            "username_placeholder": "z.B. root",
+            "password_placeholder": "z.B. password",
             "name": "Name"
         },
         "settings": {
@@ -90,7 +96,8 @@
             "delete_database_description": "Bist Du sicher, dass Du {{databaseName}} löschen möchtest? Du kannst dies nicht rückgängig machen.",
             "delete": "Löschen",
             "create_database": "Datenbank erstellen",
-            "create": "Erstellen"
+            "create": "Erstellen",
+            "database_settings": "Database Settings"
         },
         "tables": {
             "tables": "Tabellen",
