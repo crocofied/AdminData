@@ -47,7 +47,7 @@ async def database_init(request: Request):
 @router.post("/update_check", tags=["setup"])
 async def update_check(request: Request):
     global last_check_time, last_check_result
-    current_version = "v0.0.4-ALPHA"
+    current_version = "v0.0.1-BETA"
     current_time = time.time()
 
     # Check if we're still in the rate limit cooldown period
