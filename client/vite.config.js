@@ -13,4 +13,7 @@ export default defineConfig({
     host: true,
     port: 3000,
   },
+  define: {
+    'import.meta.env.VITE_API_URL': JSON.stringify('__VITE_API_URL__'),
+  },
 })

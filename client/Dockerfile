@@ -18,6 +18,11 @@ FROM nginx:stable-alpine
 COPY --from=build /app/dist /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
+# Kopieren und Ausführbar machen des env.sh Skripts
+COPY env.sh /env.sh
+RUN chmod +x /env.sh
+
 EXPOSE 80
 
-CMD ["nginx", "-g", "daemon off;"]
+# Verwenden des env.sh Skripts als Einstiegspunkt
+CMD ["/env.sh"]

@@ -11,14 +11,6 @@ const Home = () => {
     const [inputDisabled, setInputDisabled] = useState(false);
     const navigate = useNavigate();
 
-    useEffect(() => {
-        makePostRequest("/check_session")
-        .then(response => {
-            if(response.data.message === "Session is valid"){
-                navigate("/dashboard");
-            }
-        })
-    }, []);
     // Initialize the database on first load
     useEffect(() => {
         makePostRequest("/database_init", {}, {
@@ -32,6 +24,15 @@ const Home = () => {
         .catch(error => {
             navigate("/");
         });
+    }, []);
+
+    useEffect(() => {
+        makePostRequest("/check_session")
+        .then(response => {
+            if(response.data.message === "Session is valid"){
+                navigate("/dashboard");
+            }
+        })
     }, []);
 
     const showError = () => {

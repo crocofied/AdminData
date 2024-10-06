@@ -2,25 +2,39 @@
 > [!CAUTION]
 > AdminData is currently in an early stage of development and is subject to change at any time. It is not recommended for use in a production environment at this time.
 
-### 📦 · Clone Github Repo
+### 📦 · Docker Compose
+Create the docker compose file
 ```sh
-git clone https://github.com/crocofied/AdminData && cd AdminData
+nano docker-compose.yml
 ```
+Insert the following code
+```yaml
+services:
+  client:
+    image: damiandbergemann278/admindata-client:latest
+    ports:
+      - "3000:80"
+    environment:
+      - VITE_API_URL=http://<YOUR_IP>:5000
+    depends_on:
+      - server
 
-### ⚙️ · Enviroment Setup
-```sh
-cp .env.example .env && nano .env
+  server:
+    image: damiandbergemann278/admindata-server:latest
+    ports:
+      - "5000:5000"
+    volumes:
+      - db_data:/app/db
+    environment:
+      - CLIENT_URL=http://<YOUR_IP>:3000
+
+volumes:
+  db_data:
 ```
-Replace <YOUR_SERVER_IP> with your server host ip
-```
-VITE_API_URL=http://<YOUR_SERVER_IP>:5000
-CLIENT_URL=http://<YOUR_SERVER_IP>:3000
-```
-Save your changes and close the editor.
 
 ### 🐳 · Start Application through docker
 ```sh
-docker compose up -d
+docker compose up --build -d
 ```
 
 > Your application should now run on http://<YOUR_SERVER_IP>:3000. Default login is User: admin Password: admin

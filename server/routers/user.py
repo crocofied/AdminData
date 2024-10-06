@@ -60,7 +60,7 @@ async def check_session(request: Request):
 
     # Check if the session exists
     if not session:
-        raise HTTPException(status_code=401, detail="Unauthorized")
+        return {"message": "Session is invalid"}
 
     return {"message": "Session is valid"}
 
