@@ -15,6 +15,7 @@
             "error_deleting_connection": "Fehler beim Hinzufügen der Verbindung.",
             "database_connections": "Datenbankverbindungen",
             "your_connections": "Deine Verbindungen",
+            "add_connection": "Verbindung hinzufügen",
             "type": "Typ",
             "host": "Host",
             "port": "Port",

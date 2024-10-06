@@ -8,4 +8,5 @@ i18n.use(initReactI18next).init({
     de: { ...deJSON },
   },
   lng: "en",
+  fallbackLng: "en",
 });
