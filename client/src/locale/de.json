@@ -6,6 +6,29 @@
             "password_placeholder": "Passwort",
             "login_button": "Einloggen",
             "footer": "AdminData - Eine sicherer und moderner selbst gehosteter Datenbank-Client"
+        },
+        "dashboard": {
+            "fill_all_fields": "Bitte füllen Sie alle Felder aus.",
+            "connection_failed": "Verbindung fehlgeschlagen. Bitte überprüfen Sie Ihre Verbindungsdaten.",
+            "error_adding_connection": "Fehler beim Hinzufügen der Verbindung.",
+            "error_editing_connection": "Fehler beim Bearbeiten der Verbindung.",
+            "error_deleting_connection": "Fehler beim Hinzufügen der Verbindung.",
+            "database_connections": "Datenbankverbindungen",
+            "your_connections": "Deine Verbindungen",
+            "type": "Typ",
+            "host": "Host",
+            "port": "Port",
+            "username": "Nutzername",
+            "password": "Passwort",
+            "edit": "Bearbeiten",
+            "delete": "Löschen",
+            "connect": "Verbinden",
+            "no_connections": "Keine Verbindungen gefunden. Füge eine neue Verbindung hinzu, um loszulegen!",
+            "edit_database_connection": "Bearbeite Datenbank-Verbindung",
+            "select_database_type": "Datenbanktyp auswählen",
+            "save": "Speichern",
+            "add_database_connection": "Datenbankverbindung hinzufügen",
+            "name": "Name"
         }
     }
 }
