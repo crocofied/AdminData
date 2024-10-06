@@ -1,0 +1,11 @@
+{
+    "translation": {
+        "home": {
+            "login_wrong": "Wrong username or password. Try again.",
+            "username_placeholder": "Username",
+            "password_placeholder": "Password",
+            "login_button": "Login",
+            "footer": "AdminData - A secure and modern self hosted Database Client"
+        }
+    }
+}
