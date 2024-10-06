@@ -4,8 +4,13 @@ import { useNavigate, useLocation, Link } from "react-router-dom";
 import Navbar from '../components/Navbar';
 import { FaTrash  } from 'react-icons/fa';
 import { makePostRequest } from '../utils/api';
+import { useTranslation } from 'react-i18next';
 
 const TableCreate = () => {
+    const { t, i18n: {changeLanguage, language}} = useTranslation();
+    useEffect(() => {
+        changeLanguage(Cookies.get("language"));
+    }, []);
     // Navigation and location details
     const navigate = useNavigate();
     const location = useLocation();
@@ -88,7 +93,7 @@ const TableCreate = () => {
                 <div className='pt-10 pr-10 w-full'>
                     <div className="breadcrumbs text-sm">
                         <ul>
-                            <li><Link to="/dashboard">Home</Link></li>
+                            <li><Link to="/dashboard">{t("databases.home")}</Link></li>
                             <li><Link to="/databases" state={{
                                 connection_id: connectionID,
                                 connection_name: connectionName
@@ -98,10 +103,10 @@ const TableCreate = () => {
                                 connection_name: connectionName,
                                 database_name: databaseName
                             }}>{databaseName}</Link></li>
-                            <li>Create Table</li>
+                            <li>{t("table_create.create_table")}</li>
                         </ul>
                     </div>
-                    <h1 className="text-5xl font-bold">Create Table</h1>
+                    <h1 className="text-5xl font-bold text-primary">{t("table_create.create_table")}</h1>
                     <div className="divider"></div>
                     <div className="w-full">
                         {errorVisible && 
@@ -122,17 +127,17 @@ const TableCreate = () => {
                                 </div>
                             </div>
                         }
-                        <input type="text" className="input input-bordered w-full" placeholder="Table Name" onChange={(e) => setTableName(e.target.value)} required />
+                        <input type="text" className="input input-bordered w-full" placeholder={t("table_create.table_name_placeholder")} onChange={(e) => setTableName(e.target.value)} required />
                         <table className="table w-full">
                             <thead>
                                 <tr>
-                                    <th className="text-xl w-3/12">Name</th>
-                                    <th className="text-xl w-2/12">Type</th>
-                                    <th className="text-xl w-2/12">Length</th>
-                                    <th className="text-xl w-2/12">Default</th>
-                                    <th className="text-xl w-1/12">Index</th>
-                                    <th className="text-xl w-1/12">Auto Increment</th>
-                                    <th className="text-xl w-1/12">Action</th>
+                                    <th className="text-xl w-3/12">{t("table_create.name")}</th>
+                                    <th className="text-xl w-2/12">{t("table_create.type")}</th>
+                                    <th className="text-xl w-2/12">{t("table_create.length")}</th>
+                                    <th className="text-xl w-2/12">{t("table_create.default")}</th>
+                                    <th className="text-xl w-1/12">{t("table_create.index")}</th>
+                                    <th className="text-xl w-1/12">{t("table_create.auto_increment")}</th>
+                                    <th className="text-xl w-1/12">{t("table_create.action")}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -141,7 +146,7 @@ const TableCreate = () => {
                                         <td><input type="text" className="input input-bordered w-full" placeholder="e.g. id" value={column.name} onChange={(e) => handleColumnChange(index, 'name', e.target.value)} /></td>
                                         <td>
                                             <select className="select select-bordered w-full" value={column.type} onChange={(e) => handleColumnChange(index, 'type', e.target.value)}>
-                                                <option disabled selected value="">Select</option>
+                                                <option disabled selected value="">{t("table_create.select")}</option>
                                                 <option>TINYINT</option>
                                                 <option>SMALLINT</option>
                                                 <option>MEDIUMINT</option>
@@ -195,8 +200,8 @@ const TableCreate = () => {
                             </tbody>
                         </table>
                         <div className='pt-10'>
-                            <button className="btn btn-neutral w-full" onClick={addColumn}>Add Column</button>
-                            <button className="btn btn-primary w-full mt-5" onClick={createTable}>Create Table</button>
+                            <button className="btn btn-neutral w-full" onClick={addColumn}>{t("table_create.add_column")}</button>
+                            <button className="btn btn-primary w-full mt-5" onClick={createTable}>{t("table_create.create")}</button>
                         </div>
                     </div>
                 </div>

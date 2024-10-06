@@ -7,8 +7,14 @@ import { makePostRequest } from '../utils/api';
 import CodeMirror from "@uiw/react-codemirror";
 import { vscodeDark } from "@uiw/codemirror-theme-vscode";
 import { sql } from "@codemirror/lang-sql";
+import { useTranslation } from 'react-i18next';
 
 const Databases = () => {
+    const { t, i18n: {changeLanguage, language}} = useTranslation();
+    useEffect(() => {
+        changeLanguage(Cookies.get("language"));
+    }, []);
+    
     // Navigation and location details
     const navigate = useNavigate();
     const location = useLocation();
@@ -90,7 +96,7 @@ const Databases = () => {
             setLoading(false); // Set loading to false after data is successfully fetched
         })
         .catch(error => {
-            showError("Error fetching databases");
+            showError(t("databases.error_fetching_databases"));
         });
     };
 
@@ -102,7 +108,7 @@ const Databases = () => {
             setAllDatabases(response.data.items);
         })
         .catch(error => {
-            showError("Error fetching databases");
+            showError(t("databases.error_fetching_databases"));
         });
     };
     // Load databases
@@ -127,7 +133,7 @@ const Databases = () => {
             }
         })
         .catch(error => {
-            showError("Unknown error editing database.");
+            showError(t("databases.error_unknown_database_edit"));
         });
     };
 
@@ -144,7 +150,7 @@ const Databases = () => {
             }
         })
         .catch(error => {
-            showError("Unknown error deleting database.");
+            showError(t("databases.error_unknown_database_delete"));
         });
     };
 
@@ -164,7 +170,7 @@ const Databases = () => {
             }
         })
         .catch(error => {
-            showError("Unknown error creating database.");
+            showError(t("databases.error_unknown_database_create"));
         });
     };
 
@@ -173,7 +179,7 @@ const Databases = () => {
         setQueryResultVisible(false);
         setQueryErrorVisible(false);
         if (editorValue === "") {
-            setQueryError("Query is empty");
+            setQueryError(t("databases.error_query_empty"));
             setQueryErrorVisible(true);
             setTimeout(() => {
                 setQueryError("");
@@ -189,7 +195,7 @@ const Databases = () => {
         .then(response => {
             if (response.data.results) {
                 if (response.data.results.length === 1 && response.data.results[0].length === 0) {
-                    setQueryResult("Success, Result is empty.");
+                    setQueryResult(t("databases.success_query_empty"));
                 } else {
                     setQueryResult(response.data.results);
                 }
@@ -212,7 +218,7 @@ const Databases = () => {
             }
         })
         .catch(error => {
-            setQueryError(error.response?.data?.error || "An unknown error occurred");
+            setQueryError(error.response?.data?.error || t("databases.error_unknown"));
             setQueryErrorVisible(true);
             setQueryResult([]);
             setQueryResultVisible(false);
@@ -228,26 +234,26 @@ const Databases = () => {
             <div className="flex space-x-12">
                 <Navbar />
                 <div className='pt-10 pr-10 w-full'>
-                    <div className='breadcrumbs'>
+                    <div className='breadcrumbs text-sm'>
                         <ul>
-                            <li><Link to="/dashboard">Home</Link></li>
+                            <li><Link to="/dashboard">{t("databases.home")}</Link></li>
                             <li>{connectionName}</li>
                         </ul>
                     </div>
-                    <h1 className="text-5xl font-bold">{connectionName} Databases</h1>
+                    <h1 className="text-5xl font-bold text-primary">{connectionName} {t("databases.databases")}</h1>
                     <div className="divider"></div>
                     <div className="flex space-x-4 mb-4">
                         <button 
                             className={`btn flex-1 ${activeAccordion === 'database' ? 'btn-active' : ''}`}
                             onClick={() => setActiveAccordion('database')}
                         >
-                            Database View
+                            {t("databases.database_view")}
                         </button>
                         <button 
                             className={`btn flex-1 ${activeAccordion === 'sql' ? 'btn-active' : ''}`}
                             onClick={() => setActiveAccordion('sql')}
                         >
-                            SQL Editor
+                            {t("databases.sql_editor")}
                         </button>
                     </div>
                     <div className="bg-base-200 p-4 rounded-lg">
@@ -263,8 +269,8 @@ const Databases = () => {
                                             <thead>
                                                 <tr>
                                                     <th className="text-xl w-1/12">ID</th>
-                                                    <th className="text-xl">Database Name</th>
-                                                    <th className="text-xl w-1/12">Actions</th>
+                                                    <th className="text-xl">{t("databases.database_name")}</th>
+                                                    <th className="text-xl w-1/12">{t("databases.actions")}</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -293,14 +299,14 @@ const Databases = () => {
                                                 ))}
                                             </tbody>
                                         </table>
-                                        <button className="btn btn-neutral w-full mt-4" onClick={() => document.getElementById('my_modal_5').showModal()}>Create new Database</button>
+                                        <button className="btn btn-neutral w-full mt-4" onClick={() => document.getElementById('my_modal_5').showModal()}>{t("databases.create_new_database")}</button>
                                         <div className="flex justify-center items-center join pt-5">
                                             {currentPage === 1 ? (
                                                 <button className="join-item btn" disabled>«</button>
                                             ) : (
                                                 <button className="join-item btn" onClick={() => setCurrentPage(currentPage - 1)}>«</button>
                                             )}
-                                            <button className="join-item btn">Page {currentPage}</button>
+                                            <button className="join-item btn">{t("databases.page")} {currentPage} {t("general.of")} {maxPage}</button>
                                             {currentPage < maxPage ? (
                                                 <button className="join-item btn" onClick={() => setCurrentPage(currentPage + 1)}>»</button>
                                             ) : (
@@ -318,7 +324,7 @@ const Databases = () => {
                                         className="select select-bordered w-full" 
                                         onChange={(e) => {setSelectedDatabaseName(e.target.value);}}
                                     >
-                                        <option value="none">None</option>
+                                        <option value="none">{t("databases.none")}</option>
                                         {allDatabases.map((database, index) => (
                                             <option key={index} value={database.name}>{database.name}</option>
                                         ))}
@@ -334,7 +340,7 @@ const Databases = () => {
                                         />
                                     </div>
                                     <button className="btn btn-success mt-4 w-full" onClick={runQuery}>
-                                        Run Query
+                                        {t("databases.run_query")}
                                     </button>
                                 </div>
                                 {queryResultVisible && (
@@ -344,7 +350,7 @@ const Databases = () => {
                                 )}
                                 {queryErrorVisible && (
                                     <div className="mt-4 p-4 bg-error text-error-content rounded-lg">
-                                        Error: {queryError}
+                                        {t("databases.error")}: {queryError}
                                     </div>
                                 )}
                             </>
@@ -355,7 +361,7 @@ const Databases = () => {
                             <form method="dialog">
                                 <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
                             </form>
-                            <h3 className="font-bold text-lg">Edit {selectedDatabaseName}</h3>
+                            <h3 className="font-bold text-lg">{t("databases.edit_database", { databaseName: selectedDatabaseName })}</h3>
                             <div className="py-4">
                                 <div className='space-y-2'>
                                     {errorVisible &&
@@ -377,10 +383,10 @@ const Databases = () => {
                                         </div>
                                     }
                                     <label className="input input-bordered flex items-center gap-2">
-                                        Database Name
+                                        {t("databases.database_name")}
                                         <input type="text" className="grow" value={selectedNewDatabaseName} onChange={(e) => setSelectedNewDatabaseName(e.target.value)} required />
                                     </label>
-                                    <button className="btn btn-neutral w-full" onClick={saveEditDatabase}>Save</button>
+                                    <button className="btn btn-neutral w-full" onClick={saveEditDatabase}>{t("databases.save")}</button>
                                 </div>
                             </div>
                         </div>
@@ -391,13 +397,13 @@ const Databases = () => {
                             <form method="dialog">
                                 <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
                             </form>
-                            <h3 className="font-bold text-lg">Delete {selectedDatabaseName}</h3>
+                            <h3 className="font-bold text-lg">{t("databases.delete_database", { databaseName: selectedDatabaseName })}</h3>
                             <div className="py-4">
                                 <div className='space-y-2'>
                                     <label className="input flex items-center gap-2">
-                                        Are you sure you want to delete {selectedDatabaseName}? This action cannot be undone.
+                                        {t("databases.delete_database_description", { databaseName: selectedDatabaseName })}
                                     </label>
-                                    <button className="btn btn-neutral w-full" onClick={deleteDatabase}>Delete</button>
+                                    <button className="btn btn-neutral w-full" onClick={deleteDatabase}>{t("databases.delete")}</button>
                                 </div>
                             </div>
                         </div>
@@ -408,7 +414,7 @@ const Databases = () => {
                             <form method="dialog">
                                 <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
                             </form>
-                            <h3 className="font-bold text-lg">Create Database</h3>
+                            <h3 className="font-bold text-lg">{t("databases.create_database")}</h3>
                             <div className="py-4">
                                 <div className='space-y-2'>
                                     {errorVisible &&
@@ -430,10 +436,10 @@ const Databases = () => {
                                         </div>
                                     }
                                     <label className="input input-bordered flex items-center gap-2">
-                                        Database Name
+                                        {t("databases.database_name")}
                                         <input type="text" className="grow" onChange={(e) => setCreateDatabaseName(e.target.value)} required />
                                     </label>
-                                    <button className="btn btn-neutral w-full" onClick={createDatabase}>Create</button>
+                                    <button className="btn btn-neutral w-full" onClick={createDatabase}>{t("databases.create")}</button>
                                 </div>
                             </div>
                         </div>

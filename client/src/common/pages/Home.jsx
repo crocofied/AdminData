@@ -3,8 +3,14 @@ import { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import { useNavigate } from "react-router-dom";
 import { makePostRequest } from '../utils/api';
+import { useTranslation } from 'react-i18next';
 
 const Home = () => {
+    const { t, i18n: {changeLanguage, language}} = useTranslation();
+    useEffect(() => {
+        changeLanguage(Cookies.get("language"));
+    }, []);
+
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState(false);
@@ -85,7 +91,7 @@ const Home = () => {
                                 strokeWidth="2"
                                 d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
-                            <span>Wrong username or password. Try again.</span>
+                            <span>{t("home.login_wrong")}</span>
                         </div>
                     }
                     <label className="input input-bordered flex items-center gap-2">
@@ -97,7 +103,7 @@ const Home = () => {
                             <path
                             d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.215 0c-.22.578.254 1.139.872 1.139h9.47Z" />
                         </svg>
-                        <input type="text" className="grow" placeholder="Username" disabled={inputDisabled} onChange={(e) => setUsername(e.target.value)}/>
+                        <input type="text" className="grow" placeholder={t("home.username_placeholder")} disabled={inputDisabled} onChange={(e) => setUsername(e.target.value)}/>
                     </label>
                     <label className="input input-bordered flex items-center gap-2">
                         <svg
@@ -110,12 +116,12 @@ const Home = () => {
                             d="M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z"
                             clipRule="evenodd" />
                         </svg>
-                        <input type="password" className="grow" placeholder='Password' disabled={inputDisabled} onChange={(e) => setPassword(e.target.value)}/>
+                        <input type="password" className="grow" placeholder={t("home.password_placeholder")} disabled={inputDisabled} onChange={(e) => setPassword(e.target.value)}/>
                     </label>
                     <div className="card-actions justify-end">
-                    <button onClick={login} disabled={inputDisabled} className="btn btn-primary w-full">Login</button>
+                    <button onClick={login} disabled={inputDisabled} className="btn btn-primary w-full">{t("home.login_button")}</button>
                     </div>
-                    <a href="https://admindata.xyz" className="text-center text-gray-600 text-xs underline">AdminData - A secure and modern self hosted Database Client</a>
+                    <a href="https://admindata.xyz" className="text-center text-gray-600 text-xs underline">{t("home.footer")}</a>
                 </div>
                 </div>
             </div>

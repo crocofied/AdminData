@@ -4,8 +4,14 @@ import { useNavigate } from "react-router-dom";
 import Navbar from '../components/Navbar';
 import { FaDatabase, FaServer, FaNetworkWired, FaUser, FaEdit, FaPlug } from 'react-icons/fa';
 import { makePostRequest } from '../utils/api';
+import { useTranslation } from 'react-i18next';
 
 const Home = () => {
+    const { t, i18n: {changeLanguage, language}} = useTranslation();
+    useEffect(() => {
+        changeLanguage(Cookies.get("language"));
+    }, []);
+
     const navigate = useNavigate();
     const [error, setError] = useState("");
     const [errorVisible, setErrorVisible] = useState(false);
@@ -44,7 +50,7 @@ const Home = () => {
         setIsLoading(true);
         document.getElementById('save_button').disabled = true;
         if (name === "" || type === "" || host === "" || port === 0 || username === "" || password === "") {
-            showError("Please fill out all fields.");
+            showError(t("dashboard.fill_all_fields"));
             return;
         }
         makePostRequest("/add_connection", {
@@ -69,16 +75,16 @@ const Home = () => {
                 updateConnections();
             } else {
                 if (response.data.message === "Connection failed") {
-                    showError("Connection failed. Please check your connection details.");
+                    showError(t("dashboard.connection_failed"));
                 } else {
-                    showError("Error adding connection.");
+                    showError(t("dashboard.error_adding_connection"));
                 }
             }
             document.getElementById('save_button').disabled = false;
             setIsLoading(false);
         })
         .catch(error => {
-            showError("Error adding connection.");
+            showError(t("dashboard.error_adding_connection"));
             document.getElementById('save_button').disabled = false;
             setIsLoading(false);
         });
@@ -90,7 +96,7 @@ const Home = () => {
         document.getElementById('save_button').disabled = true;
         document.getElementById('delete_button').disabled = true;
         if (name === "" || type === "" || host === "" || port === 0 || username === "") {
-            showError("Please fill out all fields.");
+            showError(t("dashboard.fill_all_fields"));
             return;
         }
         makePostRequest("/edit_connection", {
@@ -117,10 +123,10 @@ const Home = () => {
                 setIsLoading(false);
             } else {
                 if (response.data.message === "Connection failed") {
-                    showError("Connection failed. Please check your connection details.");
+                    showError(t("dashboard.connection_failed"));
                     setIsLoading(false);
                 } else {
-                    showError("Error editing connection.");
+                    showError(t("dashboard.error_editing_connection"));
                     setIsLoading(false);
                 }
             }
@@ -128,7 +134,7 @@ const Home = () => {
             document.getElementById('delete_button').disabled = false;
         })
         .catch(error => {
-            showError("Error editing connection.");
+            showError(t("dashboard.error_editing_connection"));
             document.getElementById('save_button').disabled = false;
             document.getElementById('delete_button').disabled = false;
         });
@@ -167,11 +173,11 @@ const Home = () => {
                 document.getElementById('my_modal_4').close();
                 updateConnections();
             } else {
-                showError("Error deleting connection.");
+                showError(t("dashboard.error_deleting_connection"));
             }
         })
         .catch(error => {
-            showError("Error deleting connection.");
+            showError(t("dashboard.error_deleting_connection"));
         });
         setIsLoading(false);
     };
@@ -182,15 +188,15 @@ const Home = () => {
             <div className="flex min-h-screen bg-base-200">
                 <Navbar />
                 <div className='flex-1 p-8'>
-                    <h1 className="text-4xl font-bold mb-6">Database Connections</h1>
+                    <h1 className="text-4xl font-bold mb-6">{t("dashboard.database_connections")}</h1>
                     <div className="bg-base-100 rounded-box p-6 shadow-lg">
                         <div className='flex justify-between items-center mb-6'>
-                            <h2 className="text-2xl font-semibold">Your Connections</h2>
+                            <h2 className="text-2xl font-semibold">{t("dashboard.your_connections")}</h2>
                             <button className="btn btn-primary" onClick={() => document.getElementById('my_modal_3').showModal()}>
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-5 h-5 mr-2">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                                 </svg>
-                                Add Connection
+                                {t("dashboard.add_connection")}
                             </button>
                         </div>
                         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
@@ -209,25 +215,25 @@ const Home = () => {
                                                 <div className='space-y-2 mt-4'>
                                                     <p className="flex justify-between items-center">
                                                         <span className="font-medium flex items-center">
-                                                            <FaServer className="mr-2" /> Type:
+                                                            <FaServer className="mr-2" /> {t("dashboard.type")}:
                                                         </span> 
                                                         <span className="badge badge-outline">{connection[3] === 1 ? "MariaDB" : "MySQL"}</span>
                                                     </p>
                                                     <p className="flex justify-between items-center">
                                                         <span className="font-medium flex items-center">
-                                                            <FaNetworkWired className="mr-2" /> Host:
+                                                            <FaNetworkWired className="mr-2" /> {t("dashboard.host")}:
                                                         </span> 
                                                         <span className="text-sm">{connection[4]}</span>
                                                     </p>
                                                     <p className="flex justify-between items-center">
                                                         <span className="font-medium flex items-center">
-                                                            <FaNetworkWired className="mr-2" /> Port:
+                                                            <FaNetworkWired className="mr-2" /> {t("dashboard.port")}:
                                                         </span> 
                                                         <span className="text-sm">{connection[5]}</span>
                                                     </p>
                                                     <p className="flex justify-between items-center">
                                                         <span className="font-medium flex items-center">
-                                                            <FaUser className="mr-2" /> Username:
+                                                            <FaUser className="mr-2" /> {t("dashboard.username")}:
                                                         </span> 
                                                         <span className="text-sm">{connection[6]}</span>
                                                     </p>
@@ -243,13 +249,13 @@ const Home = () => {
                                                         setPassword("");
                                                         document.getElementById('my_modal_4').showModal();
                                                     }}>
-                                                        <FaEdit className="mr-2" /> Edit
+                                                        <FaEdit className="mr-2" /> {t("dashboard.edit")}
                                                     </button>
                                                     <button className="btn btn-sm btn-primary" onClick={() => {
                                                         setCurrentConnectionId(connection[0]);
                                                         navigate("/databases", { state: { connection_id: connection[0], connection_name: connection[2] }});
                                                     }}>
-                                                        <FaPlug className="mr-2" /> Connect
+                                                        <FaPlug className="mr-2" /> {t("dashboard.connect")}
                                                     </button>
                                                 </div>
                                             </div>
@@ -262,7 +268,7 @@ const Home = () => {
                                                 src="/no_server.png"
                                                 alt="AdminData No server"
                                                 className="w-96 mb-4" />
-                                            <span className="text-center text-xl font-bold">No connections found. Add a new connection to get started!</span>
+                                            <span className="text-center text-xl font-bold">{t("dashboard.no_connections")}</span>
                                         </div>
                                     </div>
                                 )
@@ -276,7 +282,7 @@ const Home = () => {
                         <form method="dialog">
                             <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
                         </form>
-                        <h3 className="font-bold text-lg">Edit Database Connection</h3>
+                        <h3 className="font-bold text-lg">{t("dashboard.edit_database_connection")}</h3>
                         <div className="divider"></div>
                         {errorVisible &&
                             <div className='pb-5'>
@@ -302,32 +308,32 @@ const Home = () => {
                                 <input type="text" className="grow" value={name} onChange={(e) => setName(e.target.value)} required />
                             </label>
                             <select className="select select-bordered w-full" onChange={(e) => setType(e.target.value)} value={type}>
-                                <option disabled>Select Database Type</option>
+                                <option disabled>{t("dashboard.select_database_type")}</option>
                                 <option value="1">MariaDB</option>
                                 <option value="2">MySQL</option>
                                 <option disabled>PostgreSQL - [SOON]</option>
                                 <option disabled>SQLite - [SOON]</option>
                             </select>
                             <label className="input input-bordered flex items-center gap-2 text-gray-500">
-                                Host
+                                {t("dashboard.host")}
                                 <input type="text" className="grow" value={host} onChange={(e) => setHost(e.target.value)} required/>
                             </label>
                             <label className="input input-bordered flex items-center gap-2 text-gray-500">
-                                Port
+                                {t("dashboard.port")}
                                 <input type="number" className="grow" value={port} onChange={(e) => setPort(e.target.value)} required/>
                             </label>
                             <label className="input input-bordered flex items-center gap-2 text-gray-500">
-                                Username
+                                {t("dashboard.username")}
                                 <input type="text" className="grow" value={username} onChange={(e) => setUsername(e.target.value)} required/>
                             </label>
                             <label className="input input-bordered flex items-center gap-2 text-gray-500">
-                                Password
+                                {t("dashboard.password")}
                                 <input type="password" className="grow" placeholder="Leave empty to use old password" onChange={(e) => setPassword(e.target.value)} required/>
                             </label>
                         </div>
                         <div className='pt-4 flex flex-col gap-2'>
-                            <button id="save_button" className="btn w-full" onClick={editConnection}>Save</button>
-                            <button id="delete_button" className="btn btn-error w-full" onClick={deleteConnection}>Delete</button>
+                            <button id="save_button" className="btn w-full" onClick={editConnection}>{t("dashboard.save")}</button>
+                            <button id="delete_button" className="btn btn-error w-full" onClick={deleteConnection}>{t("dashboard.delete")}</button>
                         </div>
                     </div>
                 </dialog>
@@ -336,7 +342,7 @@ const Home = () => {
                         <form method="dialog">
                             <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
                         </form>
-                        <h3 className="font-bold text-lg">Add Database Connection</h3>
+                        <h3 className="font-bold text-lg">{t("dashboard.add_database_connection")}</h3>
                         <div className="divider"></div>
                         {errorVisible &&
                             <div className='pb-5'>
@@ -358,35 +364,35 @@ const Home = () => {
                         }
                         <div className='flex flex-col gap-4'>
                             <label className="input input-bordered flex items-center gap-2 text-gray-500">
-                                Name
+                                {t("dashboard.name")}
                                 <input type="text" className="grow" placeholder="e.g. TodoDB" onChange={(e) => setName(e.target.value)} required/>
                             </label>
                             <select className="select select-bordered w-full" onChange={(e) => setType(e.target.value)} required>
-                                <option disabled selected>Select Database Type</option>
+                                <option disabled selected>{t("dashboard.select_database_type")}</option>
                                 <option value="1">MariaDB</option>
                                 <option value="2">MySQL</option>
                                 <option disabled>PostgreSQL - [SOON]</option>
                                 <option disabled>SQLite - [SOON]</option>
                             </select>
                             <label className="input input-bordered flex items-center gap-2 text-gray-500">
-                                Host
+                                {t("dashboard.host")}
                                 <input type="text" className="grow" placeholder="e.g. 2.56.244.115" onChange={(e) => setHost(e.target.value)} required/>
                             </label>
                             <label className="input input-bordered flex items-center gap-2 text-gray-500">
-                                Port
+                                {t("dashboard.port")}
                                 <input type="number" className="grow" placeholder="e.g. 3306" onChange={(e) => setPort(e.target.value)} required/>
                             </label>
                             <label className="input input-bordered flex items-center gap-2 text-gray-500">
-                                Username
+                                {t("dashboard.username")}
                                 <input type="text" className="grow" placeholder="e.g. root" onChange={(e) => setUsername(e.target.value)} required/>
                             </label>
                             <label className="input input-bordered flex items-center gap-2 text-gray-500">
-                                Password
+                                {t("dashboard.password")}
                                 <input type="password" className="grow" placeholder="e.g. password" onChange={(e) => setPassword(e.target.value)} required/>
                             </label>
                         </div>
                         <div className='pt-4'>
-                            <button id="save_button" className="btn w-full" onClick={addConnection}>Save</button>
+                            <button id="save_button" className="btn w-full" onClick={addConnection}>{t("dashboard.save")}</button>
                         </div>
                     </div>
                 </dialog>

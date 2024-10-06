@@ -4,8 +4,13 @@ import { useNavigate, useLocation, Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import { FaEdit, FaTrash  } from 'react-icons/fa';
 import { makePostRequest } from '../utils/api';
+import { useTranslation } from 'react-i18next';
 
 const TableView = () => {
+    const { t, i18n: {changeLanguage, language}} = useTranslation();
+    useEffect(() => {
+        changeLanguage(Cookies.get("language"));
+    }, []);
     const navigate = useNavigate();
     const location = useLocation();
     const [connectionID, setConnectionID] = useState();
@@ -155,7 +160,7 @@ const TableView = () => {
                 <div className="pt-10 pr-10 w-full">
                     <div className="breadcrumbs text-sm">
                         <ul>
-                            <li><Link to="/dashboard">Home</Link></li>
+                            <li><Link to="/dashboard">{t("table_view.home")}</Link></li>
                             <li>
                                 <Link to="/databases" state={{ connection_id: connectionID, connection_name: connectionName }}>
                                     {connectionName}
@@ -166,10 +171,10 @@ const TableView = () => {
                                     {databaseName}
                                 </Link>
                             </li>
-                            <li>View Table</li>
+                            <li>{t("table_view.view_table")}</li>
                         </ul>
                     </div>
-                    <h1 className="text-5xl font-bold">View Table</h1>
+                    <h1 className="text-5xl font-bold text-primary">{t("table_view.view_table")}</h1>
                     <div className="divider"></div>
                     {loading ? (
                         <div className="flex justify-center items-center">
@@ -199,36 +204,40 @@ const TableView = () => {
                                     </div>
                                 </div>
                             )}
-                            <table className="table w-full">
-                                <thead>
-                                    <tr>
-                                        {Object.keys(data[0]?.values || {}).map((key) => (
-                                            <th className='text-xl' key={key}>{key}</th>
-                                        ))}
-                                        <th className='text-xl w-1/12'>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {data.length > 0 && data.some(row => Object.values(row.values || {}).some(value => value !== null)) ? (
-                                        data.map((row) => (
-                                            <tr key={row.id}>
-                                                {Object.values(row.values || {}).map((value, index) => (
-                                                    <td key={index}>{value !== null ? value : ''}</td>
+                            <div className="overflow-x-auto" style={{ maxWidth: 'calc(100vw - 10vw)' }}>
+                                <div className="w-full">
+                                    <table className="table w-full">
+                                        <thead>
+                                            <tr>
+                                                {Object.keys(data[0]?.values || {}).map((key) => (
+                                                    <th className='text-xl' key={key}>{key}</th>
                                                 ))}
-                                                <td>
-                                                    <button onClick={() => openEditModal(row)} className="btn btn-neutral mr-2"><FaEdit/></button>
-                                                    <button onClick={() => handleDelete(row)} className="btn btn-neutral"><FaTrash/></button>
-                                                </td>
+                                                <th className='text-xl w-1/12'>{t("table_view.actions")}</th>
                                             </tr>
-                                        ))
-                                    ) : (
-                                        <tr>
-                                            <td colSpan={Object.keys(data[0]?.values || {}).length + 1} className="text-center">No data available</td>
-                                        </tr>
-                                    )}
-                                </tbody>
-                            </table>
-                            <button className="btn btn-neutral mt-5 w-full" onClick={() => document.getElementById('my_modal_4').showModal()}>Add Row</button>
+                                        </thead>
+                                        <tbody>
+                                            {data.length > 0 && data.some(row => Object.values(row.values || {}).some(value => value !== null)) ? (
+                                                data.map((row) => (
+                                                    <tr key={row.id}>
+                                                        {Object.values(row.values || {}).map((value, index) => (
+                                                            <td key={index}>{value !== null ? value : ''}</td>
+                                                        ))}
+                                                        <td>
+                                                            <button onClick={() => openEditModal(row)} className="btn btn-neutral mr-2"><FaEdit/></button>
+                                                            <button onClick={() => handleDelete(row)} className="btn btn-neutral"><FaTrash/></button>
+                                                        </td>
+                                                    </tr>
+                                                ))
+                                            ) : (
+                                                <tr>
+                                                    <td colSpan={Object.keys(data[0]?.values || {}).length + 1} className="text-center">{t("table_view.no_data")}</td>
+                                                </tr>
+                                            )}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <button className="btn btn-neutral mt-5 w-full" onClick={() => document.getElementById('my_modal_4').showModal()}>{t("table_view.add_row")}</button>
                             <div className="flex justify-center items-center join pt-5">
                                 {currentPage === 1 ? (
                                     <button className="join-item btn" disabled>
@@ -239,7 +248,7 @@ const TableView = () => {
                                         «
                                     </button>
                                 )}
-                                <button className="join-item btn">Page {currentPage}</button>
+                                <button className="join-item btn">{t("tables.page")} {currentPage} {t("general.of")} {maxPage}</button>
                                 {currentPage < maxPage ? (
                                     <button className="join-item btn" onClick={() => setCurrentPage(currentPage + 1)}>
                                         »
@@ -258,7 +267,7 @@ const TableView = () => {
                             <form method="dialog">
                                 <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
                             </form>
-                            <h3 className="font-bold text-lg">Edit Table Data</h3>
+                            <h3 className="font-bold text-lg">{t("table_view.edit_table_data")}</h3>
                             <div className="divider"></div>
                             {selectedRow && (
                                 <form method="dialog">
@@ -280,7 +289,7 @@ const TableView = () => {
                                             </div>
                                         ))}
                                         <div className="form-actions">
-                                            <button className="btn btn-primary w-full" type="button" onClick={handleEdit}>Save</button>
+                                            <button className="btn btn-primary w-full" type="button" onClick={handleEdit}>{t("table_view.save")}</button>
                                         </div>
                                     </div>
                                 </form>
@@ -293,7 +302,7 @@ const TableView = () => {
                             <form method="dialog">
                                 <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
                             </form>
-                            <h3 className="font-bold text-lg">Add Table Data</h3>
+                            <h3 className="font-bold text-lg">{t("table_view.add_table_data")}</h3>
                             <div className="divider"></div>
                             <form method="dialog">
                                 <div className='space-y-2'>
@@ -314,7 +323,7 @@ const TableView = () => {
                                         </div>
                                     ))}
                                     <div className="form-actions">
-                                        <button className="btn btn-primary w-full" type="button" onClick={handleAdd}>Add Row</button>
+                                        <button className="btn btn-primary w-full" type="button" onClick={handleAdd}>{t("table_view.add_row")}</button>
                                     </div>
                                 </div>
                             </form>

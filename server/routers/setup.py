@@ -22,12 +22,18 @@ async def database_init(request: Request):
 
     con, cursor = connect_database()
     # Create the users and sessions tables
-    cursor.execute("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, password TEXT, salt TEXT)")
+    cursor.execute("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, password TEXT, salt TEXT, language TEXT)")
     cursor.execute("CREATE TABLE IF NOT EXISTS sessions (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, token TEXT)")
     con.commit()
-    cursor.execute("SELECT * FROM users WHERE username='admin'")
+    # Check if users table exists
+    cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='users'")
     if not cursor.fetchone():
-        cursor.execute("INSERT INTO users (username, password, salt) VALUES (?, ?, ?)", ("admin", hashed, salt))
+        # Add language column to users table
+        cursor.execute("ALTER TABLE users ADD COLUMN language TEXT")
+        con.commit()
+    cursor.execute("SELECT * FROM users")
+    if not cursor.fetchone():
+        cursor.execute("INSERT INTO users (username, password, salt, language) VALUES (?, ?, ?, ?)", ("admin", hashed, salt, "en"))
         con.commit()
     # Create the databases table
     cursor.execute("CREATE TABLE IF NOT EXISTS databases (id INTEGER PRIMARY KEY AUTOINCREMENT, userid INTEGER, name TEXT, type INTEGER, host TEXT, port INTEGER, user TEXT, password TEXT)")

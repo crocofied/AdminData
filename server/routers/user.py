@@ -151,3 +151,40 @@ async def change_username(request: Request):
     con.close()
 
     return {"message": "Username changed successfully"}
+
+@router.post("/change_language")
+async def change_language(request: Request):
+    await validate_session(request)
+
+    # Fetch the new language
+    data = await request.json()
+    session_id = request.cookies.get("session_id")
+    new_language = data.get("new_language")
+
+    # Get the user from the database
+    con, cursor = connect_database()
+    cursor.execute("SELECT user_id FROM sessions WHERE token=?", (session_id,))
+    user_id = cursor.fetchone()[0]
+
+    cursor.execute("UPDATE users SET language=? WHERE id=?", (new_language, user_id))
+    con.commit()
+    cursor.close()
+    con.close()
+
+    return {"message": "Language changed successfully"}
+
+@router.post("/get_language")
+async def get_language(request: Request):
+    await validate_session(request)
+
+    # Fetch the language
+    session_id = request.cookies.get("session_id")
+    con, cursor = connect_database()
+    cursor.execute("SELECT user_id FROM sessions WHERE token=?", (session_id,))
+    user_id = cursor.fetchone()[0]
+    cursor.execute("SELECT language FROM users WHERE id=?", (user_id,))
+    language = cursor.fetchone()[0]
+    cursor.close()
+    con.close()
+
+    return {"language": language}
