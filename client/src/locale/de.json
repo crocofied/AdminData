@@ -33,7 +33,13 @@
             "select_database_type": "Datenbanktyp auswählen",
             "save": "Speichern",
             "add_database_connection": "Datenbankverbindung hinzufügen",
-            "name": "Name"
+            "name": "Name",
+            "name_placeholder": "z.B. TodoDB",
+            "host_placeholder": "z.B. 2.56.244.115",
+            "port_placeholder": "z.B. 3306",
+            "username_placeholder": "z.B. root",
+            "password_placeholder": "z.B. password",
+            "leave_empty_to_use_old_password": "Leer lassen, um das alte Passwort zu verwenden"
         },
         "settings": {
             "title": "Konto Einstellungen",

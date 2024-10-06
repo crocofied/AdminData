@@ -328,7 +328,7 @@ const Home = () => {
                             </label>
                             <label className="input input-bordered flex items-center gap-2 text-gray-500">
                                 {t("dashboard.password")}
-                                <input type="password" className="grow" placeholder="Leave empty to use old password" onChange={(e) => setPassword(e.target.value)} required/>
+                                <input type="password" className="grow" placeholder={t("dashboard.leave_empty_to_use_old_password")} onChange={(e) => setPassword(e.target.value)} required/>
                             </label>
                         </div>
                         <div className='pt-4 flex flex-col gap-2'>
@@ -365,7 +365,7 @@ const Home = () => {
                         <div className='flex flex-col gap-4'>
                             <label className="input input-bordered flex items-center gap-2 text-gray-500">
                                 {t("dashboard.name")}
-                                <input type="text" className="grow" placeholder="e.g. TodoDB" onChange={(e) => setName(e.target.value)} required/>
+                                <input type="text" className="grow" placeholder={t("dashboard.name_placeholder")} onChange={(e) => setName(e.target.value)} required/>
                             </label>
                             <select className="select select-bordered w-full" onChange={(e) => setType(e.target.value)} required>
                                 <option disabled selected>{t("dashboard.select_database_type")}</option>
@@ -376,19 +376,19 @@ const Home = () => {
                             </select>
                             <label className="input input-bordered flex items-center gap-2 text-gray-500">
                                 {t("dashboard.host")}
-                                <input type="text" className="grow" placeholder="e.g. 2.56.244.115" onChange={(e) => setHost(e.target.value)} required/>
+                                <input type="text" className="grow" placeholder={t("dashboard.host_placeholder")} onChange={(e) => setHost(e.target.value)} required/>
                             </label>
                             <label className="input input-bordered flex items-center gap-2 text-gray-500">
                                 {t("dashboard.port")}
-                                <input type="number" className="grow" placeholder="e.g. 3306" onChange={(e) => setPort(e.target.value)} required/>
+                                <input type="number" className="grow" placeholder={t("dashboard.port_placeholder")} onChange={(e) => setPort(e.target.value)} required/>
                             </label>
                             <label className="input input-bordered flex items-center gap-2 text-gray-500">
                                 {t("dashboard.username")}
-                                <input type="text" className="grow" placeholder="e.g. root" onChange={(e) => setUsername(e.target.value)} required/>
+                                <input type="text" className="grow" placeholder={t("dashboard.username_placeholder")} onChange={(e) => setUsername(e.target.value)} required/>
                             </label>
                             <label className="input input-bordered flex items-center gap-2 text-gray-500">
                                 {t("dashboard.password")}
-                                <input type="password" className="grow" placeholder="e.g. password" onChange={(e) => setPassword(e.target.value)} required/>
+                                <input type="password" className="grow" placeholder={t("dashboard.password_placeholder")} onChange={(e) => setPassword(e.target.value)} required/>
                             </label>
                         </div>
                         <div className='pt-4'>

@@ -31,8 +31,14 @@
             "no_connections": "No connections found. Add a new connection to get started!",
             "edit_database_connection": "Edit Database Connection",
             "select_database_type": "Select Database Type",
+            "leave_empty_to_use_old_password": "Leave empty to use old password",
             "save": "Save",
             "add_database_connection": "Add Database Connection",
+            "name_placeholder": "e.g. TodoDB",
+            "host_placeholder": "e.g. 2.56.244.115",
+            "port_placeholder": "e.g. 3306",
+            "username_placeholder": "e.g. root",
+            "password_placeholder": "e.g. password",
             "name": "Name"
         },
         "settings": {
