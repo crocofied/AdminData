@@ -414,9 +414,13 @@ async def check_if_root_database_user(request: Request):
     else:
         return {"message": "Database user is not root"}
     
+class DatabaseUserOut(BaseModel):
+    username: str
+    host: str
+    plugin: str
 
 @router.post("/get_database_users", tags=["database"])
-async def get_database_users(request: Request):
+async def get_database_users(request: Request) -> Page[DatabaseUserOut]:
     await validate_session(request)
 
     data = await request.json()
@@ -449,9 +453,13 @@ async def get_database_users(request: Request):
     con.close()
 
     # Filter out users managed by the mysql server
-    users = [user for user in users if user[2] != "mysql_native_password"]
-
-    return {"users": users}
+    users = [user for user in users if user[2]]
+    
+    if users is None:
+        return []
+    
+    users = sorted(users, key=lambda x: x[0])
+    return paginate([DatabaseUserOut(username=user[0], host=user[1], plugin=user[2]) for user in users])
 
 @router.post("/create_database_user", tags=["database"])
 async def create_database_user(request: Request):

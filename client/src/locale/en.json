@@ -96,7 +96,8 @@
             "delete_database_description": "Are you sure you want to delete {{databaseName}}? This action cannot be undone.",
             "delete": "Delete",
             "create_database": "Create Database",
-            "create": "Create"
+            "create": "Create",
+            "database_settings": "Database Settings"
         },
         "tables": {
             "tables": "Tables",

@@ -49,6 +49,12 @@ const Databases = () => {
     // New state for active accordion
     const [activeAccordion, setActiveAccordion] = useState('database');
 
+    // New state for database users
+    const [databaseUsers, setDatabaseUsers] = useState([]);
+    const [databaseUsersPage, setDatabaseUsersPage] = useState(1);
+    const [databaseUsersMaxPage, setDatabaseUsersMaxPage] = useState(1);
+    const [databaseUsersEmpty, setDatabaseUsersEmpty] = useState(true);
+
     useEffect(() => {
         makePostRequest("/check_session")
         .then(response => {
@@ -225,6 +231,26 @@ const Databases = () => {
         });
     };
 
+    const get_database_users = () => {
+        makePostRequest("/get_database_users?page=" + databaseUsersPage + "&size=5", {
+            connection_id: connectionID
+        })
+        .then(response => {
+            setDatabaseUsers(response.data.items);
+            setDatabaseUsersMaxPage(response.data.pages);
+            if (response.data.total !== 0) {
+                setDatabaseUsersEmpty(false);
+            }
+        })
+        .catch(error => {
+            showError(t("databases.error_fetching_database_users"));
+        });
+    };
+
+    useEffect(() => {
+        get_database_users();
+    }, [connectionID, databaseUsersPage]);
+
     return (
         <>
             <div className="flex space-x-12">
@@ -250,6 +276,12 @@ const Databases = () => {
                             onClick={() => setActiveAccordion('sql')}
                         >
                             {t("databases.sql_editor")}
+                        </button>
+                        <button 
+                            className={`btn flex-1 ${activeAccordion === 'settings' ? 'btn-active' : ''}`}
+                            onClick={() => setActiveAccordion('settings')}
+                        >
+                            {t("databases.database_settings")}
                         </button>
                     </div>
                     <div className="bg-base-200 p-4 rounded-lg">
@@ -349,6 +381,53 @@ const Databases = () => {
                                         {t("databases.error")}: {queryError}
                                     </div>
                                 )}
+                            </>
+                        )}
+                        {activeAccordion === 'settings' && (
+                            <>
+                                <div>
+                                    <h1 className="text-2xl font-bold">{connectionName} {t("databases.database_settings")}</h1>
+                                    <div className="divider"></div>
+                                    <h2 className="text-xl font-bold">{t("databases.database_users")}</h2>
+                                    {databaseUsersEmpty && (
+                                        <div className="mt-4 p-4 bg-base-300 rounded-lg">
+                                            {t("databases.no_database_users")}
+                                        </div>
+                                    )}
+                                    {!databaseUsersEmpty && (
+                                        <>
+                                            <table className="table w-full">
+                                                <thead>
+                                                    <tr>
+                                                        <th className="text-xl">{t("databases.username")}</th>
+                                                        <th className="text-xl">{t("databases.host")}</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {databaseUsers.map((user, index) => (
+                                                        <tr key={index}>
+                                                            <td className='text-base'>{user.username}</td>
+                                                            <td className='text-base'>{user.host}</td>
+                                                        </tr>
+                                                    ))}
+                                                </tbody>
+                                            </table>
+                                            <div className="flex justify-center items-center join pt-5">
+                                                {databaseUsersPage === 1 ? (
+                                                    <button className="join-item btn" disabled>«</button>
+                                                ) : (
+                                                    <button className="join-item btn" onClick={() => setDatabaseUsersPage(databaseUsersPage - 1)}>«</button>
+                                                )}
+                                                <button className="join-item btn">{t("databases.page")} {databaseUsersPage} {t("general.of")} {databaseUsersMaxPage}</button>
+                                                {databaseUsersPage < databaseUsersMaxPage ? (
+                                                    <button className="join-item btn" onClick={() => setDatabaseUsersPage(databaseUsersPage + 1)}>»</button>
+                                                ) : (
+                                                    <button className="join-item btn" disabled>»</button>
+                                                )}
+                                            </div>
+                                        </>
+                                    )}
+                                </div>
                             </>
                         )}
                     </div>
