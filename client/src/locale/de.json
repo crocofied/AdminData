@@ -30,6 +30,26 @@
             "save": "Speichern",
             "add_database_connection": "Datenbankverbindung hinzufügen",
             "name": "Name"
+        },
+        "settings": {
+            "title": "Account Settings",
+            "change_password": "Change Password",
+            "change_password_description": "If you would like to change your password, you can do so here.",
+            "change_password_modal_title": "Change your Password",
+            "old_password": "Old Password",
+            "new_password": "New Password",
+            "confirm_password": "Repeat New Password",
+            "change_username": "Change Username",
+            "change_username_description": "If you would like to change your username, you can do so here.",
+            "change_username_modal_title": "Change your Username",
+            "new_username": "New Username",
+            "password": "Password",
+            "password_not_matching": "Passwords do not match.",
+            "password_changed_successfully": "Password changed successfully. You will be logged out now.",
+            "username_changed_successfully": "Username changed successfully. You will be logged out now.",
+            "error_changing_password": "Error changing password.",
+            "error_changing_username": "Error changing username.",
+            "error_changing_username_message": "Error changing username: "
         }
     }
 }
