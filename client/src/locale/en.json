@@ -59,7 +59,7 @@
             "error_query_empty": "Query is empty.",
             "success_query_empty": "Success, Result is empty.",
             "error_unknown": "An unknown error occurred.",
-            "home": "Start",
+            "home": "Home",
             "databases": "Databases",
             "database_view": "Database View",
             "sql_editor": "SQL Editor",
