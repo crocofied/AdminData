@@ -234,7 +234,7 @@ const Databases = () => {
             <div className="flex space-x-12">
                 <Navbar />
                 <div className='pt-10 pr-10 w-full'>
-                    <div className='breadcrumbs'>
+                    <div className='breadcrumbs text-sm'>
                         <ul>
                             <li><Link to="/dashboard">{t("databases.home")}</Link></li>
                             <li>{connectionName}</li>
