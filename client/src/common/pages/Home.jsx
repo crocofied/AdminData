@@ -56,6 +56,7 @@ const Home = () => {
             password: password
         })
         .then(response => {
+            Cookies.set("language", response.data.language);
             navigate("/dashboard");
         })
         .catch(error => {

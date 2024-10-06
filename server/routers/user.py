@@ -35,7 +35,7 @@ async def login(request: Request):
     cursor.close()
     con.close()
 
-    response = {"message": "success"}
+    response = {"message": "success", "language": user[4]}
     response = JSONResponse(content=response)
     response.set_cookie(
         key="session_id",
