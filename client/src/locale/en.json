@@ -50,6 +50,33 @@
             "error_changing_password": "Error changing password.",
             "error_changing_username": "Error changing username.",
             "error_changing_username_message": "Error changing username: "
+        },
+        "databases": {
+            "error_fetching_databases": "Error fetching databases.",
+            "error_unknown_database_edit": "Unknown error editing database.",
+            "error_unknown_database_delete": "Unknown error deleting database.",
+            "error_unknown_database_create": "Unknown error creating database.",
+            "error_query_empty": "Query is empty.",
+            "success_query_empty": "Success, Result is empty.",
+            "error_unknown": "An unknown error occurred.",
+            "home": "Start",
+            "databases": "Databases",
+            "database_view": "Database View",
+            "sql_editor": "SQL Editor",
+            "database_name": "Database Name",
+            "actions": "Actions",
+            "create_new_database": "Create new Database",
+            "page": "Page",
+            "none": "None",
+            "run_query": "Run Query",
+            "error": "Error",
+            "edit_database": "Edit {{databaseName}}",
+            "database_name_placeholder": "Database Name",
+            "delete_database": "Delete {{databaseName}}",
+            "delete_database_description": "Are you sure you want to delete {{databaseName}}? This action cannot be undone.",
+            "delete": "Delete",
+            "create_database": "Create Database",
+            "create": "Create"
         }
     }
 }
