@@ -4,8 +4,13 @@ import Cookies from 'js-cookie';
 import Navbar from '../components/Navbar';
 import { FaEdit, FaTrash  } from 'react-icons/fa';
 import { makePostRequest } from '../utils/api';
+import { useTranslation } from 'react-i18next';
 
 const Tables = () => {
+    const { t, i18n: {changeLanguage, language}} = useTranslation();
+    useEffect(() => {
+        changeLanguage(import.meta.env.VITE_LANGUAGE);
+    }, []);
     // Navigation and location details
     const navigate = useNavigate();
     const location = useLocation();
@@ -107,7 +112,7 @@ const Tables = () => {
             <div className='pt-10 pr-10 w-full'>
             <div className="breadcrumbs text-sm">
                 <ul>
-                    <li><Link to="/dashboard">Home</Link></li>
+                    <li><Link to="/dashboard">{t("databases.home")}</Link></li>
                     <li><Link to="/databases" state={{
                         connection_id: connectionID,
                         connection_name: connectionName
@@ -115,7 +120,7 @@ const Tables = () => {
                     <li>{databaseName}</li>
                 </ul>
                 </div>
-                <h1 className="text-5xl font-bold">{databaseName} Tables</h1>
+                <h1 className="text-5xl font-bold">{databaseName} {t("tables.tables")}</h1>
                 
                 <div className="divider"></div>
                 <div className="w-full">
@@ -131,10 +136,10 @@ const Tables = () => {
                                 <thead>
                                     <tr>
                                         <th className="text-xl w-1/12">ID</th>
-                                        <th className="text-xl">Table Name</th>
-                                        <th className="text-xl w-1/12">Rows</th>
-                                        <th className="text-xl w-2/12">Size</th>
-                                        <th className="text-xl w-1/12">Actions</th>
+                                        <th className="text-xl">{t("tables.table_name")}</th>
+                                        <th className="text-xl w-1/12">{t("tables.rows")}</th>
+                                        <th className="text-xl w-2/12">{t("tables.size")}</th>
+                                        <th className="text-xl w-1/12">{t("tables.actions")}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -181,14 +186,14 @@ const Tables = () => {
                                         database_name: databaseName
                                     }
                                 });
-                            }}>Create new Table</button>
+                            }}>{t("tables.create_new_table")}</button>
                             <div className="flex justify-center items-center join pt-5">
                                 {currentPage === 1 ? (
                                     <button className="join-item btn" disabled>«</button>
                                 ) : (
                                     <button className="join-item btn" onClick={() => setCurrentPage(currentPage-1)}>«</button>
                                 )}
-                                <button className="join-item btn">Page {currentPage}</button>
+                                <button className="join-item btn">{t("tables.page")} {currentPage}</button>
                                 {currentPage < maxPage ? (
                                     <button className="join-item btn" onClick={() => setCurrentPage(currentPage + 1)}>»</button>
                                 ) : (
@@ -204,13 +209,13 @@ const Tables = () => {
                         <form method="dialog">
                         <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
                         </form>
-                        <h3 className="font-bold text-lg">Delete {selectedTableName}</h3>
+                        <h3 className="font-bold text-lg">{t("tables.delete_table", { tableName: selectedTableName })}</h3>
                         <div className="py-4">
                             <div className='space-y-2'>
                                 <label className="input flex items-center gap-2">
-                                    Are you sure you want to delete {selectedTableName}? This action cannot be undone.
+                                    {t("tables.delete_table_description", { tableName: selectedTableName })}
                                 </label>
-                                <button className="btn btn-neutral w-full" onClick={deleteTable}>Delete</button>
+                                <button className="btn btn-neutral w-full" onClick={deleteTable}>{t("tables.delete")}</button>
                             </div>
                         </div>
                     </div>

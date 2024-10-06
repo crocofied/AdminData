@@ -77,6 +77,55 @@
             "delete": "Delete",
             "create_database": "Create Database",
             "create": "Create"
+        },
+        "tables": {
+            "tables": "Tables",
+            "table_name": "Table Name",
+            "rows": "Rows",
+            "size": "Size",
+            "actions": "Actions",
+            "create_new_table": "Create new Table",
+            "delete_table": "Delete {{tableName}}",
+            "delete_table_description": "Are you sure you want to delete {{tableName}}? This action cannot be undone.",
+            "page": "Page"
+        },
+        "table_create": {
+            "create_table": "Create Table",
+            "table_name_placeholder": "Table Name",
+            "name": "Name",
+            "type": "Type",
+            "length": "Length",
+            "default": "Default",
+            "index": "Index",
+            "auto_increment": "Auto Increment",
+            "action": "Action",
+            "select": "Select",
+            "add_column": "Add Column"
+        },
+        "table_edit": {
+            "home": "Home",
+            "edit_table": "Edit Table",
+            "table_name_placeholder": "Table Name",
+            "name": "Name",
+            "type": "Type",
+            "length": "Length",
+            "default": "Default",
+            "index": "Index",
+            "auto_increment": "Auto Increment",
+            "action": "Action",
+            "select": "Select",
+            "add_column": "Add Column"
+        },
+        "table_view": {
+            "home": "Home",
+            "view_table": "View Table",
+            "actions": "Actions",
+            "no_data": "No data available",
+            "add_row": "Add Row",
+            "page": "Page",
+            "edit_table_data": "Edit Table Data",
+            "save": "Save",
+            "add_table_data": "Add Table Data"
         }
     }
 }

@@ -119,7 +119,7 @@ const TableEdit = () => {
                 <div className='pt-10 pr-10 w-full'>
                     <div className="breadcrumbs text-sm">
                         <ul>
-                            <li><Link to="/dashboard">Home</Link></li>
+                            <li><Link to="/dashboard">{t("table_edit.home")}</Link></li>
                             <li><Link to="/databases" state={{
                                 connection_id: connectionID,
                                 connection_name: connectionName
@@ -129,10 +129,10 @@ const TableEdit = () => {
                                 connection_name: connectionName,
                                 database_name: databaseName
                             }}>{databaseName}</Link></li>
-                            <li>Edit Table</li>
+                            <li>{t("table_edit.edit_table")}</li>
                         </ul>
                     </div>
-                    <h1 className="text-5xl font-bold">Edit Table</h1>
+                    <h1 className="text-5xl font-bold">{t("table_edit.edit_table")}</h1>
                     <div className="divider"></div>
                     {loading ? (
                         <div className="flex justify-center items-center">
@@ -160,17 +160,17 @@ const TableEdit = () => {
                                     </div>
                                 </div>
                             }
-                            <input type="text" className="input input-bordered w-full" placeholder="Table Name" value={newTableName} onChange={(e) => setNewTableName(e.target.value)} required />
+                            <input type="text" className="input input-bordered w-full" placeholder={t("table_edit.table_name_placeholder")} value={newTableName} onChange={(e) => setNewTableName(e.target.value)} required />
                             <table className="table w-full">
                                 <thead>
                                     <tr>
-                                        <th className="text-xl w-3/12">Name</th>
-                                        <th className="text-xl w-2/12">Type</th>
-                                        <th className="text-xl w-2/12">Length</th>
-                                        <th className="text-xl w-2/12">Default</th>
-                                        <th className="text-xl w-1/12">Index</th>
-                                        <th className="text-xl w-1/12">Auto Increment</th>
-                                        <th className="text-xl w-1/12"> Action</th>
+                                        <th className="text-xl w-3/12">{t("table_edit.name")}</th>
+                                        <th className="text-xl w-2/12">{t("table_edit.type")}</th>
+                                        <th className="text-xl w-2/12">{t("table_edit.length")}</th>
+                                        <th className="text-xl w-2/12">{t("table_edit.default")}</th>
+                                        <th className="text-xl w-1/12">{t("table_edit.index")}</th>
+                                        <th className="text-xl w-1/12">{t("table_edit.auto_increment")}</th>
+                                        <th className="text-xl w-1/12">{t("table_edit.action")}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -179,7 +179,7 @@ const TableEdit = () => {
                                             <td><input type="text" className="input input-bordered w-full" placeholder="e.g. id" value={column.name} onChange={(e) => handleColumnChange(index, 'name', e.target.value)} /></td>
                                             <td>
                                                 <select className="select select-bordered w-full" value={column.type} onChange={(e) => handleColumnChange(index, 'type', e.target.value)}>
-                                                    <option disabled selected value="">Select</option>
+                                                    <option disabled selected value="">{t("table_edit.select")}</option>
                                                     <option value="tinyint">TINYINT</option>
                                                     <option value="smallint">SMALLINT</option>
                                                     <option value="mediumint">MEDIUMINT</option>
@@ -234,8 +234,8 @@ const TableEdit = () => {
                                 </tbody>
                             </table>
                             <div className='pt-10'>
-                                <button className="btn btn-neutral w-full" onClick={addColumn}>Add Column</button>
-                                <button className="btn btn-primary w-full mt-5" onClick={editTable}>Edit Table</button>
+                                <button className="btn btn-neutral w-full" onClick={addColumn}>{t("table_edit.add_column")}</button>
+                                <button className="btn btn-primary w-full mt-5" onClick={editTable}>{t("table_edit.edit_table")}</button>
                             </div>
                         </div>
                     )}
