@@ -45,11 +45,11 @@
             "new_username": "Neuer Nutzername",
             "password": "Passwort",
             "password_not_matching": "Passwörter stimmen nicht überein.",
-            "password_changed_successfully": "Password changed successfully.",
-            "username_changed_successfully": "Username changed successfully.",
-            "error_changing_password": "Error changing password.",
-            "error_changing_username": "Error changing username.",
-            "error_changing_username_message": "Error changing username: "
+            "password_changed_successfully": "Passwort erfolgreich geändert.",
+            "username_changed_successfully": "Nutzername erfolgreich geändert.",
+            "error_changing_password": "Fehler bei der Passwortänderung.",
+            "error_changing_username": "Fehler beim Ändern des Nutzernamens.",
+            "error_changing_username_message": "Fehler beim Ändern des Nutzernamens: "
         }
     }
 }
