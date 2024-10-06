@@ -20,7 +20,7 @@ You can now follow the installation instructions to install AdminData on your ne
 ### 📤 - Upload database file
 Navigate to
 ```
-/var/lib/docker/volumes/admindata_db_data/_data
+/var/lib/docker/volumes/<CONTAINER_NAME>_db_data/_data
 ```
 on the new server and upload your previously downloaded db file.
 
